@@ -1,0 +1,171 @@
+<mxfile host="app.diagrams.net" agent="Reto2-Hacienda" version="24.7.8">
+  <diagram id="reto2-capas" name="AS-IS + TO-BE (capas superpuestas)">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="950" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="asis" value="AS-IS (SOLID) — capa base" parent="0" style="" />
+        <mxCell id="tobe" value="TO-BE (SOLID + Patrones) — capa superpuesta" parent="0" />
+        <mxCell id="a_dom" value="Hacienda.Domain" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fafafa;strokeColor=#999999;dashed=1;verticalAlign=top;fontColor=#666666;fontSize=12;" vertex="1" parent="asis">
+          <mxGeometry x="40" y="40" width="620" height="560" as="geometry" />
+        </mxCell>
+        <mxCell id="a_app" value="Hacienda.Application" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fafafa;strokeColor=#999999;dashed=1;verticalAlign=top;fontColor=#666666;fontSize=12;" vertex="1" parent="asis">
+          <mxGeometry x="700" y="40" width="480" height="560" as="geometry" />
+        </mxCell>
+        <mxCell id="a_inf" value="Hacienda.Infrastructure" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fafafa;strokeColor=#999999;dashed=1;verticalAlign=top;fontColor=#666666;fontSize=12;" vertex="1" parent="asis">
+          <mxGeometry x="40" y="660" width="700" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="a_web" value="Hacienda.Web" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fafafa;strokeColor=#999999;dashed=1;verticalAlign=top;fontColor=#666666;fontSize=12;" vertex="1" parent="asis">
+          <mxGeometry x="800" y="660" width="380" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="a_res" value="Res (abstracta)&#10;setters públicos · lista expuesta" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e65100;fontColor=#7f3f00;" vertex="1" parent="asis">
+          <mxGeometry x="60" y="120" width="170" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a_sub" value="Ternero · Cebon · Novillo&#10;ctor públicos · bolsas de constantes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e65100;fontColor=#7f3f00;" vertex="1" parent="asis">
+          <mxGeometry x="250" y="120" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a_fres" value="FabricaRes (Simple Factory)&#10;diccionario + DescribirRango" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontColor=#7f1015;" vertex="1" parent="asis">
+          <mxGeometry x="60" y="210" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a_fvac" value="IVacunaFactory + FabricaVacuna&#10;método por tipo concreto" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontColor=#7f1015;" vertex="1" parent="asis">
+          <mxGeometry x="60" y="300" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a_fven" value="FabricaVenta&#10;validación de monto duplicada" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontColor=#7f1015;" vertex="1" parent="asis">
+          <mxGeometry x="60" y="390" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_fpot" value="FabricaPotrero (se conserva,&#10;se cuelga del esqueleto)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontColor=#4a4a4a;" vertex="1" parent="asis">
+          <mxGeometry x="60" y="470" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_vo" value="ValueObjects · Results&#10;(se conservan)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontColor=#4a4a4a;" vertex="1" parent="asis">
+          <mxGeometry x="290" y="390" width="170" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a_evt" value="Events + IDomainEventPublisher&#10;(interfaz se conserva)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontColor=#4a4a4a;" vertex="1" parent="asis">
+          <mxGeometry x="290" y="300" width="190" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a_venta" value="Venta — agregado con Res fija&#10;(Venta.cs:10)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e65100;fontColor=#7f3f00;" vertex="1" parent="asis">
+          <mxGeometry x="290" y="470" width="190" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_gres" value="GestorReses&#10;switch MapearTipoRes :137-143&#10;res.Peso += :93" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;fontColor=#7f3f00;" vertex="1" parent="asis">
+          <mxGeometry x="720" y="120" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_svac" value="ServicioVacunacion&#10;límites re-implementados :134-143" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;fontColor=#7f3f00;" vertex="1" parent="asis">
+          <mxGeometry x="720" y="220" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a_sven" value="ServicioVentas&#10;(se conserva)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontColor=#4a4a4a;" vertex="1" parent="asis">
+          <mxGeometry x="720" y="310" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_val" value="Validadores x4&#10;2 muertos · 2 duplicados (P-07)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontColor=#7f1015;" vertex="1" parent="asis">
+          <mxGeometry x="720" y="390" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a_aut" value="AutorizadorRbca&#10;(se conserva — está muerto, P-08)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontColor=#4a4a4a;" vertex="1" parent="asis">
+          <mxGeometry x="950" y="120" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_rep" value="Repositorios (SQL se conserva)&#10;switches de rehidratación duplicados&#10;GUID nuevo por lectura" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;fontColor=#7f3f00;" vertex="1" parent="asis">
+          <mxGeometry x="60" y="700" width="260" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pub" value="DomainEventPublisherConsola&#10;único destino: Console" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;fontColor=#7f3f00;" vertex="1" parent="asis">
+          <mxGeometry x="350" y="700" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pol" value="PoliticaAdmin/&#10;Empleado/Visitante&#10;(se conservan — muertas)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontColor=#4a4a4a;" vertex="1" parent="asis">
+          <mxGeometry x="600" y="700" width="130" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_ctr" value="VacunaController&#10;if/else por tipo x2 (:49,:101)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;fontColor=#7f3f00;" vertex="1" parent="asis">
+          <mxGeometry x="820" y="700" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a_prg" value="Program.cs — composition root&#10;(se conserva)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontColor=#4a4a4a;" vertex="1" parent="asis">
+          <mxGeometry x="820" y="790" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ae1" value="usa" style="endArrow=classic;html=1;strokeColor=#999999;fontColor=#777777;" edge="1" parent="asis" source="a_gres" target="a_fres">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae2" value="usa" style="endArrow=classic;html=1;strokeColor=#999999;fontColor=#777777;" edge="1" parent="asis" source="a_svac" target="a_fvac">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae3" value="valida post-construcción" style="endArrow=classic;html=1;dashed=1;strokeColor=#b71c1c;fontColor=#7f1015;" edge="1" parent="asis" source="a_val" target="a_sven">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae4" value="switch propio" style="endArrow=classic;html=1;strokeColor=#999999;fontColor=#777777;" edge="1" parent="asis" source="a_rep" target="a_sub">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae5" value="publica" style="endArrow=classic;html=1;strokeColor=#999999;fontColor=#777777;" edge="1" parent="asis" source="a_gres" target="a_pub">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae6" value="sostiene" style="endArrow=classic;html=1;strokeColor=#999999;fontColor=#777777;" edge="1" parent="asis" source="a_venta" target="a_res">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t_leg" value="Leyenda TO-BE:  Factory Method ·  Template Method (base) ·  Builder ·  Observer ·  Registro/punto de decisión ·  SC-1 (variante A confirmada)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="tobe">
+          <mxGeometry x="40" y="940" width="900" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t_base_res" value="FabricaDeRes «Creator + Template Method»&#10;esqueleto sellado: validar → construir →&#10;regla del subtipo → publicar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#5c4400;" vertex="1" parent="tobe">
+          <mxGeometry x="500" y="120" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="t_cr_res" value="FabricaTernero · Cebon · Novillo&#10;«ConcreteCreator»" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1a3c6e;" vertex="1" parent="tobe">
+          <mxGeometry x="500" y="240" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t_cr_vaca" value="FabricaVacaLechera&#10;«SC-1-A · 1 clase + 1 registro»" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;fontColor=#1a3c6e;" vertex="1" parent="tobe">
+          <mxGeometry x="500" y="320" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t_reg_res" value="RegistroDeReses&#10;punto único de decisión&#10;crear + rehidratar (Id estable)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#4a3060;" vertex="1" parent="tobe">
+          <mxGeometry x="500" y="390" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t_base_vac" value="FabricaDeVacuna «TM» +&#10;FabricaBacteriana/Viva «FM»" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#5c4400;" vertex="1" parent="tobe">
+          <mxGeometry x="500" y="480" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t_datos" value="DatosVacuna&#10;(objeto-solicitud)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1a3c6e;" vertex="1" parent="tobe">
+          <mxGeometry x="500" y="550" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t_reg_vac" value="RegistroDeVacunas&#10;(por categoria)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#4a3060;" vertex="1" parent="tobe">
+          <mxGeometry x="360" y="480" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t_builder" value="VentaBuilder «Builder»&#10;iniciar → ítems → Build()&#10;valida invariantes + total" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#2d5230;" vertex="1" parent="tobe">
+          <mxGeometry x="360" y="550" width="120" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t_vend" value="IVendible + ProductoDerivado&#10;Lacteo · Carne · Piel «SC-1»" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontColor=#2d5230;" vertex="1" parent="tobe">
+          <mxGeometry x="360" y="390" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t_fprod" value="FabricaDeProducto «TM» +&#10;creadores «FM» x3 «SC-1»" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;dashed=1;fontColor=#5c4400;" vertex="1" parent="tobe">
+          <mxGeometry x="360" y="460" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t_handler_if" value="IDomainEventHandler&#171;T&#187; «Observer»" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;fontColor=#7a0f38;" vertex="1" parent="tobe">
+          <mxGeometry x="120" y="550" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t_srv" value="Servicios de Application&#10;—— ya no mapean tipos,&#10;ya no duplican validación ——&#10;(se conservan, adelgazan)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;fontColor=#222222;" vertex="1" parent="tobe">
+          <mxGeometry x="760" y="240" width="190" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t_desp" value="DespachadorDeEventos «Observer»&#10;implementa IDomainEventPublisher&#10;(interfaz AS-IS intacta)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;fontColor=#7a0f38;" vertex="1" parent="tobe">
+          <mxGeometry x="760" y="700" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t_hconsola" value="HandlerConsola «Observer #1»&#10;salida IDÉNTICA byte a byte" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;fontColor=#7a0f38;" vertex="1" parent="tobe">
+          <mxGeometry x="760" y="790" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t_hstock" value="HandlerStockDerivados&#10;«Observer #2 · SC-1»" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;dashed=1;fontColor=#7a0f38;" vertex="1" parent="tobe">
+          <mxGeometry x="960" y="790" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t_ensambla" value="Program.cs (conservado) ensambla:&#10;creators + registros + builder + handlers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#4a3060;dashed=1;" vertex="1" parent="tobe">
+          <mxGeometry x="360" y="790" width="260" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="te1" value="creators" style="endArrow=classic;html=1;strokeColor=#9673a6;fontColor=#4a3060;" edge="1" parent="tobe" source="t_reg_res" target="t_base_res">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="te2" value="" style="endArrow=classic;html=1;strokeColor=#6c8ebf;fontColor=#1a3c6e;" edge="1" parent="tobe" source="t_base_res" target="t_cr_res">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="te3" value="crea ítems" style="endArrow=classic;html=1;strokeColor=#82b366;fontColor=#2d5230;" edge="1" parent="tobe" source="t_fprod" target="t_vend">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="te4" value="ensambla" style="endArrow=classic;html=1;strokeColor=#82b366;fontColor=#2d5230;" edge="1" parent="tobe" source="t_builder" target="t_vend">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="te5" value="despacha" style="endArrow=classic;html=1;strokeColor=#c2185b;fontColor=#7a0f38;" edge="1" parent="tobe" source="t_desp" target="t_handler_if">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="te6" value="pide crear" style="endArrow=classic;html=1;strokeColor=#9673a6;fontColor=#4a3060;" edge="1" parent="tobe" source="t_srv" target="t_reg_res">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="te7" value="registra todo" style="endArrow=classic;html=1;dashed=1;strokeColor=#9673a6;fontColor=#4a3060;" edge="1" parent="tobe" source="t_ensambla" target="t_reg_res">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

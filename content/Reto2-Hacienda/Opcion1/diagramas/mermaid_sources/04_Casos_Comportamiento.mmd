@@ -1,0 +1,21 @@
+flowchart TD
+    subgraph Reto1["Casos Reto 1 (8) — congelados"]
+        C01[C-01: Login 3 roles]
+        C02[C-02: Crear potrero vacío]
+        C03[C-03: Res edad inválida]
+        C04[C-04: Alimentar → eventos peso]
+        C05[C-05: Vacunar → exceder límite]
+        C06[C-06: Lote vacunas mixto]
+        C07[C-07: Chip + ubicación + Haversine]
+        C08[C-08: Vender res]
+    end
+    subgraph Nuevos["Casos Nuevos (4) — tocan patrones"]
+        C09[C-09: Vacuna vía DatosVacuna (sin if/else)]
+        C10[C-10: Venta con derivado SC-1]
+        C11[C-11: Rehidratación Id estable]
+        C12[C-12: Agregar VacaLechera (demo OCP)]
+    end
+    CAP[Captura ANTES → Refactor → Captura DESPUÉS → diff lado a lado]
+    Reto1 --> CAP
+    Nuevos --> CAP
+    CAP --> VIDEO[Video 20 min: min 11-14 SOLID en vivo]

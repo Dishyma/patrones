@@ -1,0 +1,33 @@
+flowchart BT
+    subgraph Domain["Hacienda.Domain (sin referencias)"]
+        direction TB
+        ENT[Entities<br/>Res · Vacuna · Venta · Potrero · Chip · Usuario · Geolocalizacion]
+        FAB[Factories<br/>FabricaRes/Vacuna/Venta/Potrero + 4 interfaces]
+        VO[ValueObjects<br/>Dinero · Identificacion · Credencial · NumeroSerieChip]
+        IFC[Interfaces<br/>IRepositorio* · IHasher · IGuidProvider · IDomainEventPublisher]
+        EVT[Events · Results · Enums]
+    end
+    subgraph Application["Hacienda.Application"]
+        direction TB
+        SRV[Services x8<br/>GestorReses · GestorPotreros · ServicioVacunacion<br/>ServicioVentas · ServicioChip · ServicioGeolocalizacion<br/>ServicioAutenticacion · AutorizadorRbca]
+        VAL[Validadores x4<br/>ValidadorRes/Potrero/Vacuna/Venta]
+    end
+    subgraph Infrastructure["Hacienda.Infrastructure"]
+        direction TB
+        REP[Repositorio*Sqlite x7]
+        POL[PoliticaAdmin/Empleado/Visitante]
+        CUT[CrossCutting<br/>HasherBcrypt · GuidProviderSistema · DataLoader]
+        PUB[DomainEventPublisherConsola]
+    end
+    subgraph Web["Hacienda.Web"]
+        direction TB
+        CTL[Controllers x8 + Program.cs]
+        VW[Views x28 — NO SE INTERVIENE]
+    end
+    Application -->|"csproj:9"| Domain
+    Infrastructure -->|"csproj:9"| Domain
+    Infrastructure -->|"csproj:10 — implementa IPoliticaPermisos/IDataSeeder"| Application
+    Web -.->|"csproj:9 — controladores y vistas usan entidades y enums de dominio directamente"| Domain
+    Web -->|"csproj:9-10"| Application
+    Web -->|"csproj:11"| Infrastructure
+    linkStyle 3 stroke:#c62828,stroke-width:2px

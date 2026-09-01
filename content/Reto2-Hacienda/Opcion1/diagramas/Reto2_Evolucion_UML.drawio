@@ -1,0 +1,316 @@
+<mxfile host="app.diagrams.net" agent="Reto2-Hacienda-Evolucion" version="24.7.8">
+  <diagram id="asis-recorte" name="1 · AS-IS — lo que SALE (recorte marcado)">
+    <mxGraphModel dx="1600" dy="1140" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1130" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="aL_dom" value="Hacienda.Domain" style="swimlane;startSize=26;horizontal=1;html=1;fillColor=#fafafa;strokeColor=#999999;dashed=1;fontColor=#555555;fontSize=13;verticalAlign=top;swimlaneFillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="920" height="720" as="geometry" />
+        </mxCell>
+        <mxCell id="a_res" value="Res «abstract»&#10;🟠 setters Peso/Edad/Chip :13-16&#10;🟠 lista Vacunas expuesta" style="whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="20" y="40" width="170" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_ter" value="Ternero&#10;🟠 ctor público" style="whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="210" y="40" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_ceb" value="Cebon&#10;🟠 ctor público" style="whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="380" y="40" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_nov" value="Novillo&#10;🟠 ctor público" style="whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="550" y="40" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_scfut" value="SC-1 no existe&#10;🔴 = 9 puntos/4 capas" style="whiteSpace=wrap;html=1;fillColor=none;strokeColor=#b71c1c;dashed=1;fontColor=#b71c1c;fontStyle=2;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="720" y="40" width="170" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_vac" value="Vacuna «abstract»&#10;⚪ CalcularEstado()" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="20" y="130" width="170" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_bac" value="Bacteriana&#10;⚪ valida periodo [2,4]" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="210" y="130" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_viv" value="Viva&#10;⚪ GradoAtenuacion" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="380" y="130" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_ven" value="Venta&#10;🟠 Res fija :10" style="whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="550" y="130" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pot" value="Potrero&#10;⚪ AgregarRes(150) 🟠 lista :12" style="whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="20" y="220" width="170" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_ichip" value="IChip&#10;⚪" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="210" y="220" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_chip" value="Chip&#10;⚪ máquina de estados" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="380" y="220" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_sincon" value="🔴 P-10: sin consumo — 0 handlers · VacunaVencidaEvent muerto" style="whiteSpace=wrap;html=1;fillColor=none;strokeColor=#b71c1c;dashed=1;fontColor=#b71c1c;fontStyle=2;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="550" y="220" width="340" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_din" value="Dinero&#10;⚪ monto&lt;0 :10-11" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="20" y="310" width="170" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_evt" value="Events ×6&#10;⚪ + IDomainEvent" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="210" y="310" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pubif" value="IDomainEventPublisher&#10;⚪ Publicar&lt;T&gt;()" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="380" y="310" width="170" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a_iresf" value="«interface» IResFactory" style="whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontColor=#7f1015;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="20" y="410" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="a_ivacf" value="«interface» IVacunaFactory&#10;🔴 método por tipo :8-12" style="whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontColor=#7f1015;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="210" y="410" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="a_ivtf" value="«interface» IVentaFactory" style="whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontColor=#7f1015;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="400" y="410" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="a_ipotf" value="«interface» IPotreroFactory&#10;⚪" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="590" y="410" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="a_fres" value="FabricaRes&#10;🔴 Simple Factory — dict :17-23&#10;🔴 DescribirRango default :47&#10;🔴 edad validada después :33-37" style="whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontColor=#7f1015;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="20" y="470" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a_fvac" value="FabricaVacuna&#10;🔴 ValidarComunes :36-39&#10;🔴 (duplicado P-07)" style="whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontColor=#7f1015;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="210" y="470" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a_fven" value="FabricaVenta&#10;🔴 monto&lt;0 :20&#10;🔴 (regla ×3, P-07)" style="whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontColor=#7f1015;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="400" y="470" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a_fpot" value="FabricaPotrero&#10;⚪ se conserva — se cuelga&#10;del esqueleto en TO-BE" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="590" y="470" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a_p1note" value="🔴 P-01: agregar subtipo de res = 9 puntos de modificación en 8 archivos, 4 capas (promesa Reto 1: &quot;0 modificaciones&quot;)" style="whiteSpace=wrap;html=1;fillColor=none;strokeColor=#b71c1c;dashed=1;fontColor=#b71c1c;fontStyle=2;verticalAlign=middle;align=left;spacing=6;" vertex="1" parent="aL_dom">
+          <mxGeometry x="20" y="580" width="740" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="aL_app" value="Hacienda.Application" style="swimlane;startSize=26;horizontal=1;html=1;fillColor=#fafafa;strokeColor=#999999;dashed=1;fontColor=#555555;fontSize=13;verticalAlign=top;swimlaneFillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="40" width="540" height="720" as="geometry" />
+        </mxCell>
+        <mxCell id="a_gres" value="GestorReses&#10;🟠 switch :137-143 · stats :130-132&#10;🟠 res.Peso += :93 (P-04)" style="whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_app">
+          <mxGeometry x="20" y="40" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_svac" value="ServicioVacunacion&#10;🟠 límites re-hechos :134-143&#10;⚪ lote {base}-{i:D3} :72" style="whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_app">
+          <mxGeometry x="280" y="40" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_sven" value="ServicioVentas&#10;⚪ orquesta · contrato mixto" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_app">
+          <mxGeometry x="20" y="140" width="230" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a_val" value="Validadores ×4 «capa»&#10;🔴 2 muertos · 2 duplicados (P-07)&#10;🔴 ValidadorVenta monto&lt;=0 :15" style="whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontColor=#7f1015;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_app">
+          <mxGeometry x="280" y="140" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_aut" value="⚪ AutorizadorRbca + Políticas ×3 — bien construido, SIN call sites (P-08 ⛔ congelado)" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontStyle=2;verticalAlign=middle;align=left;spacing=6;" vertex="1" parent="aL_app">
+          <mxGeometry x="20" y="240" width="490" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="aL_inf" value="Hacienda.Infrastructure" style="swimlane;startSize=26;horizontal=1;html=1;fillColor=#fafafa;strokeColor=#999999;dashed=1;fontColor=#555555;fontSize=13;verticalAlign=top;swimlaneFillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="800" width="1000" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="a_rep" value="RepositorioPotrero/Res/VentaSqlite&#10;🟠 switches rehidratación :150-157, :39-45&#10;🟠 GUID nuevo por lectura :41-43&#10;🟠 acoplamiento estático cruzado :29,96" style="whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_inf">
+          <mxGeometry x="20" y="40" width="300" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pub" value="DomainEventPublisherConsola&#10;🟠 único destino Console :5-11" style="whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_inf">
+          <mxGeometry x="340" y="40" width="250" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a_otr" value="⚪ Otros repos ×4 · DatabaseInitializer · Políticas · CrossCutting — sin cambios" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=middle;align=left;spacing=6;" vertex="1" parent="aL_inf">
+          <mxGeometry x="620" y="40" width="340" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="aL_web" value="Hacienda.Web" style="swimlane;startSize=26;horizontal=1;html=1;fillColor=#fafafa;strokeColor=#999999;dashed=1;fontColor=#555555;fontSize=13;verticalAlign=top;swimlaneFillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="800" width="460" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="a_ctr" value="VacunaController&#10;🟠 if/else ×2 :49,:101&#10;🟠 Contains(&quot;exito&quot;) :153" style="whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_web">
+          <mxGeometry x="20" y="40" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_prg" value="Program.cs&#10;⚪ composition root OK&#10;⛔ P-12 sin tocar" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="aL_web">
+          <mxGeometry x="240" y="40" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_leg" value="Leyenda:  🔴 SALE  ·  🟠 SE TRANSFORMA  ·  ⚪ PERMANECE  ·  ⛔ no intervenir declarado  ·  :n = archivo:línea del AS-IS" style="whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1090" width="1500" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ae1" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_ter" target="a_res"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae2" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_ceb" target="a_res"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae3" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_nov" target="a_res"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae4" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_bac" target="a_vac"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae5" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_viv" target="a_vac"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae6" value="Res fija" style="endArrow=open;html=1;strokeColor=#e65100;fontColor=#7f3f00;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_ven" target="a_res"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae7" style="endArrow=block;endFill=1;dashed=1;html=1;strokeColor=#b71c1c;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_fres" target="a_iresf"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae8" style="endArrow=block;endFill=1;dashed=1;html=1;strokeColor=#b71c1c;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_fvac" target="a_ivacf"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae9" style="endArrow=block;endFill=1;dashed=1;html=1;strokeColor=#b71c1c;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_fven" target="a_ivtf"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae10" style="endArrow=block;endFill=1;dashed=1;html=1;strokeColor=#555555;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_fpot" target="a_ipotf"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae11" value="regla ×3" style="endArrow=open;dashed=1;html=1;strokeColor=#b71c1c;fontColor=#7f1015;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_fven" target="a_din"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae12" value="usa" style="endArrow=open;dashed=1;html=1;strokeColor=#777777;fontColor=#777777;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_gres" target="a_iresf"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae13" value="usa" style="endArrow=open;dashed=1;html=1;strokeColor=#777777;fontColor=#777777;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_svac" target="a_ivacf"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae14" value="usa" style="endArrow=open;dashed=1;html=1;strokeColor=#777777;fontColor=#777777;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_sven" target="a_ivtf"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae15" value="post-construcción" style="endArrow=open;dashed=1;html=1;strokeColor=#b71c1c;fontColor=#7f1015;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_val" target="a_sven"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae16" value="switch propio" style="endArrow=open;dashed=1;html=1;strokeColor=#777777;fontColor=#777777;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_rep" target="a_ter"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae17" style="endArrow=block;endFill=1;dashed=1;html=1;strokeColor=#555555;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_pub" target="a_pubif"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae18" value="if/else ×2" style="endArrow=open;dashed=1;html=1;strokeColor=#e65100;fontColor=#7f3f00;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_ctr" target="a_svac"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ae19" value="publica" style="endArrow=open;dashed=1;html=1;strokeColor=#777777;fontColor=#777777;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a_gres" target="a_pubif"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="tobe-entra" name="2 · TO-BE — lo que ENTRA (por patrón)">
+    <mxGraphModel dx="1600" dy="1140" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1130" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="bL_dom" value="Hacienda.Domain — Core fortalecido" style="swimlane;startSize=26;horizontal=1;html=1;fillColor=#fafafa;strokeColor=#999999;dashed=1;fontColor=#555555;fontSize=13;verticalAlign=top;swimlaneFillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="920" height="720" as="geometry" />
+        </mxCell>
+        <mxCell id="b_res" value="Res «abstract»&#10;🟠 setters CERRADOS · ctor privados&#10;🟠 mutación: Alimentar/AplicarVacuna/&#10;InstalarChip ⚪ superficie intacta" style="whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="20" y="40" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="b_ter" value="Ternero ⚪&#10;props-dato = hooks TM" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="210" y="40" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_ceb" value="Cebon ⚪&#10;props-dato :10-16" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="380" y="40" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_nov" value="Novillo ⚪&#10;props-dato :10-16" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="550" y="40" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_vaca" value="VacaLechera «SC-1-A»&#10;NUEVA: 1 clase + 1 registro&#10;(antes: 9 puntos/4 capas)" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;fontColor=#1a3c6e;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="720" y="40" width="170" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="b_vac" value="Vacuna «abstract» ⚪" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="20" y="150" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="b_bac" value="Bacteriana ⚪&#10;FabricaBacteriana «FM»" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="210" y="140" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_viv" value="Viva ⚪&#10;FabricaViva «FM»" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="380" y="140" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_ven" value="Venta 🟠&#10;superficie INTACTA&#10;+ items · Total()" style="whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="550" y="140" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="b_vitem" value="VentaItem «nuevo»&#10;vendible+cant+precio" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#2d5230;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="720" y="140" width="170" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_pot" value="Potrero 🟠&#10;colección cerrada" style="whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="20" y="250" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="b_ivend" value="«interface» IVendible&#10;«nuevo · diseño»" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#2d5230;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="210" y="240" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_prod" value="ProductoDerivado «SC-1»&#10;Lacteo·Carne·Piel (creadores FM)" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontColor=#2d5230;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="380" y="240" width="170" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_ih" value="«interface» IDomainEventHandler&lt;T&gt; «Observer · NUEVO»&#10;Manejar(evento)" style="whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;fontColor=#7a0f38;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="570" y="240" width="320" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_evt" value="Events ×6 ⚪ + nuevos&#10;VentaRealizada · StockBajo «SC-1»" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="20" y="320" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_pubif" value="IDomainEventPublisher ⚪&#10;(interfaz NO cambia)" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="240" y="320" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_datos" value="DatosVacuna&#10;«nuevo · request»" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1a3c6e;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="440" y="320" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_fdr" value="FabricaDeRes&#10;«Creator + Template Method»&#10;esqueleto SELLADO: validar→&#10;construir→regla subtipo→publicar&#10;+Rehidratar «Id estable»" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#5c4400;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="20" y="410" width="180" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="b_crt1" value="FabricaTernero&#10;«ConcreteCreator»" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1a3c6e;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="230" y="410" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_crt2" value="FabricaCebon&#10;«ConcreteCreator»" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1a3c6e;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="400" y="410" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_crt3" value="FabricaNovillo&#10;«ConcreteCreator»" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1a3c6e;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="570" y="410" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_crt4" value="FabricaVacaLechera&#10;«SC-1 · NUEVO»" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;fontColor=#1a3c6e;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="740" y="410" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_reg" value="RegistroDeReses&#10;«punto único de decisión»&#10;Crear · Rehidratar" style="whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#4a3060;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="20" y="540" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="b_fdv" value="FabricaDeVacuna «TM»&#10;Crear(DatosVacuna)&#10;hook ValidarPropios" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#5c4400;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="230" y="530" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="b_regv" value="RegistroDeVacunas&#10;«por categoría»" style="whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#4a3060;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="400" y="530" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_fdp" value="FabricaDeProducto «TM»&#10;«SC-1» + creators ×3" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;dashed=1;fontColor=#5c4400;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="570" y="530" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_regp" value="RegistroDeProductos&#10;«SC-1»" style="whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;dashed=1;fontColor=#4a3060;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="740" y="530" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_bld" value="VentaBuilder «Builder · NUEVO»&#10;Iniciar → ConItem() → Build()&#10;Build(): invariantes + total" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#2d5230;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="20" y="630" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="b_lspnote" value="LSP compensado: hooks = props-dato (todos los subtipos ya las declaran :10-16)" style="whiteSpace=wrap;html=1;fillColor=none;strokeColor=#5c4400;dashed=1;fontColor=#5c4400;fontStyle=2;verticalAlign=middle;align=left;spacing=6;" vertex="1" parent="bL_dom">
+          <mxGeometry x="250" y="640" width="380" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="bL_app" value="Hacienda.Application — adelgaza" style="swimlane;startSize=26;horizontal=1;html=1;fillColor=#fafafa;strokeColor=#999999;dashed=1;fontColor=#555555;fontSize=13;verticalAlign=top;swimlaneFillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="40" width="540" height="720" as="geometry" />
+        </mxCell>
+        <mxCell id="b_gres" value="GestorReses 🟠 adelgaza&#10;⚪ sin switch · stats polimórficas&#10;alimenta vía res.Alimentar()" style="whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_app">
+          <mxGeometry x="20" y="40" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="b_svac" value="ServicioVacunacion 🟠&#10;delega límite en Res.AplicarVacuna()&#10;crea vía RegistroDeVacunas" style="whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_app">
+          <mxGeometry x="280" y="40" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="b_sven" value="ServicioVentas 🟠&#10;orquesta vía VentaBuilder&#10;result-object · mensaje IDÉNTICO" style="whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_app">
+          <mxGeometry x="20" y="140" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="b_valout" value="❌ Validadores SALEN (E-04)&#10;vivas → esqueleto TM&#10;muertas → eliminadas" style="whiteSpace=wrap;html=1;fillColor=none;strokeColor=#b71c1c;dashed=1;fontColor=#b71c1c;fontStyle=2;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_app">
+          <mxGeometry x="280" y="140" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="b_aut" value="⚪ AutorizadorRbca + Políticas — intactas (P-08 ⛔ congelado · deuda declarada)" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontStyle=2;verticalAlign=middle;align=left;spacing=6;" vertex="1" parent="bL_app">
+          <mxGeometry x="20" y="240" width="490" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="bL_inf" value="Hacienda.Infrastructure" style="swimlane;startSize=26;horizontal=1;html=1;fillColor=#fafafa;strokeColor=#999999;dashed=1;fontColor=#555555;fontSize=13;verticalAlign=top;swimlaneFillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="800" width="1000" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="b_rep" value="Repositorios ×7 🟠&#10;SQL INTACTO (zona excluida)&#10;rehidratan vía RegistroDeReses&#10;→ fin switches · Id ESTABLE" style="whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_inf">
+          <mxGeometry x="20" y="40" width="300" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="b_desp" value="DespachadorDeEventos «Observer»&#10;NUEVO — implementa IDomainEventPublisher&#10;orden determinista (consola 1º)" style="whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;fontColor=#7a0f38;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_inf">
+          <mxGeometry x="340" y="40" width="280" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="b_hc" value="HandlerConsola «#1»&#10;salida IDÉNTICA byte a byte" style="whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;fontColor=#7a0f38;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_inf">
+          <mxGeometry x="640" y="40" width="170" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_hs" value="HandlerStockDerivados&#10;«#2 · SC-1»" style="whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;dashed=1;fontColor=#7a0f38;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_inf">
+          <mxGeometry x="830" y="40" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="bL_web" value="Hacienda.Web" style="swimlane;startSize=26;horizontal=1;html=1;fillColor=#fafafa;strokeColor=#999999;dashed=1;fontColor=#555555;fontSize=13;verticalAlign=top;swimlaneFillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="800" width="460" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="b_ctr" value="VacunaController 🟠&#10;SIN if/else — arma DatosVacuna&#10;éxito = result-object" style="whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontColor=#7f3f00;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_web">
+          <mxGeometry x="20" y="40" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="b_prg" value="Program.cs 🟠 ensambla&#10;creators→Registros · handlers&#10;(consola 1º) · VentaBuilder&#10;orden arranque INTACTO" style="whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#9673a6;fontColor=#4a3060;verticalAlign=top;align=left;spacing=6;" vertex="1" parent="bL_web">
+          <mxGeometry x="240" y="40" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="b_leg" value="Leyenda:  Factory Method ·  Template Method ·  Builder ·  Observer ·  Registro/punto de decisión ·  SC-1 (punteado) ·  NUEVO=entra ·  ⚪ permanece ·  🟠 se transforma" style="whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1090" width="1500" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="be1" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_ter" target="b_res"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be2" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_ceb" target="b_res"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be3" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_nov" target="b_res"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be4" style="endArrow=block;endFill=1;html=1;strokeColor=#6c8ebf;dashed=1;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_vaca" target="b_res"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be5" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_bac" target="b_vac"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be6" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_viv" target="b_vac"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be7" style="endArrow=block;endFill=1;html=1;strokeColor=#6c8ebf;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_crt1" target="b_fdr"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be8" style="endArrow=block;endFill=1;html=1;strokeColor=#6c8ebf;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_crt2" target="b_fdr"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be9" style="endArrow=block;endFill=1;html=1;strokeColor=#6c8ebf;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_crt3" target="b_fdr"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be10" style="endArrow=block;endFill=1;html=1;strokeColor=#6c8ebf;dashed=1;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_crt4" target="b_fdr"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be11" value="creators" style="endArrow=open;html=1;strokeColor=#9673a6;fontColor=#4a3060;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_reg" target="b_fdr"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be12" value="pide crear" style="endArrow=open;dashed=1;html=1;strokeColor=#9673a6;fontColor=#4a3060;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_gres" target="b_reg"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be13" value="DatosVacuna" style="endArrow=open;dashed=1;html=1;strokeColor=#9673a6;fontColor=#4a3060;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_svac" target="b_regv"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be14" value="Rehidratar" style="endArrow=open;dashed=1;html=1;strokeColor=#9673a6;fontColor=#4a3060;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_rep" target="b_reg"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be15" value="publica" style="endArrow=open;dashed=1;html=1;strokeColor=#c2185b;fontColor=#7a0f38;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_fdr" target="b_pubif"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be16" style="endArrow=block;endFill=1;dashed=1;html=1;strokeColor=#c2185b;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_desp" target="b_pubif"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be17" style="endArrow=block;endFill=1;dashed=1;html=1;strokeColor=#c2185b;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_hc" target="b_ih"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be18" value="despacha" style="endArrow=open;html=1;strokeColor=#c2185b;fontColor=#7a0f38;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_desp" target="b_hc"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be19" style="endArrow=block;endFill=1;dashed=1;html=1;strokeColor=#82b366;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_res" target="b_ivend"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be20" style="endArrow=block;endFill=1;dashed=1;html=1;strokeColor=#82b366;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_prod" target="b_ivend"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be21" value="ConItem()" style="endArrow=open;dashed=1;html=1;strokeColor=#82b366;fontColor=#2d5230;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_bld" target="b_ivend"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be22" value="Build()" style="endArrow=open;html=1;strokeColor=#82b366;fontColor=#2d5230;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_bld" target="b_ven"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be23" value="registra handlers" style="endArrow=open;dashed=1;html=1;strokeColor=#9673a6;fontColor=#4a3060;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_prg" target="b_desp"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="be24" value="usa builder" style="endArrow=open;dashed=1;html=1;strokeColor=#82b366;fontColor=#2d5230;edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b_sven" target="b_bld"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
