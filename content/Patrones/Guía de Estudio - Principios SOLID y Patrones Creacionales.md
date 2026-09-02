@@ -1,4 +1,4 @@
-# Guía de Estudio Completa: Principios SOLID y Patrones de Diseño Creacionales
+w# Guía de Estudio Completa: Principios SOLID y Patrones de Diseño Creacionales
 
 > **Basada en las presentaciones del MSc. César Augusto López Gallego** (Profesor Facultad Ingeniería en TIC – UPB, Coordinador Área de Programación, Computación y Desarrollo de Software — cesar.lopezg@upb.edu.co)
 >

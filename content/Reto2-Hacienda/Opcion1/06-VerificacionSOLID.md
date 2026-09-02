@@ -1,132 +1,109 @@
 ---
 tags: [reto2, actividad-4, verificacion, solid, comportamiento, hacienda]
-estado: en-revision
-fecha: 2026-08-30
+estado: v2 — alineada al TO-BE v2 y al catálogo P-01..P-15 (2026-09-02)
 ---
 
 # 06 — Verificación: SOLID sigue en pie y el comportamiento no cambió (Actividad 4)
 
 > [!abstract] Propósito
-> Demostrar —no afirmar— que (a) ningún patrón adoptado rompe SOLID (toda tensión declarada y compensada) y (b) el comportamiento observable es idéntico al AS-IS. Contiene los entregables 4.1 (matriz de verificación con evidencia) y 4.2 (los doce casos de comportamiento, salidas lado a lado).
+> Demostrar, no afirmar: (4.1) **matriz patrón×principio** con evidencia por celda no-neutra; (4.2) **casos de comportamiento** del Reto 1 + nuevos que recorren lo que los patrones tocan, con salidas **antes/después lado a lado**. La base ya fue auditada (B-15); aquí se audita que **los patrones no la rompan**.
 
-> [!info] Principio rector
-> "Un patrón mal aplicado deshace SOLID con una elegancia que asusta" (enunciado). Cada celda no-Neutra lleva su línea de evidencia. Ninguna celda puede quedar en **Roto** sin declaración del beneficio que lo compensa — en este diseño **no hay celdas Roto**.
+> [!warning] Regla de la Líder Técnica
+> "SOLID no se toca. Un patrón mal aplicado deshace SOLID con una elegancia que asusta." Toda celda **Tensionado** trae su compensación; ninguna celda queda **Roto**.
 
 ---
 
-## 4.1 · Entregable 1 — Matriz de verificación Patrón × SOLID
+## 4.1 · Entregable 1 — Matriz de verificación patrón × principio
 
 | Patrón adoptado | SRP | OCP | LSP | ISP | DIP |
-|-----------------|-----|-----|-----|-----|-----|
-| **Factory Method** | Refuerza | Refuerza | Tensionado pero compensado | Neutro | Refuerza |
-| **Builder** | Refuerza | Refuerza | Refuerza | Neutro | Refuerza |
-| **Template Method** | Refuerza | Refuerza | Tensionado pero compensado | Neutro | Refuerza |
-| **Observer** | Refuerza | Refuerza | Neutro | Refuerza | Refuerza |
+|---|---|---|---|---|---|
+| **Factory Method** (+ `RegistroDe*`) | **Refuerza** ① | **Refuerza** ② | Neutro | Neutro | **Refuerza** ③ |
+| **Template Method** | **Refuerza** ④ | **Tensionado → compensado** ⑤ | **Tensionado → compensado** ⑥ | Neutro | Neutro |
+| **Builder** | **Refuerza** ⑦ | **Refuerza** ⑧ | **Refuerza** ⑨ | **Refuerza** ⑩ | **Refuerza** ⑪ |
+| **Observer** | **Refuerza** ⑫ | **Refuerza** ⑬ | Neutro | **Refuerza** ⑭ | **Refuerza** ⑮ |
 
-### Evidencia por celda (toda celda ≠ Neutro)
+### Evidencias (una línea por celda no-neutra)
 
-**Factory Method**
+① La creación sale de los servicios: `GestorReses` orquesta, no decide tipo (hoy decide en `FabricaRes.cs:17-21` + `GestorReses.cs:129-134`).
+② `FabricaVacaLechera` = **1 clase + 1 registro, 0 ediciones** (E-13) — el experimento OCP medible: hoy 6 archivos/2 capas (P-01).
+③ Servicios y repos dependen de `RegistroDeReses`/interfaces — nadie conoce creators concretos (idioma ya probado en `AutorizadorRbca.cs:13-16`).
+④ El pipeline (validar→construir→exigir regla→publicar) vive **una vez** en la base: mata la triplicación de P-04 y la duplicación de P-09/P-10.
+⑤ *Tensión:* un paso nuevo del esqueleto edita la base (todas las subclases lo heredan). *Compensación:* los pasos son estables por naturaleza (comunes del dominio); lo que varia por subtipo son **datos** (rangos, parámetros), que entran por propiedades sin tocar la base. Declarado como costo en la Ficha 2.
+⑥ *Tensión:* una subclase podría "no poder" cumplir un paso (error típico del enunciado). *Compensación de diseño:* **hooks como propiedades-dato** (`RangoEdad`, `MaxVacunas*`) — ningún subtipo puede "no poder"; el esqueleto no tiene pasos skipping-ables. Caso C-17 lo prueba con `VacaLechera`.
+⑦ Construcción separada de representación: `VentaBuilder` ensambla, `Venta` protege invariantes en `Build()` — una sola vez (hoy: `FabricaVenta.cs:20` + `ValidadorVenta.cs:15` con umbrales contradictorios).
+⑧ Nuevo `IVendible` (SC-3: servicios clínicos) entra sin tocar builder ni `Venta`.
+⑨ `Res` y `ProductoDerivado` son intercambiables como ítems — el contrato `IVendible` es explícito y mínimo.
+⑩ `IVendible` = **una** operación; no arrastra superficie de `Res` (el error "interfaz que obliga a implementar de más" queda estructuralmente imposible).
+⑪ Builder recibe reloj/guid **por ctor** como todo el sistema — mata la excepción de `IVentaFactory.cs:8` (P-13).
+⑫ El publicador no sabe quién reacciona: `GestorReses` publica, los handlers deciden (P-14 muere).
+⑬ Nueva reacción (SC-1: stock bajo) = 1 handler + 1 registro — cero ediciones a publicadores (hoy: editar `GestorReses` en N flujos).
+⑭ `IDomainEventHandler<T>` segregado por evento — un handler de stock no ve eventos de vacunación.
+⑮ Los publicadores actuales **no cambian**: dependen de `IDomainEventPublisher` existente (el DIP del Reto 1 rinde: E-07).
 
-- **SRP — Refuerza.** Cada creador tiene una única razón de cambio: su subtipo. Evidencia de contraste: en el AS-IS `FabricaRes` cambia por cualquier subtipo (`FabricaRes.cs:17-23`) y además por el switch de rangos (`:42-48`) — dos razones en una clase.
-- **OCP — Refuerza.** El escenario medido P-01 baja de 9 puntos de edición en 4 capas a **1 clase nueva + 1 registro**. Es la definición operativa de "abierto a extensión, cerrado a modificación".
-- **LSP — Tensionado pero compensado.** Tensión: los creadores concretos deben poder sustituir a la base en el registro sin romper a `GestorReses` ni a los repositorios. Compensación: el contrato del creador es cerrado y pequeño (`TipoAtendido`, hook `Construir`, `Rehidratar`); ningún creador puede rechazar la llamada ni lanzar tipos nuevos — las validaciones lanzan las **mismas excepciones con los mismos textos** que hoy (`ArgumentException` por nombre vacío, etc.). Evidencia de que es compensado y no roto: los 4 creadores actuales implementan el contrato completo sin pasos vacíos.
-- **DIP — Refuerza.** `GestorReses` y los repositorios dependen de `RegistroDeReses` (abstracción); ninguna clase de Application/Infrastructure nombra un creador concreto. Mismo idioma ya probado en `AutorizadorRbca.cs:13-16`.
+### Errores típicos del enunciado — cómo este set los evita
 
-**Builder**
-
-- **SRP — Refuerza.** El builder solo ensambla; las invariantes se validan en `Build()`; el cálculo del total vive con la venta. Contraste AS-IS: `FabricaVenta.cs:20` validaba monto (tres razones: construir, validar, envolver dinero).
-- **OCP — Refuerza.** Un tipo de ítem nuevo (`ProductoDerivado`) entra implementando `IVendible` — el builder no se toca.
-- **LSP — Refuerza.** `Res` conserva exactamente su superficie actual (DEC-09): cualquier código que hoy funciona con `Res` sigue funcionando; `ProductoDerivado` implementa el mismo contrato mínimo. Nadie recibe un mensaje que no pueda atender (la lección del `ReadOnlyDocument`/`Electrico.Repostar()` de las diapositivas — [[guía SOLID]] §5).
-- **DIP — Refuerza.** El builder pide `IVendible` y publicadores abstractos, nunca `Res`-concreto-ni-producto-concreto.
-
-**Template Method**
-
-- **SRP — Refuerza.** El pipeline de creación existe una vez. Contraste: la regla de monto vivía en 3 clases con 2 umbrales (`FabricaVenta.cs:20`, `Dinero.cs:10-11`, `ValidadorVenta.cs:15`) — P-07.
-- **OCP — Refuerza.** Extender el pipeline = nuevo creador colgado de la base; modificarlo = editar una clase (la base) — y esa es su **única** razón de cambio.
-- **LSP — Tensionado pero compensado.** ⚠️ Tensión declarada en [[Reto2-Hacienda/Opcion1/04-DecisionesArquitectonicas]] DEC-03: el riesgo clásico es "un paso que alguna subclase no puede cumplir" (la advertencia textual del enunciado). **Compensación:** los hooks del esqueleto son **propiedades-dato del subtipo** (`EsEdadValida`, `MaxVacunasBacterianas/Vivas`, rangos — propiedades que ya existen en `Res.cs:27-33` y `Cebon.cs:10-16`), no métodos que alguien pueda implementar vacíos; el esqueleto está sellado en su estructura (pasos fijos: validar comunes → construir → exigir regla → publicar). No existe un paso "optativo": el mínimo común es exigible a **todo** subtipo porque es la definición de ser una res/vacuna/producto. Evidencia de compensación en código: los 3 subtipos actuales ya declaran todas las propiedades-dato (verificado `Ternero/Cebon/Novillo.cs:10-16`).
-- **DIP — Refuerza.** El paso "publicar ocurrido" de la base habla con `IDomainEventPublisher` inyectado — nunca con la consola concreta.
-
-**Observer**
-
-- **SRP — Refuerza.** El publicador no conoce consumidores (fin de la doble responsabilidad publicar+imprimir de `DomainEventPublisherConsola.cs:5-11`); cada handler tiene una sola reacción.
-- **OCP — Refuerza.** Nueva reacción (stock mínimo de derivados SC-1) = 1 handler + 1 registro; cero ediciones en publicadores.
-- **ISP — Refuerza.** `IDomainEventHandler<T>` segregado por tipo de evento: un handler de `VentaRealizadaEvent` no ve métodos de `VacunaAplicadaEvent`.
-- **DIP — Refuerza.** La consola deja de ser destino hardcodeado y pasa a **handler inyectado**; el despachador implementa la abstracción existente `IDomainEventPublisher` — los servicios publicadores no cambian ni una línea.
-
-### Mini-matriz complementaria — decisiones de diseño sin patrón ([[Reto2-Hacienda/Opcion1/04-DecisionesArquitectonicas]] §3)
-
-| Decisión | SRP | OCP | LSP | ISP | DIP |
-|----------|-----|-----|-----|-----|-----|
-| DEC-07 Encapsulamiento del Core | Refuerza¹ | Neutro | Neutro² | Neutro | Neutro |
-| DEC-08 Contrato de resultados | Refuerza³ | Neutro | Neutro | Neutro | Refuerza |
-| DEC-09 Contrato hacia vistas | Neutro | Tensionado pero compensado⁴ | Neutro | Neutro | Neutro |
-
-¹ Las entidades dejan de tener dos razones de cambio (datos + quién los muta desde afuera). ² La superficie pública se **reduce** sin cambiar contratos existentes usados por vistas. ³ Fin del parsing de mensajes como semántica (`VacunaController.cs:153`). ⁴ Tensión: mantener `TipoRes` vivo parecería conservar el punto de decisión; compensación: el enum queda degradado a **superficie de lectura** (vistas/BD), la decisión vive en el registro — declarado en DEC-09.
-
-### Mapa contra los "errores típicos" del enunciado
-
-| Situación prohibida | Nuestra defensa |
-|---------------------|-----------------|
-| Una fábrica que crece con un condicional por tipo nuevo (OCP: se movió el punto de modificación) | No hay condicional: registro abierto de creadores; tipo nuevo = clase nueva ([[Reto2-Hacienda/Opcion1/05-TOBE]] E-12) |
-| Una fachada que absorbe lógica de negocio (SRP) | No adoptamos fachada; los servicios existentes **pierden** reglas hacia el Core ([[Reto2-Hacienda/Opcion1/03-PatronesEvaluados]] §3.4) |
-| Un punto de acceso global de instancia única (DIP/testabilidad) | Sin Singleton; unicidad por composition root ([[Reto2-Hacienda/Opcion1/03-PatronesEvaluados]] §3.2) |
-| Un método plantilla con pasos que alguna subclase no puede cumplir (LSP) | Hooks como propiedades-dato + esqueleto sellado (evidencia arriba) |
-| Una envoltura que cambia el contrato de lo que envuelve (LSP) | `DespachadorDeEventos` implementa la interfaz existente sin tocar su firma; `VentaBuilder` no cambia la superficie de `Venta`; `HandlerConsola` reproduce la salida línea por línea |
+| Error típico (enunciado) | Principio | Cómo se evita en el TO-BE | Prueba |
+|---|---|---|---|
+| Fábrica que crece con un condicional por tipo | OCP | Creators concretos sin switches; la decisión vive en `RegistroDe*` por DI | Grep post-implementación: `case TipoRes` = 0 en fábricas |
+| Fachada que absorbe lógica de negocio | SRP | Los servicios **adelgazan** (delegan en entidades/registros); contador de líneas por servicio baja | C-14 |
+| Punto de acceso global único | DIP/test | No hay singleton: unicidad por composition root | Grep `static.*Instance` = 0 |
+| Método plantilla con pasos que una subclase no puede cumplir | LSP | Hooks como propiedades-dato; sin pasos opcionales | C-17 (VacaLechera pasa el esqueleto sin métodos vacíos) |
+| Envoltura que cambia el contrato de lo que envuelve | LSP | `HandlerConsola` reproduce salida **byte a byte**; `Venta` mantiene superficie pública | C-01…C-16 |
 
 ---
 
-## 4.2 · Entregable 2 — Los doce casos: comportamiento congelado
+## 4.2 · Entregable 2 — Casos de comportamiento (antes/después)
 
-> [!important] Protocolo de captura (D-03 se ejecuta aquí)
-> 1. **Antes de refactorizar:** ejecutar el AS-IS (`dotnet run` en `Hacienda.Web`) y capturar por caso: mensaje en pantalla + salida de consola del servidor (los eventos van a consola — `DomainEventPublisherConsola.cs:5-11`).
-> 2. **Después de refactorizar + SC-1:** repetir exactamente los mismos pasos.
-> 3. Comparar **lado a lado** (columna ❖ del kit de evidencias `04-evidencia/`): coincidencia = ✅.
-> La columna "Salida congelada (fuente)" cita el código que hoy la produce — **el texto exacto se congela de la ejecución, no de la memoria**: si la captura difiere de esta tabla, manda la captura.
+> [!info] Protocolo de captura (idéntico para todos)
+> 1. **Antes**: correr el caso sobre el commit base (seed determinista del `DataLoader`, `TimeProvider` falso fijado a `2026-01-15T10:00Z`), capturar consola + `ResultadoOperacion.Mensaje`.
+> 2. **Después**: mismo caso, mismo seed, mismo reloj, sobre el TO-BE.
+> 3. **Diff** de las dos capturas: debe ser **vacío** (o exactamente el declarado).
 
-### Casos del Reto 1 (8) — flujos existentes, no pueden variar en nada
+### Casos del Reto 1 (comportamiento congelado)
 
-| # | Caso | Qué recorre (patrón tocado) | Entrada | Salida congelada (fuente AS-IS) | Captura antes / después |
-|---|------|------------------------------|---------|--------------------------------|--------------------------|
-| C-01 | Login de los 3 roles | Ninguno (control: permisos efectivos idénticos — P-08 no intervenido) | admin/admin123 · empleado/emp456 · visitante/visit789 | Redirección y mensajes actuales (`AccountController.cs:37-46`, credenciales de `DataLoader.cs:42-58`) | ⬜ / ⬜ |
-| C-02 | Crear potrero con identificación vacía | TM (regla común al esqueleto) | identificación="" | Mensaje de validación actual (`ValidadorPotrero`/`FabricaPotrero.cs:20-21`) — misma redacción en el esqueleto | ⬜ / ⬜ |
-| C-03 | Crear res con edad inválida para el tipo | FM+TM (regla del subtipo como dato) | Ternero con edad 30 | Mensaje de rango actual (`FabricaRes.cs:33-37`: "La edad … no es válida … Rango: …") — el rango ahora lo aporta el subtipo, **el texto es idéntico** | ⬜ / ⬜ |
-| C-04 | Alimentar res hasta cruzar `PesoMinimo` y `PesoRecomendadoVenta` | TM/Observer (publicación al final del flujo) | Alimentar novillo 400→550 kg | Eventos "[Evento] …" actuales de `GestorReses.cs:56-65` + consola idéntica vía `HandlerConsola` | ⬜ / ⬜ |
-| C-05 | Aplicar vacunas hasta exceder el límite del tipo | FM+TM+DEC-07 (regla al dominio) | 5 vacunas vivas a un Ternero (máx 1) | Mensaje de límite actual (`ServicioVacunacion.cs:134-143`) — ahora lo lanza `Res.AplicarVacuna`, **mismo texto** | ⬜ / ⬜ |
-| C-06 | Crear lote de vacunas mixto | FM (selección por `DatosVacuna`, sin if/else del controlador) | Lote base "L1", 3 bacterianas + 2 vivas | Numeración `{loteBase}-{i:D3}` (`ServicioVacunacion.cs:72`) y mensajes de lote — idénticos | ⬜ / ⬜ |
-| C-07 | Instalar chip + registrar ubicación y ver distancia | FM rehidratación + Observer | chip activo + 2 ubicaciones | Mensajes `Contains("correctamente"/"registrada")` actuales (`ChipController.cs:45,70`) + Haversine (`ServicioGeolocalizacion.cs:88-99`) — cálculo bit a bit | ⬜ / ⬜ |
-| C-08 | Vender una res | Builder+Observer (venta por ítems ahora) | Venta de novillo 550 kg | Mensaje de éxito actual de venta (`ResController.cs:79-93` → `ServicioVentas`) + res fuera del potrero | ⬜ / ⬜ |
+| ID | Caso | Salida congelada (esencia) | Qué patrón lo toca |
+|----|------|---------------------------|---------------------|
+| C-01 | Agregar res válida (Ternero 8 meses, 200 kg) | `La res 'X' fue añadida al potrero 'P'.` + eventos peso/mitad/lleno según corresponda | FM/TM (E-01) |
+| **C-02** | **Agregar res fuera de rango (Ternero 60 meses)** | `La edad 60 no es válida para Ternero. Rango: 0-12 meses` — **la validación restaurada (DEC-09)** | TM paso sellado |
+| C-03 | Res duplicada en potrero | `Ya existe una res 'X' en el potrero 'P'` (desde `Potrero.AgregarRes`) | — (base sana) |
+| C-04 | Aplicar vacuna (esquema incompleto) | `Vacuna 'V' aplicada a 'X' correctamente. Datos válidos. Guardado exitoso en BD. La res 'X' aún no ha completado… Bacterianas: n, Vivas: m` | FM vacunas (E-03) |
+| C-05 | Vacuna con lote ya aplicado a la res | `La vacuna lote 'L' ya fue aplicada a 'X'` (desde `Res.AplicarVacuna`) | — (base sana) |
+| C-06 | Exceder máximos por categoría | `No se pueden aplicar más bacterianas a 'X' (máximo N)` / `…vivas…` | — (base sana; consumirá `ParametrosRes` ⚪) |
+| C-07 | Crear lote bacteriano (25 uds) | `Lote de vacunas bacterianas creado: 25 de 25. Lotes: B-001 a B-025. Período: 3 semanas.` + tope `cantidad debe estar entre 1 y 100` | TM `CrearLote` (E-09) |
+| C-08 | Vender res (monto válido) | `Venta de la res 'X' realizada con éxito por $ 1.500.000,00.` | Builder (E-08) |
+| C-09 | Vender en potrero/res inexistente | `Potrero 'P' no encontrado` / `Res 'X' no encontrada` | Builder |
+| C-10 | Instalar chip (éxito / duplicado / res inexistente) | `Chip N instalado correctamente en la res X` · `Ya existe un chip con el número de serie N` · `La res ya tiene un chip instalado (N)` | — (base sana) |
+| C-11 | Cambiar estado chip (Perdido→Activo válido; Perdido→Perdido inválido) | `Estado del chip N cambiado a Activo` · `Transición de estado no permitida: de Perdido a Perdido. Contacte al administrador…` (desde `TransicionesChip` ⚪) | — (base sana) |
+| C-12 | Alimentar res (desnutrida → apta) | `La res 'X' fue alimentada, ahora pesa N kg.` + `[Evento] …` — las **dos copias** de la reacción producen las mismas líneas | Observer (E-05/P-14) |
 
-### Casos nuevos (4) — recorren lo que los patrones tocan
+### Casos nuevos (recorren lo que los patrones tocan — ≥4 exigidos)
 
-| # | Caso | Qué recorre | Entrada | Comportamiento esperado | Captura |
-|---|------|-------------|---------|-------------------------|---------|
-| C-09 | Crear vacuna bacteriana y viva por la ruta nueva | FM+TM (`DatosVacuna` → registro → creador; **sin** `if (tipoVacuna=="Bacteriana")` del `VacunaController.cs:49-68`) | Formulario de vacuna tal cual hoy | Mensajes idénticos a los actuales (las mismas validaciones con los mismos textos, ahora dentro del hook `ValidarPropios`) | ⬜ |
-| C-10 | Venta con derivado (SC-1, cambio **autorizado**) | Builder + `IVendible` + producto de creadores | Venta de 20 L de leche + 1 cuero | **Comportamiento nuevo autorizado**: mensaje de éxito consistente con el estilo actual; listado de ventas muestra la venta con ítems. Los casos C-08 sobre venta de res deben seguir idénticos | ⬜ |
-| C-11 | Rehidratación de ventas con identidad estable | FM (`RegistroDeReses.Rehidratar` preserva `Id`) | Listar ventas 2 veces seguidas | **Interno, no observable**: el listado en pantalla es byte a byte igual; el `Id` de la res vendida ya no cambia entre lecturas (bug P-09 corregido — evidencia con log de depuración) | ⬜ |
-| C-12 | Agregar `VacaLechera` (demostración OCP en vivo) | FM completo | Un solo commit: 1 clase + 1 registro (ni un switch editado) | El sistema crea/muestra la vaca lechera en estadísticas (polimórficas, `GestorReses.cs:130-132` ahora agrupa por `Tipo`); **nota de maquillaje**: el badge de la vista es un switch congelado (`Views/Res/Index.cshtml:71-77`) — ver riesgo R-3 abajo | ⬜ |
+| ID | Caso | Qué demuestra | Aceptación |
+|----|------|---------------|------------|
+| C-13 | **Identidad estable**: leer la misma venta dos veces; comparar `Guid` de la `Res` | P-05/E-06: rehidratación preserva `Id` (antes: GUID nuevo por lectura) | Los dos `Guid` **iguales**; mensajes de usuario sin cambio |
+| C-14 | **SC-1 extremo a extremo**: crear `VacaLechera` + `Lacteo`; vender (1 res + 2 lácteos) | OCP medible (1+1), Builder multi-ítem, total = suma de ítems | Venta persistida con 3 ítems; total correcto; mensaje de venta idéntico en formato |
+| C-15 | **Monto $0 en venta** | P-04: la contradicción (`<0` vs `<=0`) queda consolidada en UNA regla — la congelada del constructor (`Monto no puede ser negativo` vía `Dinero`) | UNA sola respuesta posible, la misma que da hoy el `Dinero` del ctor |
+| C-16 | **Orden del despachador**: venta que dispara consola + stock | E-07: determinismo Observer (consola 1º, luego stock en orden de registro) | Líneas de consola idénticas a hoy; línea de stock DESPUÉS; orden reproducible |
+| C-17 | **VacaLechera pasa el esqueleto** sin ningún método vacío | ⑥: compensación LSP de Template Method | `Crear(VacaLechera…)` valida comunes+edad+rango propio en los mismos mensajes |
+| C-18 | **Round-trip de serialización**: persistir y releer 1 res de cada subtipo | E-10: `Serializar` consolidado en la base produce el MISMO formato pipe | Bytes idénticos al formato actual (`Id|Nombre|Peso|Edad|Tipo`) |
 
-> [!warning] Nota de alcance sobre C-12 y las vistas
-> SC-1 es la solicitud **autorizada**: sus pantallas nuevas (productos, venta con derivados) son parte del cambio autorizado y no violan el congelamiento. Distinto es el refactor de patrones: no toca ninguna vista existente. El badge de un tipo nuevo de res es la única fricción estética (la vista vieja no conoce la vaca lechera); se documenta como limitación declarada, no como cambio de comportamiento.
-
-### Comprobación "el código corresponde al diagrama" (rúbrica 4)
-
-Al implementar, cada E-XX de [[Reto2-Hacienda/Opcion1/05-TOBE]] §3.2 se marca ✅ con su archivo real; el diagrama se re-genera desde el código antes de exportar el PDF. Regla de [[00-Plan]] §5: nada documentado contradice lo implementado.
-
----
-
-## Dudas abiertas y riesgos
-
-| ID | Riesgo/Duda | Mitigación |
-|----|-------------|------------|
-| R-1 | Un texto de mensaje difiere en la migración al esqueleto/builder (−0.5 por caso) | Tabla de mensajes congelados: extraer los literales exactos del código en el primer día de implementación y trasladarlos por copia, no por memoria |
-| R-2 | El orden de handlers del Observer altera la consola | `HandlerConsola` registrado primero, síncrono; caso C-04 lo verifica |
-| R-3 | Badge de vista para tipo nuevo (C-12) | Declarado como limitación estética autorizada; no se editan vistas existentes |
-| D-03 | ✅ Resuelta aquí: los 12 casos están enumerados (C-01…C-12); falta ejecutar las capturas "antes" **antes** de refactorizar | Dueño: Arquitecto de Verificación (frente pendiente de asignar — D-04) |
+> [!note] Caso C-02 — la joya de la sustentación
+> La validación de edad fue **regresión detectada por el equipo, restaurada con mensaje exacto y luego consolidada como paso sellado** (DEC-09 → Ficha 2). C-02 demuestra el ciclo completo: cuestionar → verificar → corregir → blindar con patrón.
 
 ---
 
-## Navegación
+## 5. Verificación de la base (ya ejecutada — contexto)
 
-- [[Reto2-Hacienda/Opcion1/05-TOBE]] — el diseño cuyas promesas aquí se auditan.
-- [[Reto2-Hacienda/Opcion1/07-Riesgos]] — la Actividad 5 retoma R-1…R-3 como riesgos formales del registro.
-- [[Reto2-Hacienda/Opcion1/10-BitacoraIA]] — B-10/B-11 registran la decisión D-05 y el diagrama de capas.
+La auditoría B-15 dejó la base medida: encapsulamiento real (setters privados, `IReadOnly*`), reglas con fuente única (`Reglas/`), `IChip` eliminada, duplicaciones de parámetros y rangos corregidas. Esta actividad **no re-audita la base**: audita que los 4 patrones la preserven (matriz §4.1).
+
+## 6. Riesgos de verificación
+
+1. **Capturas antes/después**: exigen seed determinista y reloj fijo — el protocolo §4.2 los fija; sin ellos el diff es ruido.
+2. **C-15 cambia una respuesta posible**: hoy `monto=0` pasa `FabricaVenta` pero NO el validador → el usuario ve el error del validador; el TO-BE responde lo que hoy responde la cadena completa (se congela la respuesta observable, se elimina la ambigüedad interna). Declarado.
+3. **Consola en tests**: capturar `Console.Out` con `StringWriter` para comparar bytes.
+
+## 7. Navegación
+
+- [[Reto2-Hacienda/Opcion1/05-TOBE|05-TOBE]] — lo que esta matriz audita.
+- [[Reto2-Hacienda/Opcion1/07-Riesgos|07-Riesgos]] — Actividad 5: riesgos de implementar el cambio.
+- [[Reto2-Hacienda/Opcion1/10-BitacoraIA|10-Bitácora]] — B-12 (auditoría adversarial) y B-15/B-16.

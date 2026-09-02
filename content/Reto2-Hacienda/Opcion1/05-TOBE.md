@@ -1,111 +1,117 @@
 ---
 tags: [reto2, actividad-3, tobe, diseno, hacienda]
-estado: en-revision
-fecha: 2026-08-30
+estado: v2 — rediseñado sobre base sana + catálogo P-01..P-15 (2026-09-02)
+fecha: 2026-09-02
 ---
 
 # 05 — TO-BE: Diseño con SOLID + Patrones (Actividad 3)
 
 > [!abstract] Propósito
-> El diseño destino: **qué sale, qué entra, cómo se conecta y qué impacto tiene**. Contiene los tres entregables de la Actividad 3: (3.1) los dos diagramas con elementos marcados por patrón, (3.2) la tabla de cambio estructural E-XX, (3.3) las fichas por patrón adoptado. Se implementa sobre el AS-IS ([[Reto2-Hacienda/Opcion1/01-AS-IS]]) según las decisiones ratificadas ([[Reto2-Hacienda/Opcion1/04-DecisionesArquitectonicas]]).
+> El diseño destino: **qué sale, qué entra, cómo se conecta y qué impacto tiene**. Tres entregables: (3.1) los dos diagramas marcados, (3.2) la tabla de cambio estructural E-XX, (3.3) las fichas por patrón adoptado. Se implementa sobre el AS-IS saneado ([[Reto2-Hacienda/Opcion1/01-AS-IS|01-AS-IS]]) según el catálogo ([[Reto2-Hacienda/Opcion1/02-PuntosDolor|02-PuntosDolor]]) y las decisiones vivas ([[Reto2-Hacienda/Opcion1/04-DecisionesArquitectonicas|04-Decisiones]]).
 
-> [!warning] Reglas de preservación (verificables en [[Reto2-Hacienda/Opcion1/06-VerificacionSOLID]])
-> 1. **Mensajes de usuario idénticos** — mismo texto, mismo orden.
-> 2. **Salida de consola idéntica byte a byte** — el handler de consola reproduce las líneas actuales de `DomainEventPublisherConsola`.
-> 3. **Cálculos idénticos** — totales, distancias, estados, umbrales.
-> 4. **Contrato hacia vistas intacto** — `TipoRes`, `Res.Tipo`, bindings y `TempData` sobreviven (DEC-09).
+> [!warning] Reglas de preservación (congeladas — Líder Técnica)
+> 1. **Mensajes de usuario idénticos** — mismo texto, mismo orden (incluida la validación de edad restaurada, DEC-09).
+> 2. **Salida de consola idéntica byte a byte** — `HandlerConsola` reproduce las líneas actuales.
+> 3. **Cálculos idénticos** — totales, distancias, estados, umbrales, rangos.
+> 4. **Contrato hacia vistas intacto** — `TipoRes`, `Res.Tipo`, bindings y `TempData` sobreviven.
 > 5. **Sin capas ni proyectos nuevos** — Domain se fortalece; Application adelgaza; Infrastructure delega.
+> 6. **SOLID no se toca** — si un patrón tensa un principio, se declara y compensa (Act. 4).
 
-> [!success] D-05 RESUELTA (2026-08-30, por delegación explícita del equipo)
-> **Variante A — producción propia (con `FabricaVacaLechera`, E-14).** Justificación del deber ser: el enunciado define SC-1 como "productos derivados **del ganado**" — la leche proviene de vacas lecheras, la carne y el cuero de las reses; sin producción propia el modelo queda incoherente con el dominio. Además es la variante que mide la promesa OCP (9 clases/4 capas → 1 clase + 1 registro). El resto del diseño es común a ambas variantes. Ver [[Reto2-Hacienda/Opcion1/10-BitacoraIA]] B-10.
+> [!success] Set de patrones (DEC-06)
+> **Factory Method + Template Method + Builder + Observer** · Composite pendiente de D-12 (solo si SC-1 incluye canastas). Anclaje completo en [[Reto2-Hacienda/Opcion1/03-PatronesEvaluados|03-Patrones]] §2.
 
 ---
 
 ## 3.1 · Entregable 1 — Los dos diagramas
 
-### Diagrama A — LO QUE SALE (recorte del AS-IS con elementos marcados)
+### Diagrama A — LO QUE SALE (recorte del AS-IS marcado)
 
-Elementos en 🔴 rojo **salen**; en 🟠 naranja **se transforman** (cambian de responsabilidad); en gris claro permanecen.
+🔴 sale · 🟠 se transforma · ⚪ permanece. Todos los elementos existen HOY en el código.
 
 ```mermaid
 classDiagram
     direction LR
-    class FabricaRes_Simple {
-        🔴 Simple Factory con diccionario
-        FabricaRes.cs:17-23
-        + DescribirRango switch :42-48
+    class FabricaRes_Dict {
+        🔴 diccionario de creators :17-21
+        🔴 DescribirRango switch (restaurado DEC-09)
+        🟠 validez de edad → pasa al esqueleto
+    }
+    class CatalogoRes {
+        🔴 switch CrearDesdeNombre
+        🔴 switch MapearDesdePotrero (P-12)
+        🟠 config → delega a creators
+        ⚪ Parsear (para vistas/seeder)
     }
     class IVacunaFactory {
-        🔴 Interfaz con método por tipo
-        IVacunaFactory.cs:8-12
+        🔴 método por tipo :8-13
     }
     class FabricaVacuna {
-        🔴 CrearBacteriana/CrearViva :16-33
+        🔴 CrearBacteriana/CrearViva
+        🟠 ValidarParametrosComunes → esqueleto
     }
     class Validadores {
         🔴 ValidadorRes/Potrero/Vacuna/Venta
-        2 muertos · 2 duplicados (P-07)
+        P-04: umbrales contradictorios
+        valida lo imposible, omite la regla
     }
-    class GestorReses_Switch {
-        🟠 MapearTipoRes switch :137-143
-        Contadores por tipo :130-132
+    class GestorReses_Dolor {
+        🟠 stats por tipo :129-134 (P-01)
+        🟠 reacciones duplicadas :56/:99 (P-14)
     }
-    class RepoMapeos {
-        🟠 Switches de rehidratación
-        RepositorioPotreroSqlite:150-157
-        RepositorioVentaSqlite:39-45
+    class RepoVenta_Guid {
+        🟠 rehidrata con GUID nuevo :39 (P-05)
     }
-    class DomainEventPublisherConsola {
-        🟠 Único destino Console :5-11
+    class PublisherConsola {
+        🟠 único destino consola :5-11 (P-06)
+        VacunaVencidaEvent sin publicador
     }
-    class Res_Asis {
-        🟠 Setters públicos :13-16
-        Lista VacunasAplicadas expuesta
-        Ctor públicos en subtipos
+    class Venta_Mono {
+        🟠 soldada a una Res (P-03)
     }
-    class Venta_Asis {
-        🟠 Agregado con Res fija :10
+    class FabricaVenta {
+        🟠 TimeProvider por método :8 (P-13)
+        🟠 monto < 0 vs Validador <= 0
     }
-    class ServicioVacunacion {
-        🟠 Límites re-implementados :134-143
+    class ServicioVacunacion_Gemelos {
+        🟠 lotes gemelos :61-117 (P-10)
+        🟠 Crear* por categoría :33-59
     }
-    class TipoRes {
-        ⚪ Permanece (contrato vistas)
+    class Serializar_x5 {
+        🟠 formato pipe copiado ×5 (P-09)
     }
-    class Entidades {
-        ⚪ Chip · Potrero(núcleo) · VO · Results
+    class BaseSana {
+        ⚪ Res/subtipos encapsulados
+        ⚪ Reglas/ParametrosRes fuente única
+        ⚪ TransicionesChip · RangoEdad
+        ⚪ VOs · Results · enum TipoRes
     }
-    class FabricaPotrero_Fin {
-        ⚪ Se cuelga del esqueleto
-    }
-    class FabricaVenta_Simple {
-        🔴 Validación de monto duplicada :20
-    }
-    FabricaRes_Simple --> TipoRes : enum cerrado = punto de modificación
-    IVacunaFactory --> FabricaVacuna
-    Validadores ..> ServicioVacunacion : duplica reglas
-    GestorReses_Switch ..> Res_Asis : bypass de reglas
-    Venta_Asis ..> RepoMapeos : rehidrata con GUID nuevo
+    FabricaRes_Dict --> CatalogoRes : duplica decisión
+    Validadores ..> FabricaVenta : umbral contradictorio
+    ServicioVacunacion_Gemelos ..> IVacunaFactory : método por tipo
 ```
 
-**Lectura:** el AS-IS no se destruye — se le extraen los **puntos de decisión regados** (switches, métodos-por-tipo, validadores duplicados) y los objetos anémicos se transforman cerrando su encapsulamiento. El enum `TipoRes`, los Value Objects, los Results, `Chip` y el núcleo de `Potrero` permanecen.
+**Lectura:** no se destruye la base sana (⚪) — se extraen los **puntos de decisión regados** (fábricas con 4 idiomas, switches de catálogo, validación post-construcción, reacciones copiadas) y se reconectan a un único mecanismo.
 
-### Diagrama B — LO QUE ENTRA (TO-BE; en negro lo que se conserva sin cambios)
+### Diagrama B — LO QUE ENTRA (TO-BE; ⚪ lo conservado)
 
 ```mermaid
 classDiagram
     direction TB
     class FabricaDeRes {
-        «abstract · Creator + Template Method»
-        +Crear(nombre, peso, edad) Res «esqueleto sellado»
-        +Rehidratar(datos) Res «P-09»
+        «abstract · Factory Method + Template Method»
+        +Crear(nombre, peso, edad) Res
+        +Rehidratar(datos, id) Res «Id estable — P-05»
         +TipoAtendido* TipoRes
-        #Construir(...)* Res «Factory Method hook»
+        +RangoDescribible* string «mismo texto»
+        #Construir(...)* Res «hook»
+        esqueleto: validar comunes → construir
+        → exigir EsEdadValida (sellado)
+        → publicar Ocurrido
     }
     class FabricaTernero { «ConcreteCreator» }
     class FabricaCebon { «ConcreteCreator» }
     class FabricaNovillo { «ConcreteCreator» }
-    class FabricaVacaLechera { «ConcreteCreator · solo SC-1-A» }
+    class FabricaVacaLechera { «SC-1 · 1 clase + 1 registro» }
     FabricaDeRes <|-- FabricaTernero
     FabricaDeRes <|-- FabricaCebon
     FabricaDeRes <|-- FabricaNovillo
@@ -113,32 +119,27 @@ classDiagram
 
     class RegistroDeReses {
         «punto único de decisión»
-        +Crear(tipo, ...) Res
-        +Rehidratar(tipo, datos) Res
+        +Crear(tipo, ...) / +Rehidratar(tipo, id, ...)
+        «IEnumerable~FabricaDeRes~ por DI»
     }
-    RegistroDeReses o-- FabricaDeRes : creators inyectados (DI)
+    RegistroDeReses o-- FabricaDeRes
 
     class FabricaDeVacuna {
-        «abstract · Creator + Template Method»
+        «abstract · FM + TM»
         +Crear(DatosVacuna) Vacuna
-        #Construir(datos)* Vacuna
-        #ValidarPropios(datos)* void
+        +CrearLote(DatosVacuna, n) «esqueleto común — P-10»
+        #Construir(datos)* / #ValidarPropios(datos)*
     }
+    class DatosVacuna { «request object — mata método-por-tipo» }
     class FabricaBacteriana { «ConcreteCreator» }
     class FabricaViva { «ConcreteCreator» }
-    class DatosVacuna {
-        «request object · mata la interfaz por-método»
-        nombre lote fechas + periodoAplicacion? + atenuacion?
-    }
     FabricaDeVacuna <|-- FabricaBacteriana
     FabricaDeVacuna <|-- FabricaViva
-    class RegistroDeVacunas {
-        «keyed by VacunaCategoria»
-    }
+    class RegistroDeVacunas { «keyed por categoría» }
     RegistroDeVacunas o-- FabricaDeVacuna
 
     class FabricaDeProducto {
-        «abstract · SC-1 A/B»
+        «abstract · SC-1»
     }
     class FabricaLacteo { «SC-1» }
     class FabricaCarne { «SC-1» }
@@ -147,141 +148,135 @@ classDiagram
     FabricaDeProducto <|-- FabricaCarne
     FabricaDeProducto <|-- FabricaPiel
 
-    class IVendible {
-        «interface · polimorfismo de ítems (diseño, no patrón)»
-    }
-    class Res { ⚪ superficie intacta · mutación por métodos }
+    class IVendible { «interface — polimorfismo de ítems» }
+    class Res { ⚪ intacta · Serializar consolidado en base (P-09) }
     class ProductoDerivado { «SC-1 · nuevo» }
     IVendible <|.. Res
     IVendible <|.. ProductoDerivado
 
     class VentaBuilder {
-        «Builder · SC-1»
-        +Iniciar()
-        +ConItem(vendible, cantidad) VentaBuilder
-        +Build() Venta «valida invariantes»
+        «Builder — P-03»
+        +Iniciar() → ConItem(vendible, cant) → Build()
+        Build(): invariantes + total «una sola vez»
+        reloj por ctor (mata IVentaFactory:8)
     }
-    class Venta { ⚪ misma cara · agregado multi-ítem }
+    class Venta { ⚪ misma cara pública · agregado multi-ítem }
     VentaBuilder ..> Venta : construye
-    VentaBuilder ..> IVendible : ítems de los creadores
 
     class IDomainEventHandlerT {
         «interface · Observer»
         +Manejar(evento)
     }
-    class HandlerConsola {
-        «Observer #1 · salida IDÉNTICA a la actual»
-    }
-    class HandlerStockDerivados { «Observer #2 · SC-1» }
+    class HandlerConsola { «#1 — salida IDÉNTICA byte a byte» }
+    class HandlerStockDerivados { «#2 · SC-1» }
     class DespachadorDeEventos {
-        «Observer · IDomainEventPublisher existente»
-        orden determinista por registro
+        «implementa IDomainEventPublisher existente»
+        orden determinista: consola primero
     }
     IDomainEventHandlerT <|.. HandlerConsola
     IDomainEventHandlerT <|.. HandlerStockDerivados
-    DespachadorDeEventos o-- IDomainEventHandlerT : handlers inyectados
+    DespachadorDeEventos o-- IDomainEventHandlerT
 
-    class GestorReses { ⚪ orquesta · ya no mapea tipos }
-    class ServicioVacunacion { ⚪ orquesta · ya no re-implementa límites }
+    class GestorReses { ⚪ orquesta · sin reacciones inline (P-14) }
+    class ServicioVacunacion { ⚪ orquesta · sin gemelos (P-10) }
     class Repos { ⚪ SQL intacto · rehidratan vía RegistroDeReses }
-    class Program { ⚪ punto de ensamblaje · +registros }
+    class Program { ⚪ solo AÑADE registros al final (P-08 intacto) }
     GestorReses --> RegistroDeReses
     ServicioVacunacion --> RegistroDeVacunas
     Repos --> RegistroDeReses
     Program ..> RegistroDeReses : registra creators
-    Program ..> DespachadorDeEventos : registra handlers (consola 1º)
+    Program ..> DespachadorDeEventos : registra handlers
 ```
 
-**Lectura por color conceptual:** ⚪ = se conserva (algunos con interior cerrado); sin marca = nuevo y siempre con su patrón/papel rotulado. El enum `TipoRes` **no** desaparece: deja de ser el punto de *decisión* de creación y queda como superficie de lectura (para vistas y BD).
+**Lectura:** el enum `TipoRes` NO desaparece: deja de ser punto de decisión y queda como superficie de lectura (vistas + BD). `CatalogoRes` retiene `Parsear` y pierde los switches.
 
-> [!tip] Diagramador por capas (muy bien valorado por el enunciado)
-> Este par de diagramas está listo para montarse como **dos capas superpuestas** (AS-IS debajo, TO-BE encima) en draw.io: capa 1 = Diagrama A (grises), capa 2 = Diagrama B (nuevos en color). Si el equipo lo quiere, genero el archivo `.drawio` con las dos capas — pedirlo en la revisión de esta actividad.
+> [!tip] Diagramador por capas (muy bien valorado)
+> Este par está listo para montarse como **dos capas superpuestas** en draw.io (A gris debajo, B en color encima) — el archivo `diagramas/Reto2_ASIS_TOBE_Capas.drawio` se re-sincroniza al congelar este diseño.
 
 ---
 
 ## 3.2 · Entregable 2 — Tabla de cambio estructural (E-XX)
 
-| ID | Elemento | Estado | Qué hacía antes | Qué hace ahora | Quién dependía de él y cómo se reconecta |
-|----|----------|--------|-----------------|----------------|------------------------------------------|
-| E-01 | `FabricaRes` + `IResFactory` | **Se transforma** | Simple Factory con diccionario interno; switch `DescribirRango`; validaba edad después de construir | Se divide en base `FabricaDeRes` (esqueleto Template Method) + creadores concretos por subtipo con hook de construcción; el rango de edad pasa a ser **dato del subtipo** | `GestorReses` (único consumidor — `GestorReses.cs:15,23,47`) pasa a depender de `RegistroDeReses`; DI reenvasa el registro |
-| E-02 | `IVacunaFactory` / `FabricaVacuna` | **Sale** | Interfaz con un método por tipo concreto + clase que los implementa | Reemplazadas por jerarquía `FabricaDeVacuna` + `DatosVacuna` (objeto-solicitud) + `RegistroDeVacunas` | `ServicioVacunacion.cs:15,22` pasa al registro; `VacunaController` arma `DatosVacuna` sin if/else por tipo |
-| E-03 | `FabricaVenta` + `IVentaFactory` | **Sale** | Constructor fijo (res, potrero, monto, reloj) con validación de monto duplicada (`:20`) | `VentaBuilder` (SC-1): iniciar → ítems (via `IVendible`) → `Build()` valida invariantes y calcula total | `ServicioVentas.cs:14,21` pasa al builder; el reloj se inyecta por constructor como en el resto del sistema (idioma unificado) |
-| E-04 | `ValidadorRes/Potrero/Vacuna/Venta` + `IValidar*` | **Sale** | Validación post-construcción: 2 muertos, 2 duplicando reglas de factories/VOs (P-07) | Las reglas vivas migran al esqueleto de la base de creadores (paso "validar comunes"); las muertas se eliminan | `GestorReses`/`ServicioVentas` sueltan la dependencia; los mensajes de error exactos se conservan en el esqueleto |
-| E-05 | `GestorReses.MapearTipoRes` + contadores `:130-143` | **Se transforma** | Traducía enum→instancia con switch; contaba por tipo con cases hardcodeados | La traducción vive en `RegistroDeReses`; las estadísticas se calculan polimórficamente agrupando por `res.Tipo` (LINQ) | Nadie más usaba el método privado; el controlador consume las mismas estadísticas |
-| E-06 | Switches de rehidratación (`RepositorioPotreroSqlite.cs:150-157`, `RepositorioVentaSqlite.cs:39-45`) | **Se transforma** | Cada repo re-fabricaba Res con switch propio (y GUID nuevo en ventas) | Los repos llaman a `RegistroDeReses.Rehidratar(...)` que preserva el `Id` persistido | `RepositorioResSqlite` (que ya consumía el mapeo estático cruzado — `:29,96`) usa el mismo registro: fin del acoplamiento estático entre repos |
-| E-07 | `DomainEventPublisherConsola` | **Se transforma** | Publicaba todo a `Console.WriteLine` | Se divide: `DespachadorDeEventos` (implementa `IDomainEventPublisher` — la interfaz NO cambia) + `HandlerConsola` que reproduce **las mismas líneas** | Todos los servicios que publican (`GestorReses`, `ServicioVacunacion`, …) ni se enteran: dependen de la interfaz existente |
-| E-08 | `Res` y subtipos (setters, ctor públicos) | **Se transforma** | Estructura editable: `Peso/Edad/Chip` settables, lista expuesta | Setters cerrados; mutación por métodos con regla (`Alimentar`, `AplicarVacuna`, `InstalarChip`); constructores privados — la única puerta es el creador | Los servicios hacen hoy esas mutaciones; pasan a hacerlo **a través** de los métodos (mismos efectos, mismos mensajes) |
-| E-09 | `ServicioVacunacion` (límites `:134-143`) | **Se transforma** | Re-implementaba imperativamente los límites de vacunas | Delega en `Res.AplicarVacuna(vacuna)` que exige `MaxVacunasBacterianas/Vivas` (las propiedades ya existían) | Mismo mensaje de error al usuario; la regla vive donde el dominio la declaró |
-| E-10 | `Venta` | **Se transforma** | Agregado con una `Res` fija | Agregado multi-ítem (`IVendible`) construido solo por `VentaBuilder`; superficie actual (fecha, res, potrero, monto) preservada para las vistas | `RepositorioVentaSqlite` persiste ítems nuevos; la lectura de ventas legacy reconstruye un ítem único (compatibilidad) |
-| E-11 | `IDomainEventHandler<T>` + `HandlerConsola` + `HandlerStockDerivados` | **Entra** | No existían (diseño del Reto 1 que quedó en papel) | Contrato Observer + handlers registrables en orden determinista (consola primero) | `Program.cs` los registra; los publicadores existentes no cambian |
-| E-12 | `RegistroDeReses` / `RegistroDeVacunas` / `RegistroDeProductos` | **Entra** | No existían | Punto único de decisión de creación y rehidratación, alimentado por DI con `IEnumerable<FabricaDeX>` (mismo idioma que `AutorizadorRbca.cs:13-16`) | Servicios y repos los consumen; agregar tipo = 1 creador + 1 registro en `Program.cs` |
-| E-13 | `FabricaDeProducto` + `Lacteo/Carne/Piel` + `ProductoDerivado` + `IVendible` | **Entra** (SC-1 A/B) | No existían | Jerarquía de productos derivados con creadores propios; implementan `IVendible` | `VentaBuilder` los consume; repositorios nuevos de producto (SC-1) |
-| E-14 | `FabricaVacaLechera` | **Entra** (solo SC-1-A) | No existía | Creador del subtipo lechero: **1 clase + 1 registro, cero ediciones** (demostración OCP) | `RegistroDeReses`; las estadísticas y vistas la muestran vía `Tipo` sin switch |
-| E-15 | `Program.cs` | **Se transforma** | 31 registros correctos, efectos secundarios de arranque | Mismos registros + creators, registros de productos y handlers; **orden de arranque intacto** (P-12 no se toca) | Es el punto de ensamblaje del enunciado — único lugar que conoce la foto completa |
+| ID | Elemento | Estado | Qué hacía antes (hoy) | Qué hace ahora | Quién dependía y cómo se reconecta |
+|----|----------|--------|----------------------|----------------|-----------------------------------|
+| E-01 | `FabricaRes` + `IResFactory` | **Se transforma** | Diccionario de creators + `DescribirRango` switch + validez de edad inline | Base `FabricaDeRes` (Creator+TM sellado: comunes→hook→`EsEdadValida`→publicar) + creators concretos; rango describible = dato del creator | `GestorReses.cs:15,23` pasa a `RegistroDeReses`; mensajes idénticos |
+| E-02 | `CatalogoRes` | **Se transforma** | Config por tipo + 2 switches (`CrearDesdeNombre`, `MapearDesdePotrero`) | Retiene `Parsear` (vistas/seeder); creación y mapeo migran al registro/creators; config sigue delegando a `ParametrosRes` ⚪ | Repos y `GestorReses.MapearTipoRes` → `RegistroDeReses.Rehidratar` |
+| E-03 | `IVacunaFactory`/`FabricaVacuna` | **Sale** | Interfaz método-por-tipo + factory con validación común privada | Jerarquía `FabricaDeVacuna` + `DatosVacuna` (request) + `RegistroDeVacunas` | `ServicioVacunacion.cs:15,22`; `VacunaController` arma `DatosVacuna` sin ternario (`VacunaController.cs:49-54`) |
+| E-04 | Validadores ×4 | **Sale** | Validación post-construcción con umbrales contradictorios (`FabricaVenta.cs:20` `<0` vs `ValidadorVenta.cs:15` `<=0`) | Reglas vivas al esqueleto de creación/`Build()`; mensajes exactos conservados | `GestorReses`/`GestorPotreros`/`ServicioVentas` sueltan `_validador`; `Program.cs:57-60` pierde registros |
+| E-05 | `GestorReses` stats/reacciones | **Se transforma** | Contadores por tipo `:129-134`; reacciones duplicadas `:56/:99` | Stats polimórficas agrupando por `res.Tipo` (LINQ); el flujo solo publica — los handlers reaccionan | `ResController` consume las mismas keys del diccionario |
+| E-06 | `RepositorioVentaSqlite:39` | **Se transforma** | Rehidrata `Res` con GUID nuevo por lectura | `Rehidratar(tipo, id, …)` preserva el `Id` persistido | Lecturas correlacionables con potrero/chip (comportamiento interno mejorado, declarado) |
+| E-07 | `DomainEventPublisherConsola` | **Se transforma** | Todo a `Console.WriteLine` | `DespachadorDeEventos` (implementa `IDomainEventPublisher` — interfaz intacta) + `HandlerConsola` con las mismas líneas | Los publicadores actuales **no cambian** (DIP del Reto 1 rinde) |
+| E-08 | `Venta` + `FabricaVenta` | **Se transforma** | Agregado soldado a una `Res`; reloj por parámetro de método | `Venta` multi-ítem (`IVendible`) con superficie intacta; `VentaBuilder` con reloj por ctor | `ServicioVentas.cs:14,21`; repo de ventas persiste ítems (D-11 define esquema) |
+| E-09 | Lotes gemelos `ServicioVacunacion:61-117` | **Se transforma** | 27 líneas ×2 que difieren en 3 | `FabricaDeVacuna.CrearLote(DatosVacuna, n)` esqueleto común; el servicio orquesta | Mismos mensajes de lote (numerado `-001…`, conteo, tope 1-100) |
+| E-10 | `Serializar()` ×5 | **Se transforma** | Formato pipe copiado en 5 subtipos | Implementación única en la base (`Res`/`Vacuna`), hook de sufijo por subtipo | Contrato de persistencia intacto (mismo formato exacto) |
+| E-11 | `RegistroDeReses/Vacunas/Productos` | **Entra** | — | Punto único de decisión (crear + rehidratar), `IEnumerable<FabricaDeX>` por DI (idioma de `AutorizadorRbca.cs:13-16`) | Servicios y repos consumen; agregar tipo = 1 creator + 1 registro |
+| E-12 | SC-1: `ProductoDerivado` + `IVendible` + `FabricaDeProducto/Lacteo/Carne/Piel` | **Entra** | — | Jerarquía de derivados con creators propios; implementan `IVendible` | `VentaBuilder` consume; repositorios de producto nuevos |
+| E-13 | `FabricaVacaLechera` (DEC-05, Variante A) | **Entra** | — | Creador del subtipo lechero: **1 clase + 1 registro, cero ediciones** (demostración OCP medida) | `RegistroDeReses`; stats/vistas la muestran vía `Tipo` |
+| E-14 | `Program.cs` | **Se transforma** | 31 registros + arranque sensible (P-08) | Mismos registros + creators/registros/handlers **añadidos al final** — orden intacto | Composition root: único lugar con la foto completa |
 
-**Cuenta agregada:** Entran ~14–18 clases (segunda ola SC-1 incluida) · Se transforman 9 · Salen 6 (E-02, E-03, E-04 ×4). Capas: Domain +8–10, Application −4 netas, Infrastructure ±2, Web solo DI.
+**Cuenta:** Entran ~16-20 clases · Se transforman 10 · Salen 6 (E-03 ×2, E-04 ×4). Capas: Domain +8-10, Application −4 netas, Infrastructure ±2, Web solo DI.
 
 ---
 
-## 3.3 · Entregable 3 — Fichas por patrón adoptado (una página c/u)
+## 3.3 · Entregable 3 — Fichas por patrón adoptado
 
-### Ficha 1 · Factory Method
+### Ficha 1 · Factory Method (+ RegistroDeReses como idioma de ensamblaje)
 
 | Campo | Contenido |
 |-------|-----------|
-| **Patrón y punto de dolor** | Factory Method (creacional) → **P-01** (`FabricaRes.cs:17-23`, enum `TipoRes`, switches en `GestorReses.cs:137-143` y 2 repos), **P-02** (`IVacunaFactory.cs:8-12`), **P-09** (switches de rehidratación duplicados) |
-| **Alternativas evaluadas** | (1) Simple Factory ordenado — no elimina switches externos; (2) Abstract Factory — sin familias (advertencia Anexo A); (3) **no hacer nada** — 9 clases/9 archivos por subtipo, 8 por vacuna (medido en [[Reto2-Hacienda/Opcion1/02-PuntosDolor]]) |
-| **Qué sale / qué entra** | **Sale:** diccionario central, `DescribirRango`, métodos-por-tipo en interfaz, switches de servicio y repos. **Entra:** `FabricaDeRes`/`FabricaDeVacuna` (bases), creadores concretos (`FabricaTernero`…), `RegistroDe*` (punto único), `DatosVacuna` |
-| **Cómo se relaciona** | La base de creadores **es** el Template Method (Ficha 2). El `VentaBuilder` (Ficha 3) consume productos de los creadores. `Program.cs` arma los registros (punto de ensamblaje). **Quién construye:** el composition root. **Quién usa:** servicios (crear) y repositorios (rehidratar) |
-| **Impacto** | Creadas: ~8 (bases 2, creadores 4, registros 2, +SC-1). Modificadas: `GestorReses`, `ServicioVacunacion`, `VacunaController`, 2 repos, `Program.cs`. Eliminadas: `IVacunaFactory`+`FabricaVacuna` as-is. **Anexo B:** SC-1 agrega producto/vaca lechera = **1 clase + 1 registro por tipo** (era 9 clases/4 capas) |
-| **Qué cuesta** | 1 clase por subtipo (más carpetas); una indirección más entre consumo y construcción; el registro es un lugar que leer para entender "quién crea qué" |
-| **Origen** | Propuesta IA aceptada por el equipo — bitácora [[Reto2-Hacienda/Opcion1/10-BitacoraIA]] B-08; raíz del análisis B-01 |
+| **Patrón y punto de dolor** | Creacional → **P-01** (`FabricaRes.cs:17-21` diccionario, `CatalogoRes` 2 switches, `GestorReses.cs:129-134`, enum), **P-13** (4 fábricas/4 idiomas), P-02, colateral P-05/P-12 |
+| **Alternativas evaluadas** | (1) Simple Factory ordenado — reubica el switch; (2) Abstract Factory — sin familias (Anexo A); (3) **no hacer nada** — 6 archivos/2 capas por subtipo (medido) |
+| **Qué sale / qué entra** | Sale: diccionario central, switches de catálogo, método-por-tipo. Entra: bases `FabricaDeRes/Vacuna/Producto`, creators concretos, `RegistroDe*`, `DatosVacuna` |
+| **Cómo se relaciona** | Las bases **son** el Template Method (Ficha 2). El `VentaBuilder` (Ficha 3) consume productos de los registros. `Program.cs` ensambla (E-14) |
+| **Impacto** | Creadas ~8-10 · Modificadas: `GestorReses`, `ServicioVacunacion`, `VacunaController`, 3 repos, `Program.cs` · Eliminadas: `IVacunaFactory`+`FabricaVacuna` as-is · **SC-1: VacaLechera = 1+1** (antes 6 ediciones) |
+| **Qué cuesta** | 1 clase por subtipo; una indirección más; el registro es un lugar que leer |
+| **Origen** | IA aceptada — B-08; re-anclado al catálogo nuevo en B-15 |
 
 ### Ficha 2 · Template Method
 
 | Campo | Contenido |
 |-------|-----------|
-| **Patrón y punto de dolor** | Template Method (comportamiento) → **P-07** (regla de monto ×3 con 2 umbrales — `FabricaVenta.cs:20`, `Dinero.cs:10-11`, `ValidadorVenta.cs:15`; validación común duplicada `FabricaVacuna.cs:36-39` vs `ValidadorVacuna.cs:14-15`), **P-01/P-02** (pipeline disperso) |
-| **Alternativas evaluadas** | (1) Chain of Responsibility — orden fijo fail-fast, reordenabilidad sin consumidor; (2) validadores de Application (status quo = P-07); (3) **no hacer nada** — cada factory nueva reimplementa y desincroniza el pipeline (evidencia: venta de $0 que se construye y luego se rechaza) |
-| **Qué sale / qué entra** | **Sale:** capa `Validaciones/` (4 clases), validación post-construcción de edad. **Entra:** esqueleto sellado en la base de creadores: `ValidarComunes → Construir (hook FM) → ExigirReglaDelSubtipo → PublicarOcurrido`. Las reglas del subtipo son **datos** (`EsEdadValida`, rangos), no pasos opcionales |
-| **Cómo se relaciona** | Es la mitad creacional-comportamental del mismo mecanismo: los creadores de la Ficha 1 heredan este esqueleto. El último paso dispara Observer (Ficha 4) |
-| **Impacto** | Creadas: 1 (la base — compartida con Ficha 1). Eliminadas: 4 validadores + 2 interfaces `IValidar*`. Modificadas: factories (se cuelgan del esqueleto). **Anexo B:** una regla común nueva (p.ej. caducidad mínima de lácteos SC-1) se escribe una vez para todos los productos |
-| **Qué cuesta** | Herencia para variar (acoplamiento base↔subclases declarado); +1 frame de pila al depurar; **tensión LSP compensada**: hooks como propiedades-dato ⇒ ningún subtipo puede "no poder" cumplir un paso; el esqueleto no tiene pasos skipping-ables |
-| **Origen** | Propuesta IA aceptada — bitácora B-08; el dolor P-07 fue hallazgo B-01/B-06 |
+| **Patrón y punto de dolor** | Comportamiento → **P-04** (umbrales `<0` vs `<=0`; validar lo imposible), **P-09** (`Serializar` ×5), **P-10** (lotes gemelos `:61-117`), colaterales P-13/P-14. Consolidará como paso sellado la validación de edad restaurada (DEC-09) |
+| **Alternativas evaluadas** | (1) Chain of Responsibility — orden fijo, un consumidor; (2) validadores como hoy — ya desincronizados (evidencia: contradicción de monto); (3) **no hacer nada** — cada fábrica nueva reimplementa el pipeline |
+| **Qué sale / qué entra** | Sale: capa `Validaciones/` (E-04). Entra: esqueleto sellado en las bases `validar comunes → construir (hook) → exigir regla del subtipo → publicar`; serialización y lote como esqueletos en la base |
+| **Cómo se relaciona** | Es la mitad comportamiento del mismo mecanismo de la Ficha 1; el paso final dispara Observer (Ficha 4) |
+| **Impacto** | Creadas: 0 extra (comparte bases con Ficha 1) · Eliminadas: 4 validadores + 2 interfaces · **Regla común nueva = se escribe una vez** (SC-1: caducidad de lácteos) |
+| **Qué cuesta** | Herencia para variar (acoplamiento declarado); +1 frame; **tensión LSP compensada**: hooks como propiedades-dato ⇒ ningún subtipo puede "no poder" (matriz en 06) |
+| **Origen** | IA aceptada — B-08; anclas P-09/P-10 ampliadas en B-15 |
 
 ### Ficha 3 · Builder
 
 | Campo | Contenido |
 |-------|-----------|
-| **Patrón y punto de dolor** | Builder (creacional) → **P-03**: `Venta` sostiene `Res` concreta (`Venta.cs:10`) y SC-1 la vuelve multi-ítem; `FabricaVenta` con validación duplicada (`:20`) |
-| **Alternativas evaluadas** | (1) Constructores sobrecargados — telescópicos al primer cambio de ítems; (2) Composite — lista plana, no árbol ([[Reto2-Hacienda/Opcion1/03-PatronesEvaluados]] §3.3); (3) **no hacer nada** — cada evolución de ítems reescribe constructor + factory + repositorio (8 clases/8 archivos, P-03) |
-| **Qué sale / qué entra** | **Sale:** `FabricaVenta`/`IVentaFactory` tal cual. **Entra:** `VentaBuilder` (iniciar → conItem(vendible, cantidad) → `Build()` que valida invariantes y fija el total), `IVendible` (polimorfismo Res \| Producto — diseño, no patrón), `ProductoDerivado` + creadores (SC-1) |
-| **Cómo se relaciona** | Los ítems provienen de los registros de la Ficha 1 (builder ensambla, no decide tipos). `Build()` publica el evento de venta vía el despachador (Ficha 4). **Quién construye:** el builder (creado por DI). **Quién usa:** `ServicioVentas` |
-| **Impacto** | Creadas: 1 builder + contrato `IVendible` + productos SC-1 (3–4). Modificadas: `Venta` (agrega ítems; superficie intacta), `ServicioVentas`, repositorio de ventas (persistencia multi-ítem con compatibilidad de lectura legacy). **Anexo B:** SC-1 = el caso de uso directo; SC-3 futura (venta con servicios/historia) también ensambla por aquí |
-| **Qué cuesta** | Objeto "en construcción" con estado intermedio (mitigado: `Build()` único punto de entrega válida); una clase más en la traza de creación; la persistencia multi-ítem exige decisión de esquema (columna/discord — zona BD: solo agregar, no migrar) |
-| **Origen** | Propuesta IA aceptada — bitácora B-08; comparativa de costos en B-05. **D-05 resuelta → Variante A confirmada (B-10): la ficha incluye E-14** |
+| **Patrón y punto de dolor** | Creacional → **P-03** (`Venta.cs:10` soldada; SC-1 multi-ítem), P-04 ○ (invariantes una vez), P-13 (reloj por ctor — mata `IVentaFactory.cs:8`) |
+| **Alternativas evaluadas** | (1) Constructores sobrecargados — telescópicos al primer cambio de ítems; (2) Composite — D-12 pendiente (solo si canastas); (3) **no hacer nada** — SC-1 rompe constructor+factory+repo el día uno |
+| **Qué sale / qué entra** | Sale: `FabricaVenta`/`IVentaFactory` tal cual. Entra: `VentaBuilder` (Iniciar→ConItem→Build), `IVendible`, `ProductoDerivado`+creators (E-12) |
+| **Cómo se relaciona** | Ítems desde los registros (Ficha 1); `Build()` publica el evento de venta vía despachador (Ficha 4) |
+| **Impacto** | Creadas: 1 builder + `IVendible` + productos SC-1 (3-4) · Modificadas: `Venta` (superficie intacta), `ServicioVentas`, repo (D-11) |
+| **Qué cuesta** | Estado intermedio (mitigado: `Build()` único punto de entrega válida); decisión de esquema (D-11) |
+| **Origen** | IA aceptada — B-08/B-10 (Variante A confirmada) |
 
 ### Ficha 4 · Observer
 
 | Campo | Contenido |
 |-------|-----------|
-| **Patrón y punto de dolor** | Observer (comportamiento) → **P-10**: publicación sin consumo (`DomainEventPublisherConsola.cs:5-11` único destino; `VacunaVencidaEvent` nunca publicado `DomainEvents.cs:69-83`; `IDomainEventHandler` documentado y jamás implementado) |
-| **Alternativas evaluadas** | (1) Llamadas directas en servicios (status quo — cada reacción toca al publicador); (2) Mediator — god object, centraliza lo que hoy está bien distribuido; (3) **no hacer nada** — SC-1 no puede reaccionar a stock/perecederos sin cirugía en quien publica |
-| **Qué sale / qué entra** | **Sale:** el publicador-consola monolítico. **Entra:** `IDomainEventHandler<T>` (contrato Domain), `DespachadorDeEventos` (implementa la interfaz **existente** `IDomainEventPublisher`), `HandlerConsola` (reproduce la salida actual **línea por línea**), handlers SC-1 (`HandlerStockDerivados`…) |
-| **Cómo se relaciona** | Disparado por el paso final del esqueleto (Ficha 2). Se registra en el mismo composition root que los creadores (Ficha 1). Los servicios publicadores **no cambian** — dependían de la abstracción y sigue igual |
-| **Impacto** | Creadas: contrato + despachador + handler consola + handlers SC-1 (~4 + los que SC-1 necesite). Modificadas: 0 en publicadores (DIP del Reto 1 rinde aquí). **Anexo B:** reaccionar a stock mínimo de derivados o a lácteos por vencer = 1 handler + 1 registro; SC-3 futura (alertas clínicas) idéntico mecanismo |
-| **Qué cuesta** | Infraestructura de despacho; orden determinista que debe especificarse y testearse (consola primero); un evento dispara N handlers no visibles en la firma del publicador (costo de depuración declarado); handlers sincrónicos en v1 (sin cascadas) |
-| **Origen** | Propuesta IA aceptada — bitácora B-08; el "medio diseño" ya existente fue hallazgo B-01 |
+| **Patrón y punto de dolor** | Comportamiento → **P-06** (consola único destino; `VacunaVencidaEvent` 0 publicaciones — verificado), **P-14** (reacciones duplicadas `GestorReses.cs:56/:99`) |
+| **Alternativas evaluadas** | (1) Llamadas directas (status quo — cada reacción toca al publicador); (2) Mediator — god object; (3) **no hacer nada** — SC-1 no puede reaccionar a stock sin cirugía |
+| **Qué sale / qué entra** | Sale: publicador monolítico. Entra: `IDomainEventHandler<T>`, `DespachadorDeEventos` (interfaz existente intacta), `HandlerConsola` (líneas idénticas), `HandlerStockDerivados` (SC-1) |
+| **Cómo se relaciona** | Disparado por el paso final del esqueleto (Ficha 2); registrado en el mismo composition root (Ficha 1) |
+| **Impacto** | Creadas ~4 · Modificadas **0 en publicadores** · SC-1: reaccionar a stock/vencimiento = 1 handler + 1 registro |
+| **Qué cuesta** | Orden determinista a especificar y probar (consola 1º); handlers invisibles en la firma (costo de depuración declarado); sincrónicos v1 |
+| **Origen** | IA aceptada — B-08; ancla P-14 añadida en la auditoría B-15 |
 
 ---
 
-## 4. Efecto sobre las solicitudes del Anexo B (medido)
+## 4. Efecto sobre las solicitudes del Anexo B (medido hoy)
 
-| Solicitud | Costo AS-IS (medido) | Costo TO-BE (diseño) |
-|-----------|----------------------|----------------------|
-| **SC-1 · Derivados** (elegida) | ~15–20 clases en ~15 archivos, varias en flujo congelado (P-01+P-03) | **Núcleo:** 1 creador por producto (3) + `ProductoDerivado` + `IVendible` + registros + handler = ~6–8 clases **nuevas, 0 ediciones de switches**. Variante A suma `FabricaVacaLechera` (1+1). Venta: builder ya diseñado |
-| **SC-2 · Chips** (ya implementada) | — | Queda más robusta por colateral: rehidratación de chips vía registro cuando haya más subtipos; eventos de chip consumibles |
-| **SC-3 · Historia clínica** (futura) | ~9–12 clases aditivas (B-05) | ~4–5: entidad + creador + repositorio + 1 handler (los eventos ya tendrán a quién escuchar) |
+| Solicitud | Costo AS-IS (medido 2026-09-02) | Costo TO-BE (diseño) |
+|-----------|--------------------------------|----------------------|
+| **SC-1 · Derivados** (elegida) | ~20 clases / ~15 archivos: subtipo (6 ediciones P-01) + venta multi-ítem (P-03) + 5ª fábrica con idioma nuevo (P-13) + sin forma de reaccionar (P-06) | **Núcleo: ~8-10 clases nuevas, 0 ediciones de switches.** `FabricaVacaLechera` = 1+1 (E-13) |
+| SC-2 · Chips (ya implementada) | — | Colateral: rehidratación con Id estable (E-06); eventos de chip consumibles |
+| SC-3 · Historia clínica (futura) | ~9-12 clases aditivas | ~4-5: entidad + creator + repositorio + 1 handler |
 
 ---
 
@@ -289,19 +284,20 @@ classDiagram
 
 | ID | Duda | Estado |
 |----|------|--------|
-| ~~D-05~~ | Producción propia (A) vs stock directo (B) | ✅ **Resuelta: Variante A** (delegación explícita del equipo a la recomendación IA — B-10). E-14 confirmado |
-| D-11 | Persistencia multi-ítem de `Venta`: columna JSON vs tabla `venta_items` — decisión de esquema **aditiva** (zona BD: solo agregar) | 🟡 Se decide al implementar |
+| D-04 | Distribución de los 4 frentes entre integrantes | 🟡 Del equipo |
+| D-06 | ≥3 hallazgos propios sin IA | 🟡 1 confirmado (B-16 ◆) — faltan 2 |
+| D-11 | Persistencia multi-ítem: columna JSON vs tabla `venta_items` | 🟡 Se decide al implementar (zona BD: solo añadir) |
+| **D-12** | **¿Composite como 5º patrón?** (solo si SC-1 incluye canastas) | 🟡 Del equipo — recomendación: descartar salvo canastas |
 
 ## 6. Riesgos propios del diseño
 
-1. **Superficie de mensaje:** los mensajes exactos de errores/éxitos deben trasladarse al esqueleto y al builder — un texto cambiado = −0.5. Mitigación: tabla de mensajes congelados en [[Reto2-Hacienda/Opcion1/06-VerificacionSOLID]].
-2. **Rehidratación con `Id` preservado** (E-06): cambia un comportamiento *interno* (identidad estable vs GUID nuevo por lectura). No es observable en UI/consola; se declara y se evidencia en la Act. 4.
-3. **Determinismo del despachador:** el orden de handlers queda especificado (consola primero, luego resto en orden de registro) y con caso de prueba propio.
-
----
+1. **Superficie de mensaje:** los textos exactos (incluida la validación restaurada DEC-09 y los 4 mensajes de lote) se trasladan al esqueleto/builder — tabla congelada en [[Reto2-Hacienda/Opcion1/06-VerificacionSOLID|06-Verificación]].
+2. **Rehidratación con `Id` preservado** (E-06): cambia comportamiento *interno* (identidad estable vs GUID nuevo) — no observable en UI; declarado y probado en Act. 4.
+3. **Determinismo del despachador:** orden especificado (consola primero, resto en orden de registro) con caso de prueba propio.
+4. **Des-sincronización de diagramas:** los `.drawio` de `diagramas/` se re-sincronizan al congelar este diseño (los mermaid de §3.1 son hoy la fuente de verdad).
 
 ## 7. Navegación
 
-- [[Reto2-Hacienda/Opcion1/01-AS-IS]] · [[Reto2-Hacienda/Opcion1/02-PuntosDolor]] · [[Reto2-Hacienda/Opcion1/03-PatronesEvaluados]] · [[Reto2-Hacienda/Opcion1/04-DecisionesArquitectonicas]] — la cadena de evidencia.
-- [[Reto2-Hacienda/Opcion1/06-VerificacionSOLID]] — Actividad 4: aquí se audita todo lo que este diseño promete preservar.
-- [[Reto2-Hacienda/Opcion1/10-BitacoraIA]] — B-05/B-08 sustentan las decisiones de esta actividad.
+- [[Reto2-Hacienda/Opcion1/01-AS-IS|01-AS-IS]] · [[Reto2-Hacienda/Opcion1/02-PuntosDolor|02-PuntosDolor]] — la cadena de evidencia.
+- [[Reto2-Hacienda/Opcion1/06-VerificacionSOLID|06-Verificación]] — Actividad 4: aquí se audita todo lo que este diseño promete preservar.
+- [[Reto2-Hacienda/Opcion1/10-BitacoraIA|10-Bitácora]] — B-08/B-10/B-15/B-16 sustentan estas decisiones.

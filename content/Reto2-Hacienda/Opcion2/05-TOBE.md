@@ -113,7 +113,7 @@ classDiagram
 ```
 
 > [!note] Qué NO está en este recorte
-| Las entidades `Potrero`, `Chip`, VOs, eventos, repositorios de usuarios/geolocalización, autenticación y el resto de controladores ⚫ **se conservan tal cual** (ver [[Reto2-Hacienda/Opcion2/01-AS-IS]]). El frontend completo se conserva por D-05, salvo las vistas nuevas que la SC-1 autoriza.
+| Las entidades `Potrero`, `Chip`, VOs, eventos, repositorios de usuarios/geolocalización, autenticación y el resto de controladores ⚫ **se conservan tal cual** (ver [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/01-AS-IS]]). El frontend completo se conserva por D-05, salvo las vistas nuevas que la SC-1 autoriza.
 
 ---
 
@@ -258,7 +258,7 @@ classDiagram
 | E-08 | `ServicioVacunacion` | Se transforma | 4 métodos de creación clonados + reglas de límites duplicadas | 2 métodos (`CrearVacuna`, `CrearLote` parametrizado vía registro); `AplicarVacuna` delega la regla en `Res.AplicarVacuna` | `VacunaController` y vistas conservan sus inputs; los if/else por string se reducen al mapeo único de la categoría |
 | E-09 | `ServicioVentas` | Se transforma | Asumía potrero+res; buscaba, fabricaba, validaba, removía | **Fachada**: orquesta proveer → validar (dominio) → calcular (estrategia) → confirmar (`AlConfirmarVenta`) → persistir | `ResController.Vender` redirige a `Vender(espec)`; `VentaController` gana la entrada de ventas de derivados |
 | E-10 | `Venta` | Se transforma | `Res Res` grabado a fuego; 0 métodos | `IVendible Producto` + monto calculado por estrategia | `RepositorioVentaSqlite` persiste `res_id`/columnas de producto (ver E-14); vistas leen `Descripcion()/TipoProducto()/Serializar()` |
-| E-11 | `Res` | Se transforma | Setters públicos; colección de vacunas pública; pasiva | Implementa `IVendible`; encapsula peso/edad/chip/vacunas; reglas `AplicarVacuna/Alimentar/EvaluarPeso/AlConfirmarVenta` | Servicios dejan de mutar; los 8 casos del Reto 1 producen las mismas salidas (verificación en [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]]) |
+| E-11 | `Res` | Se transforma | Setters públicos; colección de vacunas pública; pasiva | Implementa `IVendible`; encapsula peso/edad/chip/vacunas; reglas `AplicarVacuna/Alimentar/EvaluarPeso/AlConfirmarVenta` | Servicios dejan de mutar; los 8 casos del Reto 1 producen las mismas salidas (verificación en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]]) |
 | E-12 | `RepositorioPotreroSqlite` / `RepositorioVentaSqlite` / `RepositorioVacunaSqlite` | Se transforma | Switches propios de subtipos; GUID nuevo en lectura | Delegan rehidratación al registro correspondiente (GUID persistido → P-10 corregido) | Firma interna: `IRegistro*.Para(tipo).Rehidratar(fila)` — sin cambios de esquema salvo E-14 |
 | E-13 | `Program.cs` | Se transforma | Registraba 4 factorías y 4 validadores | Ensambla registros de creadores + **pares (proveedor, estrategia)** por producto; punto de lectura del ensamblaje | Único lugar que crece al extender (1 línea por tipo nuevo) — autorizado por el encargo |
 | E-14 | Tabla `ventas` (esquema) | Se transforma | Columnas `res_*` obligatorias | + `res_id` (nullable, corrige P-10), + `producto_tipo/producto_descripcion/cantidad/precio_unitario` (nullable para reses) | `DatabaseInitializer` (ALTER retrocompatible, patrón existente en l.34-43); ventas de reses escriben igual que hoy |
@@ -280,8 +280,8 @@ classDiagram
 | **Qué sale y qué entra** | Sale: diccionario+switch de `FabricaRes`, 2 métodos por subtipo de `IVacunaFactory`, `MapearTipoRes`, switches de los 3 repos, contadores por nombre. Entra: `ICreadorRes` + 3 creadores, `ICreadorVacuna` + 2 creadores, `IRegistroProductos` (resuelve tipo → creador/proveedor) — cada creador **crea, rehidrata, describe y valida su subtipo** |
 | **Cómo se relaciona** | Los construye `Program.cs` (registra); los usan `GestorReses` (alta), `ServicioVacunacion` (vacunas) y los 3 repositorios (rehidratación con GUID persistido). **Interactúa con Strategy** (el registro resuelve el par proveedor+estrategia) y con **Facade** (la fachada consulta el registro, no conoce tipos). El `DescripcionTipo()` del creador alimenta los badges que hoy salen de switches de vista |
 | **Impacto** | Creadas ≈9 (creadores + registro) · Modificadas: `GestorReses`, `ServicioVacunacion`, 3 repos, `Program.cs` · Eliminadas: 4 switches/mapeos y 4 métodos paralelos. **Efecto sobre el Anexo B**: SC-1 pasa de 14 archivos a registrar un par; SC-2-variantes (nuevo estado de chip) no se beneficia (declarado); SC-3 ganaría el mismo mecanismo para eventos clínicos |
-| **Qué cuesta** | ≈9 clases pequeñas más; un nivel más de indirección entre solicitud y nacimiento del objeto; depurar exige leer el registro en `Program.cs`; riesgo residual: que alguien reintroduzca un switch de tipo — prohibido por regla en [[Reto2-Hacienda/Opcion2/09-VistaTecnica]] |
-| **Origen** | Propuesta de la IA, aprobada por el equipo (bitácora [[Reto2-Hacienda/Opcion2/10-BitacoraIA]] B-08) tras evaluar y descartar Abstract Factory y Prototype con evidencia |
+| **Qué cuesta** | ≈9 clases pequeñas más; un nivel más de indirección entre solicitud y nacimiento del objeto; depurar exige leer el registro en `Program.cs`; riesgo residual: que alguien reintroduzca un switch de tipo — prohibido por regla en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/09-VistaTecnica]] |
+| **Origen** | Propuesta de la IA, aprobada por el equipo (bitácora [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/10-BitacoraIA]] B-08) tras evaluar y descartar Abstract Factory y Prototype con evidencia |
 
 ### Ficha 2 · Facade — el subsistema de venta en un punto legible
 
@@ -292,7 +292,7 @@ classDiagram
 | **Qué sale y qué entra** | Sale: la asunción potrero+res como único caso de venta; `FabricaVenta`. Entra: `IServicioVentas` con contrato unificado `Vender(IEspecVenta)`; `ServicioVentas` reestructurado como **fachada** (rol del servicio existente, no clase nueva) |
 | **Cómo se relaciona** | La construye `Program.cs`; la usan `ResController` (venta de reses, mismo flujo visible) y `VentaController` (venta de derivados, SC-1). **Interactúa con Factory Method** (consulta `IRegistroProductos`) y con **Strategy** (recibe el monto ya calculado por la estrategia del par registrado). **Límite declarado (Anexo A)**: orquesta — obtener, validar, calcular, confirmar, persistir — y NO legisla: métrica de control "si un método de la fachada contiene un `if` de negocio, la regla baja al dominio" |
 | **Impacto** | Creadas: 0 (rol sobre servicio existente) · Modificadas: `IServicioVentas`/`ServicioVentas`, `ResController.Vender` (redirige), `VentaController` (nueva entrada SC-1), `Program.cs` · Eliminadas: `FabricaVenta`+`IVentaFactory`. **Efecto Anexo B**: SC-1 se implementa detrás de la fachada sin que la UI conozca creadores ni estrategias; SC-3 reutilizaría el mismo patrón de orquestación |
-| **Qué cuesta** | Una indirección más UI→dominio; el riesgo tipificado por el Anexo A (absorber lógica → SRP roto) queda **activo y controlado** por la métrica y por la revisión de [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]]; exige disciplina en revisión de código del equipo |
+| **Qué cuesta** | Una indirección más UI→dominio; el riesgo tipificado por el Anexo A (absorber lógica → SRP roto) queda **activo y controlado** por la métrica y por la revisión de [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]]; exige disciplina en revisión de código del equipo |
 | **Origen** | Propuesta de la IA (B-09), aprobada con el límite declarado como condición de la aprobación |
 
 ### Ficha 3 · Strategy — comportamiento de precio por producto, en runtime
@@ -305,7 +305,7 @@ classDiagram
 | **Cómo se relaciona** | La construye `Program.cs` **en par con el proveedor del producto** (el registro de Factory Method resuelve el par); la usa `Venta`/fachada para calcular el monto. **Interactúa con Factory Method** (par registrado) y con **Facade** (consumidora). Nueva política de precio (2×1, precio por bulto) = nueva estrategia + registro |
 | **Impacto** | Creadas: 3 (interfaz + 2 estrategias) · Modificadas: `Venta`, `ServicioVentas`, `Program.cs` · Eliminadas: ninguna. **Efecto Anexo B**: SC-1 viable sin tocar servicios por tipo; SC-3 no la usa (declarado); una futura SC de promociones entraría solo aquí |
 | **Qué cuesta** | +1 interfaz +2-3 clases; depurar un precio exige identificar la estrategia participante (mitigado: el registro es legible); riesgo ISP si la interfaz crece — controlado: una sola operación `Calcular` |
-| **Origen** | Propuesta de la IA (B-10) con la condición explícita de que `MontoManual` preserve el comportamiento congelado de reses — verificable en los 12 casos de [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]] |
+| **Origen** | Propuesta de la IA (B-10) con la condición explícita de que `MontoManual` preserve el comportamiento congelado de reses — verificable en los 12 casos de [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]] |
 
 ---
 
@@ -317,7 +317,7 @@ classDiagram
 | `Potrero`, `Chip` (las entidades bien encapsuladas del Reto 1), VOs, eventos, `Usuario`, `Geolocalizacion` | ⚫ Sin cambios |
 | Repositorios de usuarios/geolocalización/chips, `HasherBcrypt`, `GuidProviderSistema`, `DataLoader` | ⚫ Sin cambios |
 | Autenticación, vistas y controladores existentes (salvo la re-conexión de la entrada de venta) | ⚫ Sin cambios (D-05) |
-| Flujo observable completo de reses, potreros, vacunas, chips, usuarios | ⚫ Sin cambios — se demuestra en [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]] |
+| Flujo observable completo de reses, potreros, vacunas, chips, usuarios | ⚫ Sin cambios — se demuestra en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]] |
 
 > [!tip] Navegación
-| AS-IS: [[Reto2-Hacienda/Opcion2/01-AS-IS]] · Dolor: [[Reto2-Hacienda/Opcion2/02-PuntosDolor]] · Evaluación: [[Reto2-Hacienda/Opcion2/03-PatronesEvaluados]] · Decisiones: [[Reto2-Hacienda/Opcion2/04-DecisionesArquitectonicas]] · Verificación SOLID de este diseño: [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]]
+| AS-IS: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/01-AS-IS]] · Dolor: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/02-PuntosDolor]] · Evaluación: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/03-PatronesEvaluados]] · Decisiones: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/04-DecisionesArquitectonicas]] · Verificación SOLID de este diseño: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]]

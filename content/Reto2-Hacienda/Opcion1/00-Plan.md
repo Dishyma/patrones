@@ -19,12 +19,12 @@ fecha: 2026-08-30
 
 | # | Criterio | Peso | Artefacto principal |
 |---|----------|------|---------------------|
-| 1 | Detección de puntos de dolor | 15 % | [[Reto2-Hacienda/Opcion1/02-PuntosDolor]] |
-| 2 | Decisión de patrones + criterio frente a la IA | 20 % | [[Reto2-Hacienda/Opcion1/03-PatronesEvaluados]], [[Reto2-Hacienda/Opcion1/10-BitacoraIA]] |
-| 3 | Diseño TO-BE (sale / entra / se relaciona / impacto) | 20 % | [[Reto2-Hacienda/Opcion1/05-TOBE]] |
-| 4 | Garantía de SOLID y del comportamiento | 15 % | [[Reto2-Hacienda/Opcion1/06-VerificacionSOLID]] |
-| 5 | Análisis de riesgos | 15 % | [[Reto2-Hacienda/Opcion1/07-Riesgos]] |
-| 6 | Dos vistas y sustentación | 15 % | [[Reto2-Hacienda/Opcion1/08-VistaNegocio]], [[Reto2-Hacienda/Opcion1/09-VistaTecnica]] |
+| 1 | Detección de puntos de dolor | 15 % | [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/02-PuntosDolor]] |
+| 2 | Decisión de patrones + criterio frente a la IA | 20 % | [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/03-PatronesEvaluados]], [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/10-BitacoraIA]] |
+| 3 | Diseño TO-BE (sale / entra / se relaciona / impacto) | 20 % | [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/05-TOBE]] |
+| 4 | Garantía de SOLID y del comportamiento | 15 % | [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/06-VerificacionSOLID]] |
+| 5 | Análisis de riesgos | 15 % | [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/07-Riesgos]] |
+| 6 | Dos vistas y sustentación | 15 % | [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/08-VistaNegocio]], [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/09-VistaTecnica]] |
 
 > [!important] Meta declarada por el equipo
 > Obtener **5.0**. Eso exige que cada decisión responda las ocho preguntas del método (dolor → evidencia → costo → candidatos → alternativas → costo de cada alternativa → recomendación → impacto SOLID). Ningún patrón se adopta "por buena práctica".
@@ -55,7 +55,7 @@ Provenientes del correo de la Líder Técnica y de la sección 3 (Alcance) del e
 
 > [!warning] Decisión del equipo — 2026-08-30
 > 1. **El frontend queda FUERA del alcance.** Las vistas Razor (28 archivos `.cshtml`) permanecen exactamente iguales. El TO-BE debe ser *compatible con lo que las vistas consumen hoy* (bindings a entidades de dominio, `ViewBag.TiposRes`, mensajes en `TempData`). Esto es una restricción de diseño, no una omisión: cualquier cambio que exija tocar vistas queda descartado o restringido.
-> 2. **Los hallazgos del análisis AS-IS se tratan como deuda técnica heredada del Reto 1**, a corregir dentro de esta evolución cuando el costo del remedio lo justifique. El detalle se desarrolla en [[Reto2-Hacienda/Opcion1/02-PuntosDolor]].
+> 2. **Los hallazgos del análisis AS-IS se tratan como deuda técnica heredada del Reto 1**, a corregir dentro de esta evolución cuando el costo del remedio lo justifique. El detalle se desarrolla en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/02-PuntosDolor]].
 
 ---
 
@@ -91,16 +91,16 @@ flowchart TD
 | Archivo | Actividad | Contenido | Estado |
 |---------|-----------|-----------|--------|
 | [[00-Plan]] | — | Este documento | ✅ Aprobado |
-| [[Reto2-Hacienda/Opcion1/01-AS-IS]] | Base | Comprensión del sistema actual con evidencia | ✅ Aprobado |
-| [[Reto2-Hacienda/Opcion1/02-PuntosDolor]] | Act. 1 | Tabla P-XX: dolor, evidencia, costo real (clases/archivos), prioridad, intervención | ✅ Aprobado |
-| [[Reto2-Hacienda/Opcion1/03-PatronesEvaluados]] | Act. 2.1 | Fichas de los 22 patrones del Anexo A + tabla de decisión | ✅ Aprobado |
-| [[Reto2-Hacienda/Opcion1/04-DecisionesArquitectonicas]] | Act. 2 (cierre) | Decisiones finales con justificación extensa y alternativas | ✅ Aprobado |
-| [[Reto2-Hacienda/Opcion1/05-TOBE]] | Act. 3 | Diagrama de lo que sale / lo que entra, tabla de cambio estructural E-XX, fichas por patrón adoptado | ✅ Aprobado (D-05 → Variante A) |
-| [[Reto2-Hacienda/Opcion1/06-VerificacionSOLID]] | Act. 4 | Matriz Patrón×SOLID con evidencia + 12 casos de comportamiento congelado | ✅ Aprobado |
-| [[Reto2-Hacienda/Opcion1/07-Riesgos]] | Act. 5 | Registro R-XX: condición→consecuencia, P×I, prevención, señal observable | ✅ Aprobado |
-| [[Reto2-Hacienda/Opcion1/08-VistaNegocio]] | Act. 6a | Vista para decidores sin lenguaje técnico | ✅ Aprobado |
-| [[Reto2-Hacienda/Opcion1/09-VistaTecnica]] | Act. 6b | Vista para el ingeniero nuevo + guía "dónde tocar" | ✅ Aprobado |
-| [[Reto2-Hacienda/Opcion1/10-BitacoraIA]] | Act. 2.2 | Registro de decisiones frente a la IA (vivo desde ya) | ✅ Vivo — 12/10 registros |
+| [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/01-AS-IS]] | Base | Comprensión del sistema actual con evidencia | ✅ Aprobado |
+| [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/02-PuntosDolor]] | Act. 1 | Tabla P-XX: dolor, evidencia, costo real (clases/archivos), prioridad, intervención | ✅ Aprobado |
+| [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/03-PatronesEvaluados]] | Act. 2.1 | Fichas de los 22 patrones del Anexo A + tabla de decisión | ✅ Aprobado |
+| [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/04-DecisionesArquitectonicas]] | Act. 2 (cierre) | Decisiones finales con justificación extensa y alternativas | ✅ Aprobado |
+| [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/05-TOBE]] | Act. 3 | Diagrama de lo que sale / lo que entra, tabla de cambio estructural E-XX, fichas por patrón adoptado | ✅ Aprobado (D-05 → Variante A) |
+| [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/06-VerificacionSOLID]] | Act. 4 | Matriz Patrón×SOLID con evidencia + 12 casos de comportamiento congelado | ✅ Aprobado |
+| [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/07-Riesgos]] | Act. 5 | Registro R-XX: condición→consecuencia, P×I, prevención, señal observable | ✅ Aprobado |
+| [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/08-VistaNegocio]] | Act. 6a | Vista para decidores sin lenguaje técnico | ✅ Aprobado |
+| [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/09-VistaTecnica]] | Act. 6b | Vista para el ingeniero nuevo + guía "dónde tocar" | ✅ Aprobado |
+| [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/10-BitacoraIA]] | Act. 2.2 | Registro de decisiones frente a la IA (vivo desde ya) | ✅ Vivo — 12/10 registros |
 
 **Fuera del vault pero entregables del Reto 2:** documento PDF (máx. 15 páginas), código refactorizado que siga el TO-BE, video de 20 minutos (fecha límite: domingo 6 de septiembre, 23:59).
 
@@ -123,11 +123,11 @@ El Reto 1 dejó documentación que promete cosas que el código no cumple (ej.: 
 | Término | Convención para el Reto 2 |
 |---------|---------------------------|
 | **AS-IS** | El código `03-src/SolucionSOLID` tal como está hoy. ⚠️ En la documentación del Reto 1 ese mismo código se llama "TO-BE" (terminología de ese reto) e incluso el archivo de solución se llama `Hacienda.TOBE.sln`. Para el Reto 2 **ese código ES el AS-IS**. |
-| **TO-BE** | El diseño nuevo: AS-IS + patrones adoptados. Se documenta en [[Reto2-Hacienda/Opcion1/05-TOBE]]. |
-| **P-XX** | Punto de dolor ([[Reto2-Hacienda/Opcion1/02-PuntosDolor]]). |
-| **E-XX** | Elemento de cambio estructural ([[Reto2-Hacienda/Opcion1/05-TOBE]], tabla de la Act. 3). |
-| **R-XX** | Riesgo ([[Reto2-Hacienda/Opcion1/07-Riesgos]]). |
-| **B-XX** | Registro de bitácora frente a la IA ([[Reto2-Hacienda/Opcion1/10-BitacoraIA]]). |
+| **TO-BE** | El diseño nuevo: AS-IS + patrones adoptados. Se documenta en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/05-TOBE]]. |
+| **P-XX** | Punto de dolor ([[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/02-PuntosDolor]]). |
+| **E-XX** | Elemento de cambio estructural ([[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/05-TOBE]], tabla de la Act. 3). |
+| **R-XX** | Riesgo ([[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/07-Riesgos]]). |
+| **B-XX** | Registro de bitácora frente a la IA ([[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/10-BitacoraIA]]). |
 | **SC-1 / SC-3** | Solicitudes de cambio del Anexo B pendientes: derivados (lácteos/carne/piel) / historia clínica por res. En el Reto 1 se implementó **SC-2 (chips + geolocalización)**; el Reto 2 exige implementar una **distinta**. |
 | **Deuda técnica heredada** | Hallazgos del Reto 1 que el equipo se compromete a corregir en esta evolución cuando el remedio se justifique. |
 
@@ -153,10 +153,10 @@ Roles del Reto 2 según el enunciado (§4) y su distribución propuesta:
 
 | ID | Duda | Impacta a | Estado |
 |----|------|-----------|--------|
-| D-01 | ¿SC-1 (derivados) o SC-3 (historia clínica)? El TO-BE debe facilitar la solicitud elegida | [[Reto2-Hacienda/Opcion1/03-PatronesEvaluados]], [[Reto2-Hacienda/Opcion1/05-TOBE]] | ✅ Resuelta (2026-08-30): el equipo elige **SC-1 (derivados)** por ser la más exigente — ancla los puntos de dolor P-01/P-03 y maximiza el contraste AS-IS/TO-BE |
-| D-03 | Enumerar los 12 casos de comportamiento (8 del Reto 1 + 4 nuevos) y planear la captura de salidas | [[Reto2-Hacienda/Opcion1/06-VerificacionSOLID]] | ✅ Resuelta: casos C-01…C-12 definidos; falta ejecutar las capturas "antes" (protocolo en [[Reto2-Hacienda/Opcion1/06-VerificacionSOLID]] §4.2) |
-> [!note] Numeración de dudas: los IDs D-02, D-08 y D-09 no se emitieron (numeración asignada por fecha de aparición, no exhaustiva); D-10 era duplicado de D-03 y se eliminó de [[Reto2-Hacienda/Opcion1/04-DecisionesArquitectonicas]].
-| D-05 | ¿SC-1 con producción propia (vaca lechera) o stock directo? | [[Reto2-Hacienda/Opcion1/05-TOBE]] | ✅ Resuelta (2026-08-30, delegación explícita): **Variante A — producción propia** ([[Reto2-Hacienda/Opcion1/10-BitacoraIA]] B-10) |
+| D-01 | ¿SC-1 (derivados) o SC-3 (historia clínica)? El TO-BE debe facilitar la solicitud elegida | [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/03-PatronesEvaluados]], [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/05-TOBE]] | ✅ Resuelta (2026-08-30): el equipo elige **SC-1 (derivados)** por ser la más exigente — ancla los puntos de dolor P-01/P-03 y maximiza el contraste AS-IS/TO-BE |
+| D-03 | Enumerar los 12 casos de comportamiento (8 del Reto 1 + 4 nuevos) y planear la captura de salidas | [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/06-VerificacionSOLID]] | ✅ Resuelta: casos C-01…C-12 definidos; falta ejecutar las capturas "antes" (protocolo en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/06-VerificacionSOLID]] §4.2) |
+> [!note] Numeración de dudas: los IDs D-02, D-08 y D-09 no se emitieron (numeración asignada por fecha de aparición, no exhaustiva); D-10 era duplicado de D-03 y se eliminó de [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/04-DecisionesArquitectonicas]].
+| D-05 | ¿SC-1 con producción propia (vaca lechera) o stock directo? | [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/05-TOBE]] | ✅ Resuelta (2026-08-30, delegación explícita): **Variante A — producción propia** ([[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/10-BitacoraIA]] B-10) |
 
 ---
 
@@ -170,6 +170,6 @@ Roles del Reto 2 según el enunciado (§4) y su distribución propuesta:
 
 ## 10. Navegación
 
-- [[Reto2-Hacienda/Opcion1/01-AS-IS]] — el punto de partida del análisis.
-- [[Reto2-Hacienda/Opcion1/02-PuntosDolor]] — Actividad 1.
-- [[Reto2-Hacienda/Opcion1/10-BitacoraIA]] — registro de decisiones frente a la IA (se llena desde la primera sesión).
+- [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/01-AS-IS]] — el punto de partida del análisis.
+- [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/02-PuntosDolor]] — Actividad 1.
+- [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/10-BitacoraIA]] — registro de decisiones frente a la IA (se llena desde la primera sesión).

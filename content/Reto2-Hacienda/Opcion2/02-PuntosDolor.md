@@ -32,7 +32,7 @@ estado: "completo — pendiente selección del equipo"
 | P-09 | `Enums/TipoPotrero.cs` + `GestorReses.cs:137-143` | Dos enums idénticos traducidos a mano: dos fuentes de verdad de un concepto | 4 puntos de sincronización por tipo | Media | **Sí** (absorbido por P-02) |
 | P-10 | `RepositorioVentaSqlite.cs:41-43` | Cada lectura inventa un GUID nuevo: la identidad de la res vendida se destruye | bug latente; corrección 2-3 archivos | Media | **Sí** (oportunista con P-05) |
 | P-11 | `Validaciones/Validador*.cs` (los 4) | Validadores triviales que llegan tarde, sin composición de reglas | 4 clases + doble mecanismo de error | Media | **Sí, condicionado** |
-| P-12 | `DomainEventPublisherConsola.cs` + `GestorReses.cs:55-75` | Observer a medio instalar: publica a una consola invisible y el efecto real se duplica a mano en strings | infra + 2 publicadores por consumidor nuevo | Media | **No** (riesgo de comportamiento; se evalúa igual en [[Reto2-Hacienda/Opcion2/03-PatronesEvaluados]]) |
+| P-12 | `DomainEventPublisherConsola.cs` + `GestorReses.cs:55-75` | Observer a medio instalar: publica a una consola invisible y el efecto real se duplica a mano en strings | infra + 2 publicadores por consumidor nuevo | Media | **No** (riesgo de comportamiento; se evalúa igual en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/03-PatronesEvaluados]]) |
 | P-13 | `ServicioChip.cs:54-56` | Tres agregados persistidos sin transacción común | BD inconsistente ante fallo intermedio | Media | **No con patrón** (Unit of Work no está en el Anexo A) |
 | P-14 | `DataLoader.cs:60-98` | El seed bypasea dominio y validaciones (254 INSERTs crudos) | 1 archivo gigante + esquema | Media | **No** (datos de prueba) |
 | P-15 | `DTOs/Dto.cs` (muerto) + vistas tipadas a entidades | Cambiar una entidad rompe vistas; el anticorrupción existe pero desconectado | 8 vistas + 8 acciones | Media | **No** (frontend fuera de alcance, D-05) |
@@ -43,7 +43,7 @@ estado: "completo — pendiente selección del equipo"
 **Balance**: 9 candidatos a intervenir (P-01, 02, 04, 05, 06, 08, 09, 10, 11-condicional) · 9 recomendados como deuda declarada. De estos 9, los patrones adoptados (3–5) anclarán únicamente a los de prioridad Alta con costo contado.
 
 > [!success] Decisión del equipo (30 de agosto)
-> **D-01: SC-1** (productos derivados) · **Intervención aprobada: los 9 puntos recomendados** (P-01, 02, 04, 05, 06, 08, 09, 10, 11) · Los 9 restantes quedan como **deuda declarada**, con P-03, P-07 y P-17 como los "no intervenir" oficiales argumentados (§4). Registrado en [[Reto2-Hacienda/Opcion2/10-BitacoraIA]] (B-07, B-08).
+> **D-01: SC-1** (productos derivados) · **Intervención aprobada: los 9 puntos recomendados** (P-01, 02, 04, 05, 06, 08, 09, 10, 11) · Los 9 restantes quedan como **deuda declarada**, con P-03, P-07 y P-17 como los "no intervenir" oficiales argumentados (§4). Registrado en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/10-BitacoraIA]] (B-07, B-08).
 
 ---
 
@@ -215,7 +215,7 @@ estado: "completo — pendiente selección del equipo"
 | Evidencia | `mensajeEventos += $"\n[Evento] …"` junto a cada `Publicar` (`GestorReses.cs:58-73`); `VacunaVencidaEvent` definido y nunca publicado |
 | Costo real | Infra + 2 publicadores por cada consumidor nuevo |
 | Prioridad | Media |
-| ¿Intervenir? | **No (recomendado para Reto 2)** — las strings de reacción son comportamiento observable congelado (L1): rediseñar el dispatch toca exactamente lo que no se puede mover. Se evalúa Observer en [[Reto2-Hacienda/Opcion2/03-PatronesEvaluados]] con este riesgo declarado |
+| ¿Intervenir? | **No (recomendado para Reto 2)** — las strings de reacción son comportamiento observable congelado (L1): rediseñar el dispatch toca exactamente lo que no se puede mover. Se evalúa Observer en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/03-PatronesEvaluados]] con este riesgo declarado |
 
 ### P-13 · Tres agregados, ninguna transacción
 
@@ -320,7 +320,7 @@ private static string DescribirRango(Res res) => res.Tipo switch { … };
 |----------|-----------|-----------|
 | ¿Factory Method real? | **No** — la decisión la toma UNA clase en runtime a partir de un parámetro; no hay subclases de la factoría ni hook de extensión | l.17-22 |
 | ¿Simple Factory disfrazado? | **Sí** — el diccionario solo relocaliza el `switch`; añadir un tipo obliga a editar el cuerpo de la misma clase | l.19-21 + l.42-47 |
-| ¿Viola OCP? | **Sí** — la extensión exige modificación (aquí y en los 5 switches hermanos de P-02) | tabla §3.2 de [[Reto2-Hacienda/Opcion2/01-AS-IS]] |
+| ¿Viola OCP? | **Sí** — la extensión exige modificación (aquí y en los 5 switches hermanos de P-02) | tabla §3.2 de [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/01-AS-IS]] |
 | ¿Viola SRP? | **Tensionado** — crea, valida edad (l.35-37) y fabrica mensajes de error: tres motivos de cambio | l.27-48 |
 | ¿Centraliza demasiadas decisiones? | Paradoja: centraliza la del alta, pero los repos re-deciden lo mismo al leer (P-05) | `RepositorioVentaSqlite.cs:39-45` |
 | **¿Qué hacer?** | **Corregir/reemplazar** — devolver la decisión de creación al propio subtipo (cada subtipo sabe construirse y describirse) y eliminar los switches espejo | ancla P-02 |
@@ -353,7 +353,7 @@ private static string DescribirRango(Res res) => res.Tipo switch { … };
 | **¿Qué hacer?** | **Eliminar o dejar igual** — no daña, pero tampoco aporta; decisión del equipo con un criterio: si P-01/P-02/P-05 introducen un mecanismo de creación coherente, mantener dos wrappers sin función es ruido | — |
 
 > [!important] Síntesis de la auditoría
-> El profesor tiene razón: **0 de 4 factorías son Factory Method**. Dos son Simple Factory (una con switch relocalizado, otra con el switch propagado a la firma en 4 capas) y dos son wrappers de constructor que no factorizan nada. Y la creación real está además duplicada en los repositorios (P-05). La corrección no es "aplicar Factory Method por el libro" — eso se evalúa con alternativas en [[Reto2-Hacienda/Opcion2/03-PatronesEvaluados]] y se decide en [[Reto2-Hacienda/Opcion2/04-DecisionesArquitectonicas]].
+> El profesor tiene razón: **0 de 4 factorías son Factory Method**. Dos son Simple Factory (una con switch relocalizado, otra con el switch propagado a la firma en 4 capas) y dos son wrappers de constructor que no factorizan nada. Y la creación real está además duplicada en los repositorios (P-05). La corrección no es "aplicar Factory Method por el libro" — eso se evalúa con alternativas en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/03-PatronesEvaluados]] y se decide en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/04-DecisionesArquitectonicas]].
 
 ---
 
@@ -367,7 +367,7 @@ El enunciado exige al menos un punto donde **el remedio cuesta más que el probl
 
 ### 4.2 P-07 · Autorización muerta
 
-**Argumento**: activar `AutorizadorRbca` **cambia comportamiento observable** (aparecerían denegaciones que hoy no existen) sin solicitud de cambio autorizada — colisión frontal con L1. Además exigiría tocar los 8 controladores, justo la capa que D-05 mantiene quieta. Lo que sí se hace: dejarlo **declarado como deuda** en [[Reto2-Hacienda/Opcion2/09-VistaTecnica]] con su señal de alerta (cualquier SC de permisos futura lo activa). El mecanismo (registro múltiple + diccionario por rol) ya es el diseño correcto; no hay patrón que añadir, solo una decisión de negocio pendiente.
+**Argumento**: activar `AutorizadorRbca` **cambia comportamiento observable** (aparecerían denegaciones que hoy no existen) sin solicitud de cambio autorizada — colisión frontal con L1. Además exigiría tocar los 8 controladores, justo la capa que D-05 mantiene quieta. Lo que sí se hace: dejarlo **declarado como deuda** en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/09-VistaTecnica]] con su señal de alerta (cualquier SC de permisos futura lo activa). El mecanismo (registro múltiple + diccionario por rol) ya es el diseño correcto; no hay patrón que añadir, solo una decisión de negocio pendiente.
 
 ### 4.3 P-17 · Save-all y esquema a mano
 
@@ -418,7 +418,7 @@ Nueva entidad de eventos clínicos + repo + tabla + colección en `Res` (hoy `Va
 
 ---
 
-## 6. Hipótesis de anclaje (a evaluar en [[Reto2-Hacienda/Opcion2/03-PatronesEvaluados]])
+## 6. Hipótesis de anclaje (a evaluar en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/03-PatronesEvaluados]])
 
 > [!warning] Esto NO es una decisión
 > Los 22 patrones del Anexo A se evalúan con ficha completa en el siguiente documento. Este mapa solo organiza los clústeres de dolor para que la evaluación tenga blanco.
@@ -430,4 +430,4 @@ Nueva entidad de eventos clínicos + repo + tabla + colección en `Res` (hoy `Va
 | Ensamblaje y composición | P-03, P-07, P-12, P-13 | ¿Dónde se lee cómo colaboran los objetos? | Estructurales (Facade) + Observer — la mayoría ya argumentados como "no intervenir" en este reto |
 
 > [!tip] Navegación
-> Base de este inventario: [[Reto2-Hacienda/Opcion2/01-AS-IS]] · Evaluación de los 22 patrones: [[Reto2-Hacienda/Opcion2/03-PatronesEvaluados]] · Adopción y descartes: [[Reto2-Hacienda/Opcion2/04-DecisionesArquitectonicas]] · Plan: [[Reto2-Hacienda/Opcion1/00-Plan]]
+> Base de este inventario: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/01-AS-IS]] · Evaluación de los 22 patrones: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/03-PatronesEvaluados]] · Adopción y descartes: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/04-DecisionesArquitectonicas]] · Plan: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/00-Plan]]

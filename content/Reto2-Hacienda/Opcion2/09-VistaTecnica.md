@@ -12,7 +12,7 @@ estado: "completa"
 # 09 — Vista para el equipo de desarrollo
 
 > [!abstract] Propósito
-> La misma arquitectura de [[Reto2-Hacienda/Opcion2/08-VistaNegocio]], explicada a quien la va a mantener. Responde: qué patrones hay y dónde vive cada uno, dónde se ensambla el sistema, qué reglas no se deben romper y por qué, y **la guía de dónde tocar** para cada cambio previsible (mínimo 5 filas, cubre las 3 SC del Anexo B). Cierra con la deuda declarada.
+> La misma arquitectura de [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/08-VistaNegocio]], explicada a quien la va a mantener. Responde: qué patrones hay y dónde vive cada uno, dónde se ensambla el sistema, qué reglas no se deben romper y por qué, y **la guía de dónde tocar** para cada cambio previsible (mínimo 5 filas, cubre las 3 SC del Anexo B). Cierra con la deuda declarada.
 >
 > Prueba de que sirve: alguien que no participó en el diseño debe poder ubicar, solo con este documento, dónde hacer un cambio.
 
@@ -45,18 +45,18 @@ Program.cs
 └── Inicialización y seed (sin cambios)
 ```
 
-Para responder "¿cómo se arma el sistema?" ya no hay que leerlo todo: se lee `Program.cs` y las 3 fichas de [[Reto2-Hacienda/Opcion2/05-TOBE]] §4.
+Para responder "¿cómo se arma el sistema?" ya no hay que leerlo todo: se lee `Program.cs` y las 3 fichas de [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/05-TOBE]] §4.
 
 ## 3. Reglas que no se deben romper y por qué
 
 | # | Regla | Por qué existe |
 |---|-------|----------------|
-| R1 | **Prohibido `switch`/`if` sobre tipos** (de res, vacuna o producto) fuera de: (a) el registro en `Program.cs`, (b) el mapeo único string-de-vista→categoría en `VacunaController` (heredado, D-05) | Cada condicional de tipo es un punto de modificación en potencia: reintroduciría el dolor P-02/P-06 (10-12 archivos por tipo nuevo) y movería el punto de decisión que acabamos de eliminar. Fuente: [[Reto2-Hacienda/Opcion2/02-PuntosDolor]] |
-| R2 | **La fachada orquesta, no legisla**: cero `if` de negocio en `ServicioVentas` | Es el riesgo que el Anexo A tipifica (fachada que absorbe lógica → SRP roto). La regla vive en el dominio: `Res.EvaluarPeso`, `IVendible.ValidarParaVenta`, `AlConfirmarVenta`. Métrica de la celda 6 de [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]] |
+| R1 | **Prohibido `switch`/`if` sobre tipos** (de res, vacuna o producto) fuera de: (a) el registro en `Program.cs`, (b) el mapeo único string-de-vista→categoría en `VacunaController` (heredado, D-05) | Cada condicional de tipo es un punto de modificación en potencia: reintroduciría el dolor P-02/P-06 (10-12 archivos por tipo nuevo) y movería el punto de decisión que acabamos de eliminar. Fuente: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/02-PuntosDolor]] |
+| R2 | **La fachada orquesta, no legisla**: cero `if` de negocio en `ServicioVentas` | Es el riesgo que el Anexo A tipifica (fachada que absorbe lógica → SRP roto). La regla vive en el dominio: `Res.EvaluarPeso`, `IVendible.ValidarParaVenta`, `AlConfirmarVenta`. Métrica de la celda 6 de [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]] |
 | R3 | **Mensajes 1:1**: los textos visibles se copian de su sitio AS-IS, jamás se re-escriben de memoria | Son comportamiento congelado: una diferencia de un carácter = −0.5 en la nota (regla del enunciado). Verificación: 12 casos lado a lado |
 | R4 | **Crear ≠ rehidratar**: `Crear` valida invariantes; `Rehidratar` restaura el estado persistido tal cual | Re-validar en lectura rompería los datos históricos (la BD pre-TO-BE tiene filas que las reglas actuales no aceptarían). Compensación declarada de la tensión FM×LSP, caso 12 |
 | R5 | **Las estrategias se registran en par** con su proveedor; nunca se cruzan | Sustituibilidad por emparejamiento (tensión Strategy×LSP, celda 13): `PrecioUnitario` jamás recibe una especificación de res ni viceversa |
-| R6 | **Los subtipos se registran completos** (subclase + creador + línea de registro) en el mismo commit | Un registro a medias = falla en runtime "tipo no registrado" (riesgo R-05 de [[Reto2-Hacienda/Opcion2/07-Riesgos]]) |
+| R6 | **Los subtipos se registran completos** (subclase + creador + línea de registro) en el mismo commit | Un registro a medias = falla en runtime "tipo no registrado" (riesgo R-05 de [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/07-Riesgos]]) |
 
 ## 4. La guía de dónde tocar ⭐
 
@@ -88,19 +88,19 @@ Para responder "¿cómo se arma el sistema?" ya no hay que leerlo todo: se lee `
 
 ## 6. Diccionario vista de negocio ↔ vista técnica (uso interno)
 
-| Frase en [[Reto2-Hacienda/Opcion2/08-VistaNegocio]] | Realidad técnica |
+| Frase en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/08-VistaNegocio]] | Realidad técnica |
 |-------------------------------|------------------|
 | "Un solo lugar para dar de alta lo nuevo" | Factory Method: registros de creadores en `Program.cs` |
 | "Las reglas vuelven a vivir junto a lo que describen" | Refactor de dominio P-04/P-08: `Res.AplicarVacuna/Alimentar/EvaluarPeso`, `IVendible.ValidarParaVenta` |
 | "Un punto único de lectura del recorrido de venta" | Facade: `ServicioVentas` reestructurado (E-09) |
 | "El precio se calcula según el producto" | Strategy: `MontoManual`/`PrecioUnitario` registradas en par |
-| "14 lugares → 1 registro" | Conteo P-01 vs tabla E-XX de [[Reto2-Hacienda/Opcion2/05-TOBE]] |
-| "Doce verificaciones lado a lado" | Los 12 casos de [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]] |
-| "Parada de emergencia el 4/9" | Criterio de parada R-03 en [[Reto2-Hacienda/Opcion2/07-Riesgos]] §2.2 |
+| "14 lugares → 1 registro" | Conteo P-01 vs tabla E-XX de [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/05-TOBE]] |
+| "Doce verificaciones lado a lado" | Los 12 casos de [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]] |
+| "Parada de emergencia el 4/9" | Criterio de parada R-03 en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/07-Riesgos]] §2.2 |
 
 ## 7. Orden de implementación (resumen ejecutivo)
 
-Las 5 fases con puntos de compilación y sus casos están en [[Reto2-Hacienda/Opcion2/07-Riesgos]] §2: **(0)** capturar las 12 salidas AS-IS → **(1)** dominio encapsulado → **(2)** creadores + registro → **(3)** fachada + MontoManual → **(4)** SC-1 derivados → **(5)** limpieza + verificación completa. Una fase, un commit hito; rollback al hito anterior, nunca al inicio.
+Las 5 fases con puntos de compilación y sus casos están en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/07-Riesgos]] §2: **(0)** capturar las 12 salidas AS-IS → **(1)** dominio encapsulado → **(2)** creadores + registro → **(3)** fachada + MontoManual → **(4)** SC-1 derivados → **(5)** limpieza + verificación completa. Una fase, un commit hito; rollback al hito anterior, nunca al inicio.
 
 > [!tip] Navegación
-> Diseño completo: [[Reto2-Hacienda/Opcion2/05-TOBE]] · Verificación: [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]] · Riesgos y plan: [[Reto2-Hacienda/Opcion2/07-Riesgos]] · Decisiones: [[Reto2-Hacienda/Opcion2/04-DecisionesArquitectonicas]] · Bitácora: [[Reto2-Hacienda/Opcion2/10-BitacoraIA]]
+> Diseño completo: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/05-TOBE]] · Verificación: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]] · Riesgos y plan: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/07-Riesgos]] · Decisiones: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/04-DecisionesArquitectonicas]] · Bitácora: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/10-BitacoraIA]]

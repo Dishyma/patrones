@@ -93,4 +93,4 @@ En tiempo de respuesta a una solicitud: lo que hoy es un proyecto pequeño por c
 - [ ] **Pendiente (video)**: presentar a una persona ajena y sin formación técnica; anotar qué entendió. Si al quitar las palabras técnicas la vista se quedara sin contenido, es que no había contenido — este documento responde qué/cuánto/cuándo/riesgo/costo sin una sola de ellas.
 
 > [!tip] Navegación (uso interno del equipo)
-> La traducción técnica de cada frase de esta vista está en [[Reto2-Hacienda/Opcion2/09-VistaTecnica]] §6. Evidencia de que lo viejo no cambia: [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]]. Riesgos completos: [[Reto2-Hacienda/Opcion2/07-Riesgos]].
+> La traducción técnica de cada frase de esta vista está en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/09-VistaTecnica]] §6. Evidencia de que lo viejo no cambia: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]]. Riesgos completos: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/07-Riesgos]].

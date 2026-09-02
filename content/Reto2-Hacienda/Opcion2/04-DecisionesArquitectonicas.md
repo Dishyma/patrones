@@ -49,11 +49,11 @@ estado: "completo — pendiente de aprobación del equipo"
 
 ## 2. ADR-01 · Adoptar Factory Method (real) como mecanismo único de creación
 
-- **Contexto**: la decisión de "qué subtipo instanciar" está regada en 7+ sitios (ficha 1 de [[Reto2-Hacienda/Opcion2/03-PatronesEvaluados]]): diccionario y switch espejo en `FabricaRes`, firmas bifurcadas en `IVacunaFactory`→servicio→controlador, switches propios en 3 repositorios. Costo medido: 10 archivos por tipo nuevo de Res, 12 por tipo nuevo de Vacuna; además los dos caminos de creación discrepan (P-10: GUID nuevo en lectura).
+- **Contexto**: la decisión de "qué subtipo instanciar" está regada en 7+ sitios (ficha 1 de [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/03-PatronesEvaluados]]): diccionario y switch espejo en `FabricaRes`, firmas bifurcadas en `IVacunaFactory`→servicio→controlador, switches propios en 3 repositorios. Costo medido: 10 archivos por tipo nuevo de Res, 12 por tipo nuevo de Vacuna; además los dos caminos de creación discrepan (P-10: GUID nuevo en lectura).
 - **Decisión**: cada subtipo aporta su propio **creador** (`ICreadorRes`, `ICreadorVacuna`, …) que encapsula construcción + descripción + rehidratación (acepta el estado persistido, GUID incluido). Un **registro único** por familia, ensamblado en `Program.cs` (el punto de ensamblaje que el encargo autoriza), resuelve clave→creador. Los repositorios dejan de decidir subtipos: **delegan** la rehidratación al registro.
 - **Alternativas**: Abstract Factory (mueve el punto de modificación), Prototype (rompe la encapsulación que P-08 exige), no hacer nada (10-12 archivos por tipo; discrepancia de identidad persiste).
-- **Consecuencias**: (+) tipo nuevo = 1 subclase + 1 creador + 1 línea de registro; `MapearTipoRes`, `DescribirRango`, switches de repos y 4 métodos paralelos de vacunas desaparecen; identidad preservada por construcción. (−) ≈8-10 clases más, un nivel más de indirección, el registro hay que leerlo en `Program.cs` para depurar. **Regla de protección OCP**: prohibido volver a escribir `switch`/`if` sobre el tipo para crear — queda en [[Reto2-Hacienda/Opcion2/09-VistaTecnica]].
-- **SOLID**: SRP ✓ (crear y describir vuelven al subtipo) · OCP ✓ (extensión por adición) · LSP ✓ (creadores sustituibles por contrato) · ISP ✓ (una operación por contrato de creador) · DIP ✓ (consumidores dependen de la abstracción del registro). Evidencia por celda: [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]].
+- **Consecuencias**: (+) tipo nuevo = 1 subclase + 1 creador + 1 línea de registro; `MapearTipoRes`, `DescribirRango`, switches de repos y 4 métodos paralelos de vacunas desaparecen; identidad preservada por construcción. (−) ≈8-10 clases más, un nivel más de indirección, el registro hay que leerlo en `Program.cs` para depurar. **Regla de protección OCP**: prohibido volver a escribir `switch`/`if` sobre el tipo para crear — queda en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/09-VistaTecnica]].
+- **SOLID**: SRP ✓ (crear y describir vuelven al subtipo) · OCP ✓ (extensión por adición) · LSP ✓ (creadores sustituibles por contrato) · ISP ✓ (una operación por contrato de creador) · DIP ✓ (consumidores dependen de la abstracción del registro). Evidencia por celda: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]].
 
 ## 3. ADR-02 · Adoptar Facade (rol declarado) sobre el subsistema de venta
 
@@ -61,8 +61,8 @@ estado: "completo — pendiente de aprobación del equipo"
 - **Decisión**: `ServicioVentas` se reestructura como **fachada del subsistema de venta**: un contrato unificado de entrada (`Vender(especificación de venta)`) que coordina producto → validación → precio → persistencia. **No es una clase nueva encima del servicio** — es el rol del servicio existente con dependencias declaradas y el contrato unificado.
 - **Límite declarado** (Anexo A): la fachada **orquesta, no legisla**. Secuencia permitida: obtener producto, validar (regla del dominio), calcular (estrategia), persistir. **Métrica de control**: si un método de la fachada contiene una condición de negocio (`if (peso < mínimo) …`), se pasó del límite y la regla baja al dominio.
 - **Alternativas**: Mediator (matriz de referencias cruzadas), exponer los colaboradores al controlador (el status quo que duele).
-- **Consecuencias**: (+) un lugar legible para responder "¿cómo se vende?"; SC-1 se implementa detrás de la fachada sin que controladores conozcan creadores ni estrategias. (−) una indirección más UI→dominio; el riesgo tipificado (absorber lógica) queda vigente y se controla con la métrica anterior y con la revisión de [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]].
-- **SOLID**: SRP ✓ (orquestación como única responsabilidad) · OCP ✓ (nuevos productos entran sin editar la fachada) · LSP ✓ · ISP ✓ (contrato angosto: 3 operaciones) · DIP ✓ (depende de abstracciones). El detalle por celda con evidencia, en [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]].
+- **Consecuencias**: (+) un lugar legible para responder "¿cómo se vende?"; SC-1 se implementa detrás de la fachada sin que controladores conozcan creadores ni estrategias. (−) una indirección más UI→dominio; el riesgo tipificado (absorber lógica) queda vigente y se controla con la métrica anterior y con la revisión de [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]].
+- **SOLID**: SRP ✓ (orquestación como única responsabilidad) · OCP ✓ (nuevos productos entran sin editar la fachada) · LSP ✓ · ISP ✓ (contrato angosto: 3 operaciones) · DIP ✓ (depende de abstracciones). El detalle por celda con evidencia, en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]].
 
 ## 4. ADR-03 · Adoptar Strategy para el comportamiento de precio por producto
 
@@ -70,13 +70,13 @@ estado: "completo — pendiente de aprobación del equipo"
 - **Decisión**: `IEstrategiaPrecio` con dos implementaciones: **`MontoManual`** (reses: pasa el monto tal como hoy — preserva salidas exactas) y **`PrecioUnitario`** (derivados: precio × cantidad). La estrategia se asigna al crear el producto (el creador la conoce) y la fachada la consume vía `Venta`. 
 - **Alternativas**: Template Method (varía el comportamiento completo, no un paso), condicional por tipo (el anti-patrón actual), no hacer nada (SC-1 imposible sin bifurcar).
 - **Consecuencias**: (+) nueva política de precio = nueva estrategia + registro, sin editar consumidores; el comportamiento congelado queda representado por una estrategia explícita y verificable en los 12 casos. (−) +1 interfaz +2-3 clases; depurar un precio exige identificar la estrategia participante.
-- **SOLID**: SRP ✓ · OCP ✓ · LSP ✓ (estrategias intercambiables ante `Venta`) · ISP ✓ (una sola operación `Calcular`) · DIP ✓ (`Venta` no conoce implementaciones). Evidencia: [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]].
+- **SOLID**: SRP ✓ · OCP ✓ · LSP ✓ (estrategias intercambiables ante `Venta`) · ISP ✓ (una sola operación `Calcular`) · DIP ✓ (`Venta` no conoce implementaciones). Evidencia: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]].
 
 ---
 
 ## 5. Destino de las 4 factorías existentes
 
-| Factoría | Diagnóstico ([[Reto2-Hacienda/Opcion2/02-PuntosDolor]] §3) | Destino en el TO-BE |
+| Factoría | Diagnóstico ([[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/02-PuntosDolor]] §3) | Destino en el TO-BE |
 |----------|--------------------------------------|---------------------|
 | `FabricaRes` + `IResFactory` | Simple Factory (diccionario + switch espejo) | **Se transforma**: los 3 subtipos ganan sus creadores; el registro reemplaza el diccionario; `DescribirRango` baja al subtipo; los switches de `GestorReses` y de los 2 repos caen |
 | `FabricaVacuna` + `IVacunaFactory` | Simple Factory con el switch en la firma (métodos por subtipo) | **Se transforma**: creadores por subtipo + registro; `IServicioVacunacion` colapsa 4 métodos → 2 (`CrearVacuna`, `CrearLote` parametrizado); los if/else de `VacunaController` desaparecen del contrato |
@@ -100,7 +100,7 @@ estado: "completo — pendiente de aprobación del equipo"
 
 ---
 
-## 7. La SC-1 en el TO-BE (panorama; el diseño completo en [[Reto2-Hacienda/Opcion2/05-TOBE]])
+## 7. La SC-1 en el TO-BE (panorama; el diseño completo en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/05-TOBE]])
 
 **Qué entra** (solo diseño): `IVendible` (contrato de producto: descripción, serialización, validación para venta) implementado por la jerarquía `Res` existente y por `ProductoDerivado` (lácteos/carne/piel como configuración de datos del derivado, no como subtipos — la variación es de datos, no de comportamiento); creadores de derivados registrados junto a los de reses; `IEstrategiaPrecio` (MontoManual/PrecioUnitario); persistencia de derivados en **tabla nueva** (`productos`), sin tocar la tabla `ventas` de las reses más allá de referenciar el producto vendido.
 
@@ -129,4 +129,4 @@ estado: "completo — pendiente de aprobación del equipo"
 | P-18 rol hardcodeado | SC de gestión de roles | Fuera del alcance actual |
 
 > [!tip] Navegación
-> Evaluación completa: [[Reto2-Hacienda/Opcion2/03-PatronesEvaluados]] · Diseño TO-BE con diagramas y tabla E-XX: [[Reto2-Hacienda/Opcion2/05-TOBE]] · Matriz SOLID de esta adopción: [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]] · Bitácora: [[Reto2-Hacienda/Opcion2/10-BitacoraIA]]
+> Evaluación completa: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/03-PatronesEvaluados]] · Diseño TO-BE con diagramas y tabla E-XX: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/05-TOBE]] · Matriz SOLID de esta adopción: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]] · Bitácora: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/10-BitacoraIA]]

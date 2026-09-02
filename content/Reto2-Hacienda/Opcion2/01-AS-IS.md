@@ -11,7 +11,7 @@ estado: "completo"
 # 01 — AS-IS · Arquitectura actual (SolucionSOLID)
 
 > [!abstract] Propósito
-> Fotografía completa y verificada de la arquitectura heredada del Reto 1: capas, clases, dependencias, flujos de negocio, punto de ensamblaje y sitios de creación/decisión. Es la línea base contra la que se miden los puntos de dolor ([[Reto2-Hacienda/Opcion2/02-PuntosDolor]]) y el TO-BE ([[Reto2-Hacienda/Opcion2/05-TOBE]]).
+> Fotografía completa y verificada de la arquitectura heredada del Reto 1: capas, clases, dependencias, flujos de negocio, punto de ensamblaje y sitios de creación/decisión. Es la línea base contra la que se miden los puntos de dolor ([[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/02-PuntosDolor]]) y el TO-BE ([[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/05-TOBE]]).
 >
 > **Alcance**: backend (colaboración de objetos). El frontend (Views/Razor) queda fuera por decisión D-05 — se conserva igual en la entrega. Toda la evidencia cita `archivo:línea` relativo a `03-src/SolucionSOLID/`.
 
@@ -71,7 +71,7 @@ flowchart TB
 | Carpeta | Miembros | Observación clave |
 |---------|----------|-------------------|
 | `Entities/` | `Res` (abstracta) → `Ternero`, `Cebon`, `Novillo`; `Vacuna` (abstracta) → `Viva`, `Bacteriana`; `Potrero`, `Chip`, `Venta`, `Usuario`, `Geolocalizacion`, `IChip` | Subtipos de Res portan comportamiento real (rangos de edad, `EsEdadValida`, `Serializar`). `Potrero` y `Chip` encapsulan bien (invariantes dentro); `Res`, `Venta`, `Usuario`, `Geolocalizacion` son anémicas o semi-anémicas (setters públicos) |
-| `Factories/` | `FabricaRes`/`IResFactory`, `FabricaVacuna`/`IVacunaFactory`, `FabricaVenta`/`IVentaFactory`, `FabricaPotrero`/`IPotreroFactory` | **Ninguna es Factory Method GoF** — auditoría completa en [[Reto2-Hacienda/Opcion2/02-PuntosDolor]] §3 |
+| `Factories/` | `FabricaRes`/`IResFactory`, `FabricaVacuna`/`IVacunaFactory`, `FabricaVenta`/`IVentaFactory`, `FabricaPotrero`/`IPotreroFactory` | **Ninguna es Factory Method GoF** — auditoría completa en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/02-PuntosDolor]] §3 |
 | `Interfaces/` | 7 `IRepositorio*`, `IDomainEvent(Publisher)`, `IHasher`, `IGuidProvider` | Los repos devuelven agregados sueltos (`List<Res>`) con parches de rehidratación (`CargarResesEnPotreros`) |
 | `ValueObjects/` | `Dinero`, `Identificacion`, `Credencial`, `NumeroSerieChip` | Correctos y pequeños; `Credencial.Verificar` bien diseñado |
 | `Enums/` | `TipoRes`, `TipoPotrero`, `VacunaCategoria`, `EstadoVacuna`, `EstadoChip`, `RolUsuario` | `TipoPotrero` duplica valor a valor a `TipoRes` — dos fuentes de verdad de un mismo concepto |
@@ -142,13 +142,13 @@ sequenceDiagram
     C-->>V: TempData + Contains("correctamente")
 ```
 
-**Lectura arquitectónica**: la venta es un caso de uso ("vender ganado") modelado como entidad (`Venta` tiene `Res Res` grabada a fuego, `Venta.cs:10`). No existe la abstracción "cosa vendible"; la tabla `ventas` persiste columnas `res_*` (`DatabaseInitializer.cs:69-79`). Vender un derivado (SC-1) obliga a tocar **14 archivos / ~14 clases** — conteo completo en [[Reto2-Hacienda/Opcion2/02-PuntosDolor]] §5.
+**Lectura arquitectónica**: la venta es un caso de uso ("vender ganado") modelado como entidad (`Venta` tiene `Res Res` grabada a fuego, `Venta.cs:10`). No existe la abstracción "cosa vendible"; la tabla `ventas` persiste columnas `res_*` (`DatabaseInitializer.cs:69-79`). Vender un derivado (SC-1) obliga a tocar **14 archivos / ~14 clases** — conteo completo en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/02-PuntosDolor]] §5.
 
 ### 3.2 Alta de res (el flujo de los switches paralelos)
 
 `ResController.Create` (`ResController.cs:45`) → `GestorReses.AgregarRes` (`GestorReses.cs:36`) → unicidad de nombre (l.42) → `MapearTipoRes` Traduce `TipoPotrero→TipoRes` (l.137-143) → `FabricaRes.Crear` decide el subtipo por diccionario (l.17-22) y valida edad por switch (l.42-48) → `Potrero.AgregarRes` → `RepositorioPotreroSqlite.GuardarTodos`.
 
-**Lectura arquitectónica**: para dar de alta un tipo nuevo de res hay que editar **10 archivos / 7 clases** con 7 puntos de decisión distintos que crecen en paralelo (factoría ×2, servicio ×2, repos ×2, vistas ×2, enums ×2) — evidencia en [[Reto2-Hacienda/Opcion2/02-PuntosDolor]] P-02.
+**Lectura arquitectónica**: para dar de alta un tipo nuevo de res hay que editar **10 archivos / 7 clases** con 7 puntos de decisión distintos que crecen en paralelo (factoría ×2, servicio ×2, repos ×2, vistas ×2, enums ×2) — evidencia en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/02-PuntosDolor]] P-02.
 
 ### 3.3 Aplicar vacuna (el flujo con la regla duplicada)
 
@@ -197,7 +197,7 @@ Mapeo directo entre las observaciones del profesor y la evidencia encontrada:
 
 | Observación del profesor | Evidencia en el código |
 |---------------------------|------------------------|
-| "Factory mal implementados" | 0 de 4 factorías son Factory Method; 2 son wrappers; los repos vuelven a decidir subtipos por su cuenta ([[Reto2-Hacienda/Opcion2/02-PuntosDolor]] §3) |
+| "Factory mal implementados" | 0 de 4 factorías son Factory Method; 2 son wrappers; los repos vuelven a decidir subtipos por su cuenta ([[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/02-PuntosDolor]] §3) |
 | "Responsabilidades movidas fuera del dominio" | Umbrales de peso en `GestorReses` (l.56-65), límites de vacunación en `ServicioVacunacion` (l.137-143), Haversine y rangos en `ServicioGeolocalizacion` (l.38-99), reglas de chip en `ServicioChip` (l.43-48) |
 | "Entidades que no encapsulan correctamente" | `Res.Peso/Edad/Chip` con setters públicos (Res.cs:13-16), `VacunasAplicadas` lista pública, `Venta` con 0 métodos — mientras `Potrero` y `Chip` (las del Reto 1) sí encapsulan: **el estándar correcto ya existe dentro del propio código** |
 | "Lógica de negocio donde no corresponde" | Contrato string de servicios + éxito por `Contains` (ChipController.cs:45,70; VacunaController.cs:153); decisión de tipos de vacuna en la web por string (VacunaController.cs:49,101) |
@@ -224,4 +224,4 @@ Mapeo directo entre las observaciones del profesor y la evidencia encontrada:
 | Costo proyectado SC-3 (historia clínica) | **7-8 archivos / 5-7 clases** |
 
 > [!tip] Navegación
-> Plan: [[Reto2-Hacienda/Opcion1/00-Plan]] · Inventario de dolor con estos números por punto: [[Reto2-Hacienda/Opcion2/02-PuntosDolor]] · Evaluación de patrones: [[Reto2-Hacienda/Opcion2/03-PatronesEvaluados]]
+> Plan: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/00-Plan]] · Inventario de dolor con estos números por punto: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/02-PuntosDolor]] · Evaluación de patrones: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/03-PatronesEvaluados]]

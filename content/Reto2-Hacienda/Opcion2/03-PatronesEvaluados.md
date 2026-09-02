@@ -11,7 +11,7 @@ estado: "completo — adopción pendiente de aprobación del equipo"
 # 03 — Patrones evaluados · Los 22 del Anexo A, ficha por ficha
 
 > [!abstract] Propósito
-> Evaluación completa de los 22 patrones del Anexo A contra la evidencia del AS-IS. **Ningún patrón se adopta por buena práctica**: cada ficha parte de un punto de dolor aprobado ([[Reto2-Hacienda/Opcion2/02-PuntosDolor]]), evalúa mínimo tres alternativas (este patrón / otro patrón / no hacer nada), declara costos e impacto, y termina en veredicto argumentado.
+> Evaluación completa de los 22 patrones del Anexo A contra la evidencia del AS-IS. **Ningún patrón se adopta por buena práctica**: cada ficha parte de un punto de dolor aprobado ([[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/02-PuntosDolor]]), evalúa mínimo tres alternativas (este patrón / otro patrón / no hacer nada), declara costos e impacto, y termina en veredicto argumentado.
 >
 > **Regla de anclaje** (enunciado, punto 2): un patrón sin punto rígido que lo justifique es sobre-ingeniería y penaliza (−0.3). Los patrones sin punto de dolor aprobado se **descartan por anclaje**, no por desconocimiento.
 
@@ -42,7 +42,7 @@ estado: "completo — adopción pendiente de aprobación del equipo"
 | 21 | Template Method | Comportamiento | P-06 evaluado | ❌ Descartado |
 | 22 | Visitor | Comportamiento | — | ❌ Descartado |
 
-**Balance**: 3 adoptados (uno por familia), 19 descartados con justificación técnica. La decisión formal está en [[Reto2-Hacienda/Opcion2/04-DecisionesArquitectonicas]].
+**Balance**: 3 adoptados (uno por familia), 19 descartados con justificación técnica. La decisión formal está en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/04-DecisionesArquitectonicas]].
 
 ---
 
@@ -63,7 +63,7 @@ estado: "completo — adopción pendiente de aprobación del equipo"
 
 **Beneficios**: un solo punto de creación para alta y rehidratación; añadir un tipo = 1 subclase + 1 creador + 1 línea de registro en el punto de ensamblaje (los switches espejo desaparecen porque el creador también sabe describir su producto — absorbe `DescribirRango` y los badges de vista vía `Serializar`); identidad preservada en persistencia; las firmas de `IVacunaFactory`/`IServicioVacunacion` colapsan (4 métodos → 1 por operación).
 
-**Costos**: +1 clase creadora por subtipo existente (≈7-9 clases nuevas); +1 nivel de indirección entre "quiero una res" y "nace la res"; depurar exige saber qué creador participó (mitigado: el registro es legible en `Program.cs`); riesgo OCP si alguien vuelve a escribir un switch sobre el tipo — mitigado con regla explícita en [[Reto2-Hacienda/Opcion2/09-VistaTecnica]].
+**Costos**: +1 clase creadora por subtipo existente (≈7-9 clases nuevas); +1 nivel de indirección entre "quiero una res" y "nace la res"; depurar exige saber qué creador participó (mitigado: el registro es legible en `Program.cs`); riesgo OCP si alguien vuelve a escribir un switch sobre el tipo — mitigado con regla explícita en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/09-VistaTecnica]].
 
 **Impacto** (solo diseño): clases nuevas ≈8-10 (creadores por subtipo + registro); modificadas: `FabricaRes`/`FabricaVacuna` (se transforman en registro + creadores), `IRepositorio*`/repos (delegan rehidratación), `ServicioVacunacion` (colapsa métodos), `GestorReses` (cae `MapearTipoRes` y contadores), `Program.cs` (ensambla el registro); eliminadas: ninguna física (las interfaces `I*Factory` se transforman). Capas: Domain (creadores, registro) + Infrastructure (repos delegan) + Program.cs. **Core afectado: sí — es el objetivo.**
 
@@ -179,7 +179,7 @@ estado: "completo — adopción pendiente de aprobación del equipo"
 
 **Impacto**: +2 jerarquías (abstracción e implementación) para un solo caso real de variación.
 
-**Veredicto: DESCARTADO**. Separar un eje congelado es sobre-ingeniería con nombre técnico. Queda declarado en [[Reto2-Hacienda/Opcion2/09-VistaTecnica]] como decisión revisitada si algún día cambia el motor de persistencia.
+**Veredicto: DESCARTADO**. Separar un eje congelado es sobre-ingeniería con nombre técnico. Queda declarado en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/09-VistaTecnica]] como decisión revisitada si algún día cambia el motor de persistencia.
 
 ## 8. Composite ❌
 
@@ -191,7 +191,7 @@ estado: "completo — adopción pendiente de aprobación del equipo"
 
 **Alternativas evaluadas**: 1) Composite potreros→reses→chips. 2) Agregación plana actual. 3) No hacer nada.
 
-**Veredicto: DESCARTADO**. No existe operación que deba aplicarse recursivamente sobre una estructura arbórea (registrar peso a TODO el árbol, serializar el potrero completo…). El patrón resolvería uniformidad que nadie pidió. Reevaluable si SC-3 (historia clínica con episodios anidados) se elige en el futuro — anoto el escenario en [[Reto2-Hacienda/Opcion2/09-VistaTecnica]].
+**Veredicto: DESCARTADO**. No existe operación que deba aplicarse recursivamente sobre una estructura arbórea (registrar peso a TODO el árbol, serializar el potrero completo…). El patrón resolvería uniformidad que nadie pidió. Reevaluable si SC-3 (historia clínica con episodios anidados) se elige en el futuro — anoto el escenario en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/09-VistaTecnica]].
 
 ## 9. Decorator ❌
 
@@ -335,7 +335,7 @@ estado: "completo — adopción pendiente de aprobación del equipo"
 
 **Impacto**: infra de eventos + 2 publicadores + handlers; riesgo directo sobre las salidas de los 8 casos del Reto 1.
 
-**Veredicto: DESCARTADO EN RETO 2, CON DEUDA DECLARADA**. Este es el descarte más incómodo y por eso el más honesto: el patrón encaja técnicamente (la abstracción ya existe a medias), pero el encargo congela la reacción observable que habría que rediseñar. La líder técnica fue explícita: no acepta robustez comprada rompiendo lo pagado. Queda registrado en [[Reto2-Hacienda/Opcion2/07-Riesgos]] y [[Reto2-Hacienda/Opcion2/09-VistaTecnica]] con su señal de alerta: **si una futura SC autoriza tocar mensajes de eventos, Observer es el primer patrón a incorporar**.
+**Veredicto: DESCARTADO EN RETO 2, CON DEUDA DECLARADA**. Este es el descarte más incómodo y por eso el más honesto: el patrón encaja técnicamente (la abstracción ya existe a medias), pero el encargo congela la reacción observable que habría que rediseñar. La líder técnica fue explícita: no acepta robustez comprada rompiendo lo pagado. Queda registrado en [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/07-Riesgos]] y [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/09-VistaTecnica]] con su señal de alerta: **si una futura SC autoriza tocar mensajes de eventos, Observer es el primer patrón a incorporar**.
 
 ## 19. State ❌
 
@@ -347,7 +347,7 @@ estado: "completo — adopción pendiente de aprobación del equipo"
 
 **Alternativas evaluadas**: 1) State: una clase por estado con transiciones polimórficas. 2) Switch interno actual. 3) Tabla de transiciones (diccionario).
 
-**Costos**: 4+ clases de estado + contexto modificable en la entidad mejor encapsulada del sistema (`Chip` es el ejemplo a imitar según [[Reto2-Hacienda/Opcion2/01-AS-IS]] §2.1) — se tocaría lo que funciona para resolver lo que no duele.
+**Costos**: 4+ clases de estado + contexto modificable en la entidad mejor encapsulada del sistema (`Chip` es el ejemplo a imitar según [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/01-AS-IS]] §2.1) — se tocaría lo que funciona para resolver lo que no duele.
 
 **Veredicto: DESCARTADO** por anclaje: **no existe P-XX aprobado** sobre el estado del chip (costo de cambio actual: 1 archivo). Adoptarlo activaría la penalización −0.3 del enunciado. Se documenta el umbral de adopción futura: si aparecen ≥2 estados nuevos o reglas de transición dependientes de contexto, State pasa la prueba de costo.
 
@@ -361,7 +361,7 @@ estado: "completo — adopción pendiente de aprobación del equipo"
 
 **Alternativas evaluadas**: 1) **Strategy**: `IEstrategiaPrecio` con `MontoManual` (reses: preserva exactamente el comportamiento actual — el monto lo sigue dando el usuario) y `PrecioUnitario` (derivados: nuevo comportamiento autorizado por SC-1); seleccionada al crear el producto (junto a su creador, ficha 1) y consumida por la fachada (ficha 10). 2) Template Method (la variación es el comportamiento completo, no un paso del algoritmo). 3) No hacer nada / condicional por tipo (el patrón que ya duele en el AS-IS y que SC-1 multiplicaría).
 
-**Beneficios**: el comportamiento de precio/variedad se selecciona en runtime sin tocar consumidores; añadir un derivado con política de precio distinta (2×1, precio por bulto) = nueva estrategia + registro, sin editar la fachada ni los servicios; elimina el bifurcador por tipo que SC-1 induciría; la estrategia `MontoManual` documenta explícitamente que el comportamiento de reses no cambia (verificable en los 12 casos de [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]]).
+**Beneficios**: el comportamiento de precio/variedad se selecciona en runtime sin tocar consumidores; añadir un derivado con política de precio distinta (2×1, precio por bulto) = nueva estrategia + registro, sin editar la fachada ni los servicios; elimina el bifurcador por tipo que SC-1 induciría; la estrategia `MontoManual` documenta explícitamente que el comportamiento de reses no cambia (verificable en los 12 casos de [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]]).
 
 **Costos**: +1 interfaz +2-3 implementaciones; una indirección más entre "vender" y "saber el precio" (depurar exige preguntar qué estrategia participó); riesgo ISP si la interfaz crece con métodos no aplicables a todas las variantes (mitigado: una sola operación `Calcular`).
 
@@ -398,4 +398,4 @@ estado: "completo — adopción pendiente de aprobación del equipo"
 ---
 
 > [!tip] Navegación
-> Dolor: [[Reto2-Hacienda/Opcion2/02-PuntosDolor]] · Decisión formal y diseño de los 3 adoptados: [[Reto2-Hacienda/Opcion2/04-DecisionesArquitectonicas]] · Verificación SOLID de esta adopción: [[Reto2-Hacienda/Opcion2/06-VerificacionSOLID]] · Plan: [[Reto2-Hacienda/Opcion1/00-Plan]]
+> Dolor: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/02-PuntosDolor]] · Decisión formal y diseño de los 3 adoptados: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/04-DecisionesArquitectonicas]] · Verificación SOLID de esta adopción: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID]] · Plan: [[Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion1/00-Plan]]
