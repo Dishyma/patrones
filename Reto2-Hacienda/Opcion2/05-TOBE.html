@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr"><head><title>Reto 2 — TO-BE: diseño con SOLID + patrones</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Arquitectura de Software"/><meta property="og:title" content="Reto 2 — TO-BE: diseño con SOLID + patrones"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Reto 2 — TO-BE: diseño con SOLID + patrones"/><meta name="twitter:description" content="05 — TO-BE · Diseño del sistema con SOLID + Patrones Propósito Centro del entregable (Actividad 3): qué se va, qué llega, cómo se conecta y qué efecto tiene."/><meta property="og:description" content="05 — TO-BE · Diseño del sistema con SOLID + Patrones Propósito Centro del entregable (Actividad 3): qué se va, qué llega, cómo se conecta y qué efecto tiene."/><meta property="og:image:alt" content="05 — TO-BE · Diseño del sistema con SOLID + Patrones Propósito Centro del entregable (Actividad 3): qué se va, qué llega, cómo se conecta y qué efecto tiene."/><meta property="twitter:domain" content="dishyma.github.io/patrones"/><meta property="og:url" content="https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion2/05-TOBE"/><meta property="twitter:url" content="https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion2/05-TOBE"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="05 — TO-BE · Diseño del sistema con SOLID + Patrones Propósito Centro del entregable (Actividad 3): qué se va, qué llega, cómo se conecta y qué efecto tiene."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" data-persist="true"/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvZGlzaHltYS9yZXBvcy9xdWFydHotcGF0cm9uZXMvcXVhcnR6L2NvbXBvbmVudHMvc3R5bGVzIiwic291cmNlcyI6WyJtZXJtYWlkLmlubGluZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFHRjtFQUNFOzs7QUFLRjtFQUNFO0VBQ0E7OztBQUlKO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFOztBQUdGO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gICAgICB0cmFuc2Zvcm0tb3JpZ2luOiAwIDA7XG4gICAgICB0cmFuc2l0aW9uOiB0cmFuc2Zvcm0gMC4xcyBlYXNlO1xuICAgICAgb3ZlcmZsb3c6IHZpc2libGU7XG4gICAgICBtaW4taGVpZ2h0OiAyMDBweDtcbiAgICAgIG1pbi13aWR0aDogMjAwcHg7XG5cbiAgICAgIHByZSB7XG4gICAgICAgIG1hcmdpbjogMDtcbiAgICAgICAgYm9yZGVyOiBub25lO1xuICAgICAgfVxuXG4gICAgICBzdmcge1xuICAgICAgICBtYXgtd2lkdGg6IG5vbmU7XG4gICAgICAgIGhlaWdodDogYXV0bztcbiAgICAgIH1cbiAgICB9XG5cbiAgICAmID4gLm1lcm1haWQtY29udHJvbHMge1xuICAgICAgcG9zaXRpb246IGFic29sdXRlO1xuICAgICAgYm90dG9tOiAyMHB4O1xuICAgICAgcmlnaHQ6IDIwcHg7XG4gICAgICBkaXNwbGF5OiBmbGV4O1xuICAgICAgZ2FwOiA4cHg7XG4gICAgICBwYWRkaW5nOiA4cHg7XG4gICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgYm9yZGVyLXJhZGl1czogNnB4O1xuICAgICAgYm94LXNoYWRvdzogMCAycHggNHB4IHJnYmEoMCwgMCwgMCwgMC4xKTtcbiAgICAgIHotaW5kZXg6IDI7XG5cbiAgICAgIC5tZXJtYWlkLWNvbnRyb2wtYnV0dG9uIHtcbiAgICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICAgICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgICAgIHdpZHRoOiAzMnB4O1xuICAgICAgICBoZWlnaHQ6IDMycHg7XG4gICAgICAgIHBhZGRpbmc6IDA7XG4gICAgICAgIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWxpZ2h0Z3JheSk7XG4gICAgICAgIGJhY2tncm91bmQ6IHZhcigtLWxpZ2h0KTtcbiAgICAgICAgY29sb3I6IHZhcigtLWRhcmspO1xuICAgICAgICBib3JkZXItcmFkaXVzOiA0cHg7XG4gICAgICAgIGN1cnNvcjogcG9pbnRlcjtcbiAgICAgICAgZm9udC1zaXplOiAxNnB4O1xuICAgICAgICBmb250LWZhbWlseTogdmFyKC0tYm9keUZvbnQpO1xuICAgICAgICB0cmFuc2l0aW9uOiBhbGwgMC4ycyBlYXNlO1xuXG4gICAgICAgICY6aG92ZXIge1xuICAgICAgICAgIGJhY2tncm91bmQ6IHZhcigtLWxpZ2h0Z3JheSk7XG4gICAgICAgIH1cblxuICAgICAgICAmOmFjdGl2ZSB7XG4gICAgICAgICAgdHJhbnNmb3JtOiB0cmFuc2xhdGVZKDFweCk7XG4gICAgICAgIH1cblxuICAgICAgICAvLyBTdHlsZSB0aGUgcmVzZXQgYnV0dG9uIGRpZmZlcmVudGx5XG4gICAgICAgICY6bnRoLWNoaWxkKDIpIHtcbiAgICAgICAgICB3aWR0aDogYXV0bztcbiAgICAgICAgICBwYWRkaW5nOiAwIDEycHg7XG4gICAgICAgICAgZm9udC1zaXplOiAxNHB4O1xuICAgICAgICB9XG4gICAgICB9XG4gICAgfVxuICB9XG59XG4iXX0= */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" data-persist="true"/><script src="../../prescript.js" type="application/javascript" data-persist="true"></script><script type="application/javascript" data-persist="true">const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://dishyma.github.io/patrones/index.xml"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image" content="https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion2/05-TOBE-og-image.webp"/><meta property="og:image:url" content="https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion2/05-TOBE-og-image.webp"/><meta name="twitter:image" content="https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion2/05-TOBE-og-image.webp"/><meta property="og:image:type" content="image/.webp"/></head><body data-slug="Reto2-Hacienda/Opcion2/05-TOBE"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Arquitectura de Software</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Buscar</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Busca algo" placeholder="Busca algo"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Modo oscuro"><title>Modo oscuro</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Modo claro"><title>Modo claro</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Modo lector"><title>Modo lector</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-51"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Explorador</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-51" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../Reto2-Hacienda/">Reto2 Hacienda</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../Reto2-Hacienda/Opcion2/">Opcion2</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Reto 2 — TO BE: diseño con SOLID + patrones</a></div></nav><h1 class="article-title">Reto 2 — TO-BE: diseño con SOLID + patrones</h1><p show-comma="true" class="content-meta"><time datetime="2026-09-01T01:16:53.000Z">31 ago 2026</time><span>Se lee en 13 min</span></p><ul class="tags"><li><a href="../../tags/arquitectura-software" class="internal tag-link">arquitectura-software</a></li><li><a href="../../tags/reto2" class="internal tag-link">reto2</a></li><li><a href="../../tags/hacienda" class="internal tag-link">hacienda</a></li><li><a href="../../tags/tobe" class="internal tag-link">tobe</a></li><li><a href="../../tags/uml" class="internal tag-link">uml</a></li></ul></div></div><article class="popover-hint"><h1 id="05--to-be--diseño-del-sistema-con-solid--patrones">05 — TO-BE · Diseño del sistema con SOLID + Patrones<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#05--to-be--diseño-del-sistema-con-solid--patrones" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote class="callout abstract" data-callout="abstract">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Propósito </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Centro del entregable (Actividad 3): qué se va, qué llega, cómo se conecta y qué efecto tiene. Contiene los dos diagramas (Entregable 3.1), la tabla de cambio estructural E-XX (3.2) y la ficha de cada patrón adoptado (3.3). El estilo arquitectónico <strong>no cambia</strong> — el trabajo vive en la colaboración de objetos, principalmente el Core.</p>
+</div>
+</blockquote>
+<p><strong>Leyenda de marcado</strong> (aplica a los dos diagramas):</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Marca</th><th>Significado</th></tr></thead><tbody><tr><td>❌</td><td><strong>Sale</strong> — se retira del diseño</td></tr><tr><td>🔄</td><td><strong>Se transforma</strong> — cambia de responsabilidad o de forma</td></tr><tr><td>⬅️</td><td><strong>Entra</strong> — participante nuevo</td></tr><tr><td>⚫</td><td><strong>Se conserva sin cambios</strong> (en negro en el diagramador de capas del PDF)</td></tr></tbody></table></div>
+<hr/>
+<h2 id="1-entregable-31a--diagrama-de-lo-que-sale-recorte-del-as-is-marcado">1. Entregable 3.1a — Diagrama de lo que sale (recorte del AS-IS marcado)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-entregable-31a--diagrama-de-lo-que-sale-recorte-del-as-is-marcado" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Clúster de creación y venta del AS-IS. Todo lo marcado ❌/🔄 es lo que el TO-BE retira o cambia de responsabilidad; lo ⚫ permanece.</p>
+<pre><button class="expand-button" aria-label="Expand mermaid diagram" data-view-component="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 011.06 1.06L2.56 7h10.88l-2.22-2.22a.75.75 0 011.06-1.06l3.5 3.5a.75.75 0 010 1.06l-3.5 3.5a.75.75 0 11-1.06-1.06l2.22-2.22H2.56l2.22 2.22a.75.75 0 11-1.06 1.06l-3.5-3.5a.75.75 0 010-1.06l3.5-3.5z"></path></svg></button><code class="mermaid" data-clipboard="&quot;classDiagram\n    direction LR\n    class FabricaRes {\n        ❌ diccionario TipoRes→lambda\n        ❌ switch DescribirRango\n        🔄 SE TRANSFORMA en registro + creadores\n    }\n    class IResFactory {\n        🔄 firma se conserva, semántica cambia\n    }\n    class FabricaVacuna {\n        ❌ CrearBacteriana / CrearViva\n        ❌ switch delegado a la firma\n        🔄 SE TRANSFORMA en registro + creadores\n    }\n    class IVacunaFactory {\n        ❌ 2 métodos por subtipo\n        ❌ propaga Viva.GradoAtenuacion\n    }\n    class FabricaVenta {\n        ❌ SALE — wrapper sin familia\n        🔄 reemplazada por IVendible + fachada\n    }\n    class IVentaFactory {\n        ❌ SALE con FabricaVenta\n    }\n    class FabricaPotrero {\n        ❌ SALE — valida lo que el VO garantiza\n    }\n    class IPotreroFactory {\n        ❌ SALE con FabricaPotrero\n    }\n    class GestorReses {\n        ❌ MapearTipoRes (switch)\n        ❌ contadores por nombre de tipo\n        ❌ res.Peso += (setter)\n        🔄 orquesta alto nivel, reglas bajan a Res\n    }\n    class ServicioVacunacion {\n        ❌ 4 métodos paralelos (cuerpos clonados)\n        ❌ if de límites por categoría (duplicaba a Res)\n        🔄 colapsa a CrearVacuna + CrearLote\n    }\n    class ServicioVentas {\n        🔄 SE TRANSFORMA en Fachada del subsistema\n        ❌ asumía potrero+res como único caso\n    }\n    class ValidadorRes { ❌ degradado }\n    class ValidadorVacuna { ❌ degradado }\n    class ValidadorVenta { ❌ degradado }\n    class ValidadorPotrero { ❌ degradado }\n    class RepositorioPotreroSqlite {\n        ❌ switch MapearRes\n        🔄 delega rehidratación al registro\n    }\n    class RepositorioVentaSqlite {\n        ❌ switch de reconstrucción\n        ❌ new GUID por lectura (bug P-10)\n        🔄 delega + persiste res_id\n    }\n    class RepositorioVacunaSqlite {\n        ❌ if por categoría / is Bacteriana\n        🔄 delega al registro de vacunas\n    }\n    class Res {\n        🔄 setters Peso/Edad/Chip → privados\n        🔄 VacunasAplicadas → encapsulada\n        🔄 gana AplicarVacuna, Alimentar, EvaluarPeso\n    }\n    class Venta {\n        🔄 Res Res → IVendible Producto\n    }\n    class Program_cs {\n        🔄 ensambla registros (creador, estrategia)\n    }\n\n    FabricaRes ..> IResFactory\n    FabricaVacuna ..> IVacunaFactory\n    FabricaVenta ..> IVentaFactory\n    FabricaPotrero ..> IPotreroFactory&quot;">classDiagram
+    direction LR
+    class FabricaRes {
+        ❌ diccionario TipoRes→lambda
+        ❌ switch DescribirRango
+        🔄 SE TRANSFORMA en registro + creadores
+    }
+    class IResFactory {
+        🔄 firma se conserva, semántica cambia
+    }
+    class FabricaVacuna {
+        ❌ CrearBacteriana / CrearViva
+        ❌ switch delegado a la firma
+        🔄 SE TRANSFORMA en registro + creadores
+    }
+    class IVacunaFactory {
+        ❌ 2 métodos por subtipo
+        ❌ propaga Viva.GradoAtenuacion
+    }
+    class FabricaVenta {
+        ❌ SALE — wrapper sin familia
+        🔄 reemplazada por IVendible + fachada
+    }
+    class IVentaFactory {
+        ❌ SALE con FabricaVenta
+    }
+    class FabricaPotrero {
+        ❌ SALE — valida lo que el VO garantiza
+    }
+    class IPotreroFactory {
+        ❌ SALE con FabricaPotrero
+    }
+    class GestorReses {
+        ❌ MapearTipoRes (switch)
+        ❌ contadores por nombre de tipo
+        ❌ res.Peso += (setter)
+        🔄 orquesta alto nivel, reglas bajan a Res
+    }
+    class ServicioVacunacion {
+        ❌ 4 métodos paralelos (cuerpos clonados)
+        ❌ if de límites por categoría (duplicaba a Res)
+        🔄 colapsa a CrearVacuna + CrearLote
+    }
+    class ServicioVentas {
+        🔄 SE TRANSFORMA en Fachada del subsistema
+        ❌ asumía potrero+res como único caso
+    }
+    class ValidadorRes { ❌ degradado }
+    class ValidadorVacuna { ❌ degradado }
+    class ValidadorVenta { ❌ degradado }
+    class ValidadorPotrero { ❌ degradado }
+    class RepositorioPotreroSqlite {
+        ❌ switch MapearRes
+        🔄 delega rehidratación al registro
+    }
+    class RepositorioVentaSqlite {
+        ❌ switch de reconstrucción
+        ❌ new GUID por lectura (bug P-10)
+        🔄 delega + persiste res_id
+    }
+    class RepositorioVacunaSqlite {
+        ❌ if por categoría / is Bacteriana
+        🔄 delega al registro de vacunas
+    }
+    class Res {
+        🔄 setters Peso/Edad/Chip → privados
+        🔄 VacunasAplicadas → encapsulada
+        🔄 gana AplicarVacuna, Alimentar, EvaluarPeso
+    }
+    class Venta {
+        🔄 Res Res → IVendible Producto
+    }
+    class Program_cs {
+        🔄 ensambla registros (creador, estrategia)
+    }
+
+    FabricaRes ..> IResFactory
+    FabricaVacuna ..> IVacunaFactory
+    FabricaVenta ..> IVentaFactory
+    FabricaPotrero ..> IPotreroFactory
+</code><div id="mermaid-container" role="dialog"><div id="mermaid-space"><div class="mermaid-content"></div></div></div></pre>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Qué NO está en este recorte </p></div>
+                  
+                </div>
+</blockquote>
+<p>| Las entidades <code>Potrero</code>, <code>Chip</code>, VOs, eventos, repositorios de usuarios/geolocalización, autenticación y el resto de controladores ⚫ <strong>se conservan tal cual</strong> (ver <a href="../../Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/01-AS-IS" class="internal" data-slug="Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/01-AS-IS">01-AS-IS</a>). El frontend completo se conserva por D-05, salvo las vistas nuevas que la SC-1 autoriza.</p>
+<hr/>
+<h2 id="2-entregable-31b--diagrama-de-lo-que-entra-to-be">2. Entregable 3.1b — Diagrama de lo que entra (TO-BE)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-entregable-31b--diagrama-de-lo-que-entra-to-be" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<pre><button class="expand-button" aria-label="Expand mermaid diagram" data-view-component="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 011.06 1.06L2.56 7h10.88l-2.22-2.22a.75.75 0 011.06-1.06l3.5 3.5a.75.75 0 010 1.06l-3.5 3.5a.75.75 0 11-1.06-1.06l2.22-2.22H2.56l2.22 2.22a.75.75 0 11-1.06 1.06l-3.5-3.5a.75.75 0 010-1.06l3.5-3.5z"></path></svg></button><code class="mermaid" data-clipboard="&quot;classDiagram\n    direction TB\n    class IVendible {\n        ⬅️ «contrato de producto»\n        +Descripcion() string\n        +TipoProducto() string\n        +Serializar() string\n        +ValidarParaVenta(ctx) ValidationResult\n        +AlConfirmarVenta(ctx)\n    }\n    class Res {\n        ⚫ jerarquía existente\n        🔄 ahora implementa IVendible\n        🔄 AplicarVacuna / Alimentar / EvaluarPeso\n        🔄 setters privados\n    }\n    class Ternero { ⚫ }\n    class Novillo { ⚫ }\n    class Cebon { ⚫ }\n    class ProductoDerivado {\n        ⬅️ «SC-1»\n        TipoDerivado, Nombre\n        PrecioUnitario Dinero\n    }\n    class ICreadorRes {\n        ⬅️ «Factory Method»\n        +Crear(datos) Res\n        +Rehidratar(estadoPersistido) Res\n        +TipoAtendido TipoRes\n        +DescripcionTipo() string\n    }\n    class CreadorTernero { ⬅️ «Factory Method» }\n    class CreadorNovillo { ⬅️ «Factory Method» }\n    class CreadorCebon { ⬅️ «Factory Method» }\n    class ICreadorVacuna {\n        ⬅️ «Factory Method»\n        +Crear(datos) Vacuna\n        +Rehidratar(estado) Vacuna\n    }\n    class CreadorViva { ⬅️ «Factory Method» }\n    class CreadorBacteriana { ⬅️ «Factory Method» }\n    class IRegistroProductos {\n        ⬅️ «Factory Method + Strategy»\n        +Para(tipo) Par(Proveedor, Estrategia)\n    }\n    class ProveedorResDePotrero {\n        ⬅️ resuelve la res vendible\n        (potreroId, nombreRes)\n    }\n    class ProveedorDerivado {\n        ⬅️ «SC-1» construye ProductoDerivado\n    }\n    class IEstrategiaPrecio {\n        ⬅️ «Strategy»\n        +Calcular(producto, datos) Dinero\n    }\n    class MontoManual {\n        ⬅️ «Strategy»\n        reses: monto provisto por el usuario\n        (comportamiento congelado)\n    }\n    class PrecioUnitario {\n        ⬅️ «Strategy» «SC-1»\n        precio unitario × cantidad\n    }\n    class IServicioVentas {\n        🔄 «Facade» contrato unificado\n        +Vender(especVenta) string\n    }\n    class ServicioVentas {\n        🔄 «Facade»\n        ORQUESTA: proveer → validar →\n        calcular → confirmar → persistir\n        PROHIBIDO: reglas de negocio (límite)\n    }\n    class Venta {\n        🔄 Producto IVendible\n        +Monto via estrategia\n    }\n    class IContextoVenta {\n        ⬅️ «double dispatch»\n        acceso de dominio a potreros\n    }\n    class ServicioVacunacion {\n        🔄 CrearVacuna(categoria, datos)\n        🔄 CrearLote(categoria, cantidad, datos)\n        reglas → Res.AplicarVacuna\n    }\n    class Program_cs {\n        ⚫ 🔄 ensambla: registros de creadores\n        + pares (proveedor, estrategia)\n    }\n\n    IVendible &lt;|.. Res\n    Res &lt;|-- Ternero\n    Res &lt;|-- Novillo\n    Res &lt;|-- Cebon\n    IVendible &lt;|.. ProductoDerivado\n    ICreadorRes &lt;|.. CreadorTernero\n    ICreadorRes &lt;|.. CreadorNovillo\n    ICreadorRes &lt;|.. CreadorCebon\n    CreadorTernero ..> Ternero : crea y describe\n    ICreadorVacuna &lt;|.. CreadorViva\n    ICreadorVacuna &lt;|.. CreadorBacteriana\n    IRegistroProductos --> ICreadorRes : resuelve por tipo\n    IRegistroProductos --> ProveedorDerivado\n    IRegistroProductos --> IEstrategiaPrecio : par registrado\n    IEstrategiaPrecio &lt;|.. MontoManual\n    IEstrategiaPrecio &lt;|.. PrecioUnitario\n    ProveedorResDePotrero ..> Res : localiza\n    ProveedorDerivado ..> ProductoDerivado : construye\n    IServicioVentas &lt;|.. ServicioVentas\n    ServicioVentas --> IRegistroProductos : consulta\n    ServicioVentas --> Venta : registra\n    Venta --> IVendible\n    Venta --> IEstrategiaPrecio : delega monto\n    Res --> IContextoVenta : AlConfirmarVenta\n    ServicioVacunacion --> ICreadorVacuna : sin if por categoría&quot;">classDiagram
+    direction TB
+    class IVendible {
+        ⬅️ «contrato de producto»
+        +Descripcion() string
+        +TipoProducto() string
+        +Serializar() string
+        +ValidarParaVenta(ctx) ValidationResult
+        +AlConfirmarVenta(ctx)
+    }
+    class Res {
+        ⚫ jerarquía existente
+        🔄 ahora implementa IVendible
+        🔄 AplicarVacuna / Alimentar / EvaluarPeso
+        🔄 setters privados
+    }
+    class Ternero { ⚫ }
+    class Novillo { ⚫ }
+    class Cebon { ⚫ }
+    class ProductoDerivado {
+        ⬅️ «SC-1»
+        TipoDerivado, Nombre
+        PrecioUnitario Dinero
+    }
+    class ICreadorRes {
+        ⬅️ «Factory Method»
+        +Crear(datos) Res
+        +Rehidratar(estadoPersistido) Res
+        +TipoAtendido TipoRes
+        +DescripcionTipo() string
+    }
+    class CreadorTernero { ⬅️ «Factory Method» }
+    class CreadorNovillo { ⬅️ «Factory Method» }
+    class CreadorCebon { ⬅️ «Factory Method» }
+    class ICreadorVacuna {
+        ⬅️ «Factory Method»
+        +Crear(datos) Vacuna
+        +Rehidratar(estado) Vacuna
+    }
+    class CreadorViva { ⬅️ «Factory Method» }
+    class CreadorBacteriana { ⬅️ «Factory Method» }
+    class IRegistroProductos {
+        ⬅️ «Factory Method + Strategy»
+        +Para(tipo) Par(Proveedor, Estrategia)
+    }
+    class ProveedorResDePotrero {
+        ⬅️ resuelve la res vendible
+        (potreroId, nombreRes)
+    }
+    class ProveedorDerivado {
+        ⬅️ «SC-1» construye ProductoDerivado
+    }
+    class IEstrategiaPrecio {
+        ⬅️ «Strategy»
+        +Calcular(producto, datos) Dinero
+    }
+    class MontoManual {
+        ⬅️ «Strategy»
+        reses: monto provisto por el usuario
+        (comportamiento congelado)
+    }
+    class PrecioUnitario {
+        ⬅️ «Strategy» «SC-1»
+        precio unitario × cantidad
+    }
+    class IServicioVentas {
+        🔄 «Facade» contrato unificado
+        +Vender(especVenta) string
+    }
+    class ServicioVentas {
+        🔄 «Facade»
+        ORQUESTA: proveer → validar →
+        calcular → confirmar → persistir
+        PROHIBIDO: reglas de negocio (límite)
+    }
+    class Venta {
+        🔄 Producto IVendible
+        +Monto via estrategia
+    }
+    class IContextoVenta {
+        ⬅️ «double dispatch»
+        acceso de dominio a potreros
+    }
+    class ServicioVacunacion {
+        🔄 CrearVacuna(categoria, datos)
+        🔄 CrearLote(categoria, cantidad, datos)
+        reglas → Res.AplicarVacuna
+    }
+    class Program_cs {
+        ⚫ 🔄 ensambla: registros de creadores
+        + pares (proveedor, estrategia)
+    }
+
+    IVendible &lt;|.. Res
+    Res &lt;|-- Ternero
+    Res &lt;|-- Novillo
+    Res &lt;|-- Cebon
+    IVendible &lt;|.. ProductoDerivado
+    ICreadorRes &lt;|.. CreadorTernero
+    ICreadorRes &lt;|.. CreadorNovillo
+    ICreadorRes &lt;|.. CreadorCebon
+    CreadorTernero ..> Ternero : crea y describe
+    ICreadorVacuna &lt;|.. CreadorViva
+    ICreadorVacuna &lt;|.. CreadorBacteriana
+    IRegistroProductos --> ICreadorRes : resuelve por tipo
+    IRegistroProductos --> ProveedorDerivado
+    IRegistroProductos --> IEstrategiaPrecio : par registrado
+    IEstrategiaPrecio &lt;|.. MontoManual
+    IEstrategiaPrecio &lt;|.. PrecioUnitario
+    ProveedorResDePotrero ..> Res : localiza
+    ProveedorDerivado ..> ProductoDerivado : construye
+    IServicioVentas &lt;|.. ServicioVentas
+    ServicioVentas --> IRegistroProductos : consulta
+    ServicioVentas --> Venta : registra
+    Venta --> IVendible
+    Venta --> IEstrategiaPrecio : delega monto
+    Res --> IContextoVenta : AlConfirmarVenta
+    ServicioVacunacion --> ICreadorVacuna : sin if por categoría
+</code><div id="mermaid-container" role="dialog"><div id="mermaid-space"><div class="mermaid-content"></div></div></div></pre>
+<p><strong>Lectura del ensamblaje</strong> (la respuesta a “hay que leerlo todo”): <code>Program.cs</code> registra, por familia, los creadores; y por tipo de producto vendible, el <strong>par (proveedor, estrategia)</strong>. La fachada pregunta al registro; no conoce ningún tipo concreto. <strong>Añadir un producto nuevo = registrar su par.</strong> Ese es todo el punto de extensión.</p>
+<hr/>
+<h2 id="3-entregable-32--tabla-de-cambio-estructural">3. Entregable 3.2 — Tabla de cambio estructural<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-entregable-32--tabla-de-cambio-estructural" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>ID</th><th>Elemento</th><th>Estado</th><th>Qué hacía antes</th><th>Qué hace ahora</th><th>Quién dependía de él y cómo se reconecta</th></tr></thead><tbody><tr><td>E-01</td><td><code>FabricaRes</code></td><td>Se transforma</td><td>Diccionario TipoRes→lambda + switch de rangos; validaba edad</td><td>Desaparece como clase única: su conocimiento se reparte en <code>CreadorTernero/Novillo/Cebon</code> (crear, rehidratar, describir, validar edad del subtipo) + registro</td><td><code>GestorReses.AgregarRes</code> → pide al registro; <code>RepositorioPotreroSqlite</code>/<code>RepositorioVentaSqlite</code> → <code>Rehidratar</code> con estado persistido</td></tr><tr><td>E-02</td><td><code>IResFactory</code></td><td>Se transforma</td><td><code>Crear(TipoRes, nombre, peso, edad)</code></td><td><code>IRegistroReses.Para(tipo) → ICreadorRes</code>; mismo uso desde <code>GestorReses</code></td><td>Firma nueva en el mismo punto de inyección (<code>Program.cs</code>)</td></tr><tr><td>E-03</td><td><code>FabricaVacuna</code> + <code>IVacunaFactory</code></td><td>Se transforma</td><td>2 métodos por subtipo; propagaba <code>GradoAtenuacion</code></td><td><code>ICreadorVacuna</code> + <code>CreadorViva/Bacteriana</code> + registro; los datos propios del subtipo quedan dentro del subtipo</td><td><code>ServicioVacunacion</code> colapsa 4 métodos → 2; <code>VacunaController</code> mapea el string del radio a la categoría <strong>una sola vez</strong> (las vistas no cambian)</td></tr><tr><td>E-04</td><td><code>FabricaVenta</code> + <code>IVentaFactory</code></td><td>Sale</td><td>Wrapper de <code>new Venta</code></td><td>La venta se construye en la fachada con el <code>IVendible</code> ya provisto</td><td><code>ServicioVentas</code> (único consumidor) reconstruido como fachada</td></tr><tr><td>E-05</td><td><code>FabricaPotrero</code> + <code>IPotreroFactory</code></td><td>Sale</td><td>Validaba no-vacío (garantizado por <code>Identificacion</code>) y <code>new Potrero</code></td><td>Construcción directa; el VO sigue siendo el guardián</td><td><code>GestorPotreros.CrearPotrero</code> construye directamente</td></tr><tr><td>E-06</td><td><code>ValidadorRes/Vacuna/Venta/Potrero</code></td><td>Sale (degrada)</td><td>2 checks triviales tras la creación, con doble semántica de error</td><td>Validación real: VOs + creadores + <code>IVendible.ValidarParaVenta</code>; un solo mecanismo</td><td><code>GestorReses</code>/<code>ServicioVacunacion</code>/fachada leen <code>ValidationResult</code> del dominio</td></tr><tr><td>E-07</td><td><code>GestorReses</code></td><td>Se transforma</td><td>Mapeaba enums, contaba por tipo, mutaba peso, decidía umbrales</td><td>Orquesta: registro → creador → <code>Res</code> (reglas dentro) → eventos; <code>MapearTipoRes</code> y contadores desaparecen</td><td><code>ResController</code> no cambia de contrato; <code>Res</code> gana <code>Alimentar/EvaluarPeso/AplicarVacuna</code></td></tr><tr><td>E-08</td><td><code>ServicioVacunacion</code></td><td>Se transforma</td><td>4 métodos de creación clonados + reglas de límites duplicadas</td><td>2 métodos (<code>CrearVacuna</code>, <code>CrearLote</code> parametrizado vía registro); <code>AplicarVacuna</code> delega la regla en <code>Res.AplicarVacuna</code></td><td><code>VacunaController</code> y vistas conservan sus inputs; los if/else por string se reducen al mapeo único de la categoría</td></tr><tr><td>E-09</td><td><code>ServicioVentas</code></td><td>Se transforma</td><td>Asumía potrero+res; buscaba, fabricaba, validaba, removía</td><td><strong>Fachada</strong>: orquesta proveer → validar (dominio) → calcular (estrategia) → confirmar (<code>AlConfirmarVenta</code>) → persistir</td><td><code>ResController.Vender</code> redirige a <code>Vender(espec)</code>; <code>VentaController</code> gana la entrada de ventas de derivados</td></tr><tr><td>E-10</td><td><code>Venta</code></td><td>Se transforma</td><td><code>Res Res</code> grabado a fuego; 0 métodos</td><td><code>IVendible Producto</code> + monto calculado por estrategia</td><td><code>RepositorioVentaSqlite</code> persiste <code>res_id</code>/columnas de producto (ver E-14); vistas leen <code>Descripcion()/TipoProducto()/Serializar()</code></td></tr><tr><td>E-11</td><td><code>Res</code></td><td>Se transforma</td><td>Setters públicos; colección de vacunas pública; pasiva</td><td>Implementa <code>IVendible</code>; encapsula peso/edad/chip/vacunas; reglas <code>AplicarVacuna/Alimentar/EvaluarPeso/AlConfirmarVenta</code></td><td>Servicios dejan de mutar; los 8 casos del Reto 1 producen las mismas salidas (verificación en <a href="../../Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID" class="internal" data-slug="Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID">06-VerificacionSOLID</a>)</td></tr><tr><td>E-12</td><td><code>RepositorioPotreroSqlite</code> / <code>RepositorioVentaSqlite</code> / <code>RepositorioVacunaSqlite</code></td><td>Se transforma</td><td>Switches propios de subtipos; GUID nuevo en lectura</td><td>Delegan rehidratación al registro correspondiente (GUID persistido → P-10 corregido)</td><td>Firma interna: <code>IRegistro*.Para(tipo).Rehidratar(fila)</code> — sin cambios de esquema salvo E-14</td></tr><tr><td>E-13</td><td><code>Program.cs</code></td><td>Se transforma</td><td>Registraba 4 factorías y 4 validadores</td><td>Ensambla registros de creadores + <strong>pares (proveedor, estrategia)</strong> por producto; punto de lectura del ensamblaje</td><td>Único lugar que crece al extender (1 línea por tipo nuevo) — autorizado por el encargo</td></tr><tr><td>E-14</td><td>Tabla <code>ventas</code> (esquema)</td><td>Se transforma</td><td>Columnas <code>res_*</code> obligatorias</td><td>+ <code>res_id</code> (nullable, corrige P-10), + <code>producto_tipo/producto_descripcion/cantidad/precio_unitario</code> (nullable para reses)</td><td><code>DatabaseInitializer</code> (ALTER retrocompatible, patrón existente en l.34-43); ventas de reses escriben igual que hoy</td></tr><tr><td>E-15</td><td><code>IVendible</code>, <code>ProductoDerivado</code>, <code>ICreadorRes(+3)</code>, <code>ICreadorVacuna(+2)</code>, <code>IRegistroProductos</code>, <code>ProveedorResDePotrero</code>, <code>ProveedorDerivado</code>, <code>IEstrategiaPrecio(+2)</code>, <code>IContextoVenta</code></td><td><strong>Entra</strong></td><td>—</td><td>El andamiaje del TO-BE (ver diagrama §2)</td><td>Nadie dependía: se conectan vía <code>Program.cs</code> y la fachada</td></tr><tr><td>E-16</td><td><code>Dto.cs</code> (muerto)</td><td>⚫ Se conserva</td><td>Nada</td><td>Nada (deuda P-15 declarada)</td><td>—</td></tr></tbody></table></div>
+<p><strong>Resumen de impacto</strong>: ⬅️ ~16 clases nuevas (todas pequeñas, alta cohesión) · 🔄 12 transformaciones · ❌ 8 salidas (2 factorías, 4 validadores, switches/mapeos) · Capas: Domain (núcleo del cambio), Application (fachada + colapso de servicios), Infrastructure (repos delegan + 1 ALTER), Web (solo <code>Program.cs</code> + re-ruteo de la entrada de venta). <strong>El Core es el protagonista — exactamente lo que el profesor pidió.</strong></p>
+<hr/>
+<h2 id="4-entregable-33--fichas-de-los-patrones-adoptados">4. Entregable 3.3 — Fichas de los patrones adoptados<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-entregable-33--fichas-de-los-patrones-adoptados" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="ficha-1--factory-method--creación-única-para-alta-y-rehidratación">Ficha 1 · Factory Method — creación única para alta y rehidratación<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ficha-1--factory-method--creación-única-para-alta-y-rehidratación" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Campo</th><th>Contenido</th></tr></thead><tbody><tr><td><strong>Patrón y punto de dolor</strong></td><td>Factory Method (creacional). Anclas: P-02, P-05, P-06, P-09, P-10. Evidencia: <code>FabricaRes.cs:17-22</code> (diccionario), <code>:42-48</code> (switch espejo), <code>GestorReses.cs:137-143</code>, <code>RepositorioVentaSqlite.cs:39-45</code> (switch + GUID nuevo l.41-43), <code>IVacunaFactory</code> (métodos por subtipo), <code>VacunaController.cs:49,101</code> (if por string)</td></tr><tr><td><strong>Alternativas evaluadas</strong></td><td>(1) Abstract Factory — descartada: el eje es el tipo, no la familia (advertencia literal del Anexo A). (2) Prototype — descartado: clonar exige exponer llenado y rompe la encapsulación que P-08 recupera. (3) <strong>No hacer nada</strong> — cada tipo nuevo seguiría costando 10-12 archivos con dos caminos de creación que discrepan (bug P-10 activo)</td></tr><tr><td><strong>Qué sale y qué entra</strong></td><td>Sale: diccionario+switch de <code>FabricaRes</code>, 2 métodos por subtipo de <code>IVacunaFactory</code>, <code>MapearTipoRes</code>, switches de los 3 repos, contadores por nombre. Entra: <code>ICreadorRes</code> + 3 creadores, <code>ICreadorVacuna</code> + 2 creadores, <code>IRegistroProductos</code> (resuelve tipo → creador/proveedor) — cada creador <strong>crea, rehidrata, describe y valida su subtipo</strong></td></tr><tr><td><strong>Cómo se relaciona</strong></td><td>Los construye <code>Program.cs</code> (registra); los usan <code>GestorReses</code> (alta), <code>ServicioVacunacion</code> (vacunas) y los 3 repositorios (rehidratación con GUID persistido). <strong>Interactúa con Strategy</strong> (el registro resuelve el par proveedor+estrategia) y con <strong>Facade</strong> (la fachada consulta el registro, no conoce tipos). El <code>DescripcionTipo()</code> del creador alimenta los badges que hoy salen de switches de vista</td></tr><tr><td><strong>Impacto</strong></td><td>Creadas ≈9 (creadores + registro) · Modificadas: <code>GestorReses</code>, <code>ServicioVacunacion</code>, 3 repos, <code>Program.cs</code> · Eliminadas: 4 switches/mapeos y 4 métodos paralelos. <strong>Efecto sobre el Anexo B</strong>: SC-1 pasa de 14 archivos a registrar un par; SC-2-variantes (nuevo estado de chip) no se beneficia (declarado); SC-3 ganaría el mismo mecanismo para eventos clínicos</td></tr><tr><td><strong>Qué cuesta</strong></td><td>≈9 clases pequeñas más; un nivel más de indirección entre solicitud y nacimiento del objeto; depurar exige leer el registro en <code>Program.cs</code>; riesgo residual: que alguien reintroduzca un switch de tipo — prohibido por regla en <a href="../../Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/09-VistaTecnica" class="internal" data-slug="Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/09-VistaTecnica">09-VistaTecnica</a></td></tr><tr><td><strong>Origen</strong></td><td>Propuesta de la IA, aprobada por el equipo (bitácora <a href="../../Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/10-BitacoraIA" class="internal" data-slug="Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/10-BitacoraIA">10-BitacoraIA</a> B-08) tras evaluar y descartar Abstract Factory y Prototype con evidencia</td></tr></tbody></table></div>
+<h3 id="ficha-2--facade--el-subsistema-de-venta-en-un-punto-legible">Ficha 2 · Facade — el subsistema de venta en un punto legible<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ficha-2--facade--el-subsistema-de-venta-en-un-punto-legible" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Campo</th><th>Contenido</th></tr></thead><tbody><tr><td><strong>Patrón y punto de dolor</strong></td><td>Facade (estructural). Anclas: P-01 y la queja de la Líder Técnica (“interfaces limpias y ningún lugar donde se pueda leer cómo colaboran”). Evidencia: pipeline de venta en 9 piezas (<code>ResController.cs:79</code> → <code>ServicioVentas.cs:32-54</code> → fábrica+validador+potrero+2 repos); <code>Venta.cs:10</code> (<code>Res Res</code> grabado)</td></tr><tr><td><strong>Alternativas evaluadas</strong></td><td>(1) Mediator — descartado: matriz de referencias cruzadas entre colegas paritarios; duplicaría la fachada con acoplamiento mayor. (2) Exponer colaboradores al controlador (status quo) — con SC-1 el controlador coordinaría 5+ dependencias nuevas. (3) <strong>No hacer nada</strong> — el costo contado de P-01 (14 archivos) permanece</td></tr><tr><td><strong>Qué sale y qué entra</strong></td><td>Sale: la asunción potrero+res como único caso de venta; <code>FabricaVenta</code>. Entra: <code>IServicioVentas</code> con contrato unificado <code>Vender(IEspecVenta)</code>; <code>ServicioVentas</code> reestructurado como <strong>fachada</strong> (rol del servicio existente, no clase nueva)</td></tr><tr><td><strong>Cómo se relaciona</strong></td><td>La construye <code>Program.cs</code>; la usan <code>ResController</code> (venta de reses, mismo flujo visible) y <code>VentaController</code> (venta de derivados, SC-1). <strong>Interactúa con Factory Method</strong> (consulta <code>IRegistroProductos</code>) y con <strong>Strategy</strong> (recibe el monto ya calculado por la estrategia del par registrado). <strong>Límite declarado (Anexo A)</strong>: orquesta — obtener, validar, calcular, confirmar, persistir — y NO legisla: métrica de control “si un método de la fachada contiene un <code>if</code> de negocio, la regla baja al dominio”</td></tr><tr><td><strong>Impacto</strong></td><td>Creadas: 0 (rol sobre servicio existente) · Modificadas: <code>IServicioVentas</code>/<code>ServicioVentas</code>, <code>ResController.Vender</code> (redirige), <code>VentaController</code> (nueva entrada SC-1), <code>Program.cs</code> · Eliminadas: <code>FabricaVenta</code>+<code>IVentaFactory</code>. <strong>Efecto Anexo B</strong>: SC-1 se implementa detrás de la fachada sin que la UI conozca creadores ni estrategias; SC-3 reutilizaría el mismo patrón de orquestación</td></tr><tr><td><strong>Qué cuesta</strong></td><td>Una indirección más UI→dominio; el riesgo tipificado por el Anexo A (absorber lógica → SRP roto) queda <strong>activo y controlado</strong> por la métrica y por la revisión de <a href="../../Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID" class="internal" data-slug="Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID">06-VerificacionSOLID</a>; exige disciplina en revisión de código del equipo</td></tr><tr><td><strong>Origen</strong></td><td>Propuesta de la IA (B-09), aprobada con el límite declarado como condición de la aprobación</td></tr></tbody></table></div>
+<h3 id="ficha-3--strategy--comportamiento-de-precio-por-producto-en-runtime">Ficha 3 · Strategy — comportamiento de precio por producto, en runtime<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ficha-3--strategy--comportamiento-de-precio-por-producto-en-runtime" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Campo</th><th>Contenido</th></tr></thead><tbody><tr><td><strong>Patrón y punto de dolor</strong></td><td>Strategy (comportamiento). Anclas: P-01 (SC-1: el comportamiento de venta varía por tipo de producto) y P-04 (la selección por categoría hoy es un if que duplica al dominio). Alcance literal del encargo: “cómo se selecciona y coordina el comportamiento en tiempo de ejecución”. Evidencia: el bifurcador que SC-1 induciría (<code>if (producto es res) … else …</code>) ya existe como defecto equivalente en <code>VacunaController.cs:49,101</code> y <code>ServicioVacunacion.cs:137-143</code></td></tr><tr><td><strong>Alternativas evaluadas</strong></td><td>(1) Template Method — descartado: varía el comportamiento completo, no un paso del algoritmo. (2) Condicional por tipo — es exactamente el anti-patrón medido del AS-IS (12 archivos por tipo de vacuna). (3) <strong>No hacer nada</strong> — SC-1 imposible sin bifurcar servicios y validadores</td></tr><tr><td><strong>Qué sale y qué entra</strong></td><td>Sale: el futuro (y los existentes) bifurcadores por tipo en el camino de venta/precio. Entra: <code>IEstrategiaPrecio</code> + <code>MontoManual</code> (reses: devuelve el monto provisto — <strong>el comportamiento observable de hoy no cambia ni un carácter</strong>) + <code>PrecioUnitario</code> (derivados: precio × cantidad — comportamiento nuevo autorizado por SC-1)</td></tr><tr><td><strong>Cómo se relaciona</strong></td><td>La construye <code>Program.cs</code> <strong>en par con el proveedor del producto</strong> (el registro de Factory Method resuelve el par); la usa <code>Venta</code>/fachada para calcular el monto. <strong>Interactúa con Factory Method</strong> (par registrado) y con <strong>Facade</strong> (consumidora). Nueva política de precio (2×1, precio por bulto) = nueva estrategia + registro</td></tr><tr><td><strong>Impacto</strong></td><td>Creadas: 3 (interfaz + 2 estrategias) · Modificadas: <code>Venta</code>, <code>ServicioVentas</code>, <code>Program.cs</code> · Eliminadas: ninguna. <strong>Efecto Anexo B</strong>: SC-1 viable sin tocar servicios por tipo; SC-3 no la usa (declarado); una futura SC de promociones entraría solo aquí</td></tr><tr><td><strong>Qué cuesta</strong></td><td>+1 interfaz +2-3 clases; depurar un precio exige identificar la estrategia participante (mitigado: el registro es legible); riesgo ISP si la interfaz crece — controlado: una sola operación <code>Calcular</code></td></tr><tr><td><strong>Origen</strong></td><td>Propuesta de la IA (B-10) con la condición explícita de que <code>MontoManual</code> preserve el comportamiento congelado de reses — verificable en los 12 casos de <a href="../../Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID" class="internal" data-slug="Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID">06-VerificacionSOLID</a></td></tr></tbody></table></div>
+<hr/>
+<h2 id="5-qué-se-conserva-intacto-la-prueba-de-que-el-estilo-no-cambió">5. Qué se conserva intacto (la prueba de que el estilo no cambió)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-qué-se-conserva-intacto-la-prueba-de-que-el-estilo-no-cambió" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Elemento</th><th>Estado</th></tr></thead><tbody><tr><td>Estilo arquitectónico, 4 proyectos, dirección de dependencias</td><td>⚫ Sin cambios</td></tr><tr><td><code>Potrero</code>, <code>Chip</code> (las entidades bien encapsuladas del Reto 1), VOs, eventos, <code>Usuario</code>, <code>Geolocalizacion</code></td><td>⚫ Sin cambios</td></tr><tr><td>Repositorios de usuarios/geolocalización/chips, <code>HasherBcrypt</code>, <code>GuidProviderSistema</code>, <code>DataLoader</code></td><td>⚫ Sin cambios</td></tr><tr><td>Autenticación, vistas y controladores existentes (salvo la re-conexión de la entrada de venta)</td><td>⚫ Sin cambios (D-05)</td></tr><tr><td>Flujo observable completo de reses, potreros, vacunas, chips, usuarios</td><td>⚫ Sin cambios — se demuestra en <a href="../../Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID" class="internal" data-slug="Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID">06-VerificacionSOLID</a></td></tr></tbody></table></div>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Navegación </p></div>
+                  
+                </div>
+</blockquote>
+<p>| AS-IS: <a href="../../Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/01-AS-IS" class="internal" data-slug="Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/01-AS-IS">01-AS-IS</a> · Dolor: <a href="../../Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/02-PuntosDolor" class="internal" data-slug="Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/02-PuntosDolor">02-PuntosDolor</a> · Evaluación: <a href="../../Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/03-PatronesEvaluados" class="internal" data-slug="Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/03-PatronesEvaluados">03-PatronesEvaluados</a> · Decisiones: <a href="../../Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/04-DecisionesArquitectonicas" class="internal" data-slug="Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/04-DecisionesArquitectonicas">04-DecisionesArquitectonicas</a> · Verificación SOLID de este diseño: <a href="../../Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID" class="internal" data-slug="Universidad/ArquitecturaDeSoftware/Reto2-Hacienda/Opcion2/06-VerificacionSOLID">06-VerificacionSOLID</a></p></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Vista Gráfica</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-23" aria-expanded="true"><h3>Tabla de Contenidos</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#05--to-be--diseño-del-sistema-con-solid--patrones" data-for="05--to-be--diseño-del-sistema-con-solid--patrones">05 — TO-BE · Diseño del sistema con SOLID + Patrones</a></li><li class="depth-1"><a href="#1-entregable-31a--diagrama-de-lo-que-sale-recorte-del-as-is-marcado" data-for="1-entregable-31a--diagrama-de-lo-que-sale-recorte-del-as-is-marcado">1. Entregable 3.1a — Diagrama de lo que sale (recorte del AS-IS marcado)</a></li><li class="depth-1"><a href="#2-entregable-31b--diagrama-de-lo-que-entra-to-be" data-for="2-entregable-31b--diagrama-de-lo-que-entra-to-be">2. Entregable 3.1b — Diagrama de lo que entra (TO-BE)</a></li><li class="depth-1"><a href="#3-entregable-32--tabla-de-cambio-estructural" data-for="3-entregable-32--tabla-de-cambio-estructural">3. Entregable 3.2 — Tabla de cambio estructural</a></li><li class="depth-1"><a href="#4-entregable-33--fichas-de-los-patrones-adoptados" data-for="4-entregable-33--fichas-de-los-patrones-adoptados">4. Entregable 3.3 — Fichas de los patrones adoptados</a></li><li class="depth-2"><a href="#ficha-1--factory-method--creación-única-para-alta-y-rehidratación" data-for="ficha-1--factory-method--creación-única-para-alta-y-rehidratación">Ficha 1 · Factory Method — creación única para alta y rehidratación</a></li><li class="depth-2"><a href="#ficha-2--facade--el-subsistema-de-venta-en-un-punto-legible" data-for="ficha-2--facade--el-subsistema-de-venta-en-un-punto-legible">Ficha 2 · Facade — el subsistema de venta en un punto legible</a></li><li class="depth-2"><a href="#ficha-3--strategy--comportamiento-de-precio-por-producto-en-runtime" data-for="ficha-3--strategy--comportamiento-de-precio-por-producto-en-runtime">Ficha 3 · Strategy — comportamiento de precio por producto, en runtime</a></li><li class="depth-1"><a href="#5-qué-se-conserva-intacto-la-prueba-de-que-el-estilo-no-cambió" data-for="5-qué-se-conserva-intacto-la-prueba-de-que-el-estilo-no-cambió">5. Qué se conserva intacto (la prueba de que el estilo no cambió)</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Creado con <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript" data-persist="true">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module" data-persist="true">function E(a,e){if(!a)return;function t(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function n(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}a?.addEventListener("click",t),window.addCleanup(()=>a?.removeEventListener("click",t)),document.addEventListener("keydown",n),window.addCleanup(()=>document.removeEventListener("keydown",n))}function f(a){for(;a.firstChild;)a.removeChild(a.firstChild)}var m=class{constructor(e,t){this.container=e;this.content=t;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),t=this.onMouseMove.bind(this),n=this.onMouseUp.bind(this),o=this.onTouchStart.bind(this),r=this.onTouchMove.bind(this),i=this.onTouchEnd.bind(this),s=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",t),document.addEventListener("mouseup",n),this.container.addEventListener("touchstart",o,{passive:!1}),document.addEventListener("touchmove",r,{passive:!1}),document.addEventListener("touchend",i),window.addEventListener("resize",s),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",t),()=>document.removeEventListener("mouseup",n),()=>this.container.removeEventListener("touchstart",o),()=>document.removeEventListener("touchmove",r),()=>document.removeEventListener("touchend",i),()=>window.removeEventListener("resize",s))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let t=this.createButton("+",()=>this.zoom(.1)),n=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(n),e.appendChild(o),e.appendChild(t),this.container.appendChild(e)}createButton(e,t){let n=document.createElement("button");return n.textContent=e,n.className="mermaid-control-button",n.addEventListener("click",t),window.addCleanup(()=>n.removeEventListener("click",t)),n}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}onTouchStart(e){if(e.touches.length!==1)return;this.isDragging=!0;let t=e.touches[0];this.startPan={x:t.clientX-this.currentPan.x,y:t.clientY-this.currentPan.y}}onTouchMove(e){if(!this.isDragging||e.touches.length!==1)return;e.preventDefault();let t=e.touches[0];this.currentPan={x:t.clientX-this.startPan.x,y:t.clientY-this.startPan.y},this.updateTransform()}onTouchEnd(){this.isDragging=!1}zoom(e){let t=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),n=this.content.getBoundingClientRect(),o=n.width/2,r=n.height/2,i=t-this.scale;this.currentPan.x-=o*i,this.currentPan.y-=r*i,this.scale=t,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){let t=this.content.querySelector("svg").getBoundingClientRect(),n=t.width/this.scale,o=t.height/this.scale;this.scale=1,this.currentPan={x:(this.container.clientWidth-n)/2,y:(this.container.clientHeight-o)/2},this.updateTransform()}},T=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],y;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;y||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let t=y.default,n=new WeakMap;for(let r of e)n.set(r,r.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let c=n.get(s);c&&(s.innerHTML=c)}let r=T.reduce((s,c)=>(s[c]=window.getComputedStyle(document.documentElement).getPropertyValue(c),s),{}),i=document.documentElement.getAttribute("saved-theme")==="dark";t.initialize({startOnLoad:!1,securityLevel:"loose",theme:i?"dark":"base",themeVariables:{fontFamily:r["--codeFont"],primaryColor:r["--light"],primaryTextColor:r["--darkgray"],primaryBorderColor:r["--tertiary"],lineColor:r["--darkgray"],secondaryColor:r["--secondary"],tertiaryColor:r["--tertiary"],clusterBkg:r["--light"],edgeLabelBackground:r["--highlight"]}}),await t.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let r=0;r<e.length;r++){let v=function(){let g=l.querySelector("#mermaid-space"),h=l.querySelector(".mermaid-content");if(!h)return;f(h);let w=i.querySelector("svg").cloneNode(!0);h.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new m(g,h)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},i=e[r],s=i.parentElement,c=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(c),L=c.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),E(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript" data-persist="true"></script><script src="../../postscript.js" type="module" data-persist="true"></script></html>

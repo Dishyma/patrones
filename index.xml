@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+      <title>Arquitectura de Software</title>
+      <link>https://dishyma.github.io/patrones</link>
+      <description>Últimas 10 notas on Arquitectura de Software</description>
+      <generator>Quartz -- quartz.jzhao.xyz</generator>
+      <item>
+    <title>Arquitectura de Software — Reto 2 Hacienda</title>
+    <link>https://dishyma.github.io/patrones/</link>
+    <guid>https://dishyma.github.io/patrones/</guid>
+    <description><![CDATA[ Análisis, diseño y patrones sobre el dominio ganadero ]]></description>
+    <pubDate>Thu, 03 Sep 2026 02:58:33 GMT</pubDate>
+  </item><item>
+    <title>Guía de Estudio - Principios SOLID y Patrones Creacionales</title>
+    <link>https://dishyma.github.io/patrones/Patrones/Gu%C3%ADa-de-Estudio---Principios-SOLID-y-Patrones-Creacionales</link>
+    <guid>https://dishyma.github.io/patrones/Patrones/Gu%C3%ADa-de-Estudio---Principios-SOLID-y-Patrones-Creacionales</guid>
+    <description><![CDATA[ w# Guía de Estudio Completa: Principios SOLID y Patrones de Diseño Creacionales Basada en las presentaciones del MSc. ]]></description>
+    <pubDate>Wed, 02 Sep 2026 17:26:05 GMT</pubDate>
+  </item><item>
+    <title>Patrones Comportamiento</title>
+    <link>https://dishyma.github.io/patrones/Patrones/Patrones-Comportamiento</link>
+    <guid>https://dishyma.github.io/patrones/Patrones/Patrones-Comportamiento</guid>
+    <description><![CDATA[ 1. ]]></description>
+    <pubDate>Wed, 02 Sep 2026 17:22:58 GMT</pubDate>
+  </item><item>
+    <title>Patrones Estructurales - Resumen Completo</title>
+    <link>https://dishyma.github.io/patrones/Patrones/Patrones_Estructurales_Resumen</link>
+    <guid>https://dishyma.github.io/patrones/Patrones/Patrones_Estructurales_Resumen</guid>
+    <description><![CDATA[ Patrones Estructurales — Resumen Completo Resumen Este documento es un apunte de estudio + referencia técnica sobre los 7 patrones estructurales vistos en clase: Bridge, Composite, Decorator, Adapter, Facade, Flyweight y Proxy. ]]></description>
+    <pubDate>Wed, 02 Sep 2026 17:22:58 GMT</pubDate>
+  </item><item>
+    <title>Curso_Intensivo_4_Dias_Arquitectura_Software</title>
+    <link>https://dishyma.github.io/patrones/Curso_Intensivo_4_Dias_Arquitectura_Software</link>
+    <guid>https://dishyma.github.io/patrones/Curso_Intensivo_4_Dias_Arquitectura_Software</guid>
+    <description><![CDATA[ Curso Intensivo de 4 Días — Arquitectura de Software (con repaso integral de POO, Paradigmas de Programación y fundamentos de Arquitectura) Preparado a partir de los 16 documentos oficiales de la asignatura. ]]></description>
+    <pubDate>Wed, 02 Sep 2026 17:22:58 GMT</pubDate>
+  </item><item>
+    <title>Curso_Intensivo_Arquitectura_Software</title>
+    <link>https://dishyma.github.io/patrones/Curso_Intensivo_Arquitectura_Software</link>
+    <guid>https://dishyma.github.io/patrones/Curso_Intensivo_Arquitectura_Software</guid>
+    <description><![CDATA[ Curso Intensivo de 4 Días — Arquitectura de Software y Fundamentos de POO Preparado a partir de 16 documentos oficiales del curso (presentación del curso, repaso de POO y paradigmas, introducción a arquitectura, principios SOLID, clases básicas, accesibilidad/constructores/accesores, relaciones entr... ]]></description>
+    <pubDate>Wed, 02 Sep 2026 17:22:58 GMT</pubDate>
+  </item><item>
+    <title>00-Plan</title>
+    <link>https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion1/00-Plan</link>
+    <guid>https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion1/00-Plan</guid>
+    <description><![CDATA[ 00 — Plan de Trabajo · Reto 2 (Proyecto Hacienda) Propósito Este documento fija el encuadre, el alcance, la metodología y el mapa de artefactos del Reto 2. ]]></description>
+    <pubDate>Tue, 01 Sep 2026 01:16:53 GMT</pubDate>
+  </item><item>
+    <title>01-AS-IS</title>
+    <link>https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion1/01-AS-IS</link>
+    <guid>https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion1/01-AS-IS</guid>
+    <description><![CDATA[ 01 — AS-IS: Comprensión del Sistema Actual Propósito Retrato fiel del sistema tal como está hoy el código, tras cerrar la deuda del Reto 1. ]]></description>
+    <pubDate>Tue, 01 Sep 2026 01:16:53 GMT</pubDate>
+  </item><item>
+    <title>02-PuntosDolor</title>
+    <link>https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion1/02-PuntosDolor</link>
+    <guid>https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion1/02-PuntosDolor</guid>
+    <description><![CDATA[ 02 — Puntos de Dolor de la Arquitectura Actual (Catálogo completo) Propósito Catálogo amplio de puntos donde el diseño, aun siendo correcto, sigue siendo caro de cambiar — medido contando clases y archivos reales. ]]></description>
+    <pubDate>Tue, 01 Sep 2026 01:16:53 GMT</pubDate>
+  </item><item>
+    <title>03-PatronesEvaluados</title>
+    <link>https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion1/03-PatronesEvaluados</link>
+    <guid>https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion1/03-PatronesEvaluados</guid>
+    <description><![CDATA[ 03 — Patrones Evaluados (Actividad 2 · Entregable 2.1) Propósito Evaluación de los 22 patrones del Anexo A (mín. ]]></description>
+    <pubDate>Tue, 01 Sep 2026 01:16:53 GMT</pubDate>
+  </item>
+    </channel>
+  </rss>

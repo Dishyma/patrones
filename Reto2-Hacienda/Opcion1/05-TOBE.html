@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr"><head><title>05-TOBE</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Arquitectura de Software"/><meta property="og:title" content="05-TOBE"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="05-TOBE"/><meta name="twitter:description" content="05 — TO-BE: Diseño con SOLID + Patrones (Actividad 3) Propósito El diseño destino: qué sale, qué entra, cómo se conecta y qué impacto tiene."/><meta property="og:description" content="05 — TO-BE: Diseño con SOLID + Patrones (Actividad 3) Propósito El diseño destino: qué sale, qué entra, cómo se conecta y qué impacto tiene."/><meta property="og:image:alt" content="05 — TO-BE: Diseño con SOLID + Patrones (Actividad 3) Propósito El diseño destino: qué sale, qué entra, cómo se conecta y qué impacto tiene."/><meta property="twitter:domain" content="dishyma.github.io/patrones"/><meta property="og:url" content="https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion1/05-TOBE"/><meta property="twitter:url" content="https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion1/05-TOBE"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="05 — TO-BE: Diseño con SOLID + Patrones (Actividad 3) Propósito El diseño destino: qué sale, qué entra, cómo se conecta y qué impacto tiene."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" data-persist="true"/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvZGlzaHltYS9yZXBvcy9xdWFydHotcGF0cm9uZXMvcXVhcnR6L2NvbXBvbmVudHMvc3R5bGVzIiwic291cmNlcyI6WyJtZXJtYWlkLmlubGluZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFHRjtFQUNFOzs7QUFLRjtFQUNFO0VBQ0E7OztBQUlKO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFOztBQUdGO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gICAgICB0cmFuc2Zvcm0tb3JpZ2luOiAwIDA7XG4gICAgICB0cmFuc2l0aW9uOiB0cmFuc2Zvcm0gMC4xcyBlYXNlO1xuICAgICAgb3ZlcmZsb3c6IHZpc2libGU7XG4gICAgICBtaW4taGVpZ2h0OiAyMDBweDtcbiAgICAgIG1pbi13aWR0aDogMjAwcHg7XG5cbiAgICAgIHByZSB7XG4gICAgICAgIG1hcmdpbjogMDtcbiAgICAgICAgYm9yZGVyOiBub25lO1xuICAgICAgfVxuXG4gICAgICBzdmcge1xuICAgICAgICBtYXgtd2lkdGg6IG5vbmU7XG4gICAgICAgIGhlaWdodDogYXV0bztcbiAgICAgIH1cbiAgICB9XG5cbiAgICAmID4gLm1lcm1haWQtY29udHJvbHMge1xuICAgICAgcG9zaXRpb246IGFic29sdXRlO1xuICAgICAgYm90dG9tOiAyMHB4O1xuICAgICAgcmlnaHQ6IDIwcHg7XG4gICAgICBkaXNwbGF5OiBmbGV4O1xuICAgICAgZ2FwOiA4cHg7XG4gICAgICBwYWRkaW5nOiA4cHg7XG4gICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgYm9yZGVyLXJhZGl1czogNnB4O1xuICAgICAgYm94LXNoYWRvdzogMCAycHggNHB4IHJnYmEoMCwgMCwgMCwgMC4xKTtcbiAgICAgIHotaW5kZXg6IDI7XG5cbiAgICAgIC5tZXJtYWlkLWNvbnRyb2wtYnV0dG9uIHtcbiAgICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICAgICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgICAgIHdpZHRoOiAzMnB4O1xuICAgICAgICBoZWlnaHQ6IDMycHg7XG4gICAgICAgIHBhZGRpbmc6IDA7XG4gICAgICAgIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWxpZ2h0Z3JheSk7XG4gICAgICAgIGJhY2tncm91bmQ6IHZhcigtLWxpZ2h0KTtcbiAgICAgICAgY29sb3I6IHZhcigtLWRhcmspO1xuICAgICAgICBib3JkZXItcmFkaXVzOiA0cHg7XG4gICAgICAgIGN1cnNvcjogcG9pbnRlcjtcbiAgICAgICAgZm9udC1zaXplOiAxNnB4O1xuICAgICAgICBmb250LWZhbWlseTogdmFyKC0tYm9keUZvbnQpO1xuICAgICAgICB0cmFuc2l0aW9uOiBhbGwgMC4ycyBlYXNlO1xuXG4gICAgICAgICY6aG92ZXIge1xuICAgICAgICAgIGJhY2tncm91bmQ6IHZhcigtLWxpZ2h0Z3JheSk7XG4gICAgICAgIH1cblxuICAgICAgICAmOmFjdGl2ZSB7XG4gICAgICAgICAgdHJhbnNmb3JtOiB0cmFuc2xhdGVZKDFweCk7XG4gICAgICAgIH1cblxuICAgICAgICAvLyBTdHlsZSB0aGUgcmVzZXQgYnV0dG9uIGRpZmZlcmVudGx5XG4gICAgICAgICY6bnRoLWNoaWxkKDIpIHtcbiAgICAgICAgICB3aWR0aDogYXV0bztcbiAgICAgICAgICBwYWRkaW5nOiAwIDEycHg7XG4gICAgICAgICAgZm9udC1zaXplOiAxNHB4O1xuICAgICAgICB9XG4gICAgICB9XG4gICAgfVxuICB9XG59XG4iXX0= */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" data-persist="true"/><script src="../../prescript.js" type="application/javascript" data-persist="true"></script><script type="application/javascript" data-persist="true">const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://dishyma.github.io/patrones/index.xml"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image" content="https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion1/05-TOBE-og-image.webp"/><meta property="og:image:url" content="https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion1/05-TOBE-og-image.webp"/><meta name="twitter:image" content="https://dishyma.github.io/patrones/Reto2-Hacienda/Opcion1/05-TOBE-og-image.webp"/><meta property="og:image:type" content="image/.webp"/></head><body data-slug="Reto2-Hacienda/Opcion1/05-TOBE"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Arquitectura de Software</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Buscar</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Busca algo" placeholder="Busca algo"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Modo oscuro"><title>Modo oscuro</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Modo claro"><title>Modo claro</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Modo lector"><title>Modo lector</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-27"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Explorador</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-27" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../Reto2-Hacienda/">Reto2 Hacienda</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../Reto2-Hacienda/Opcion1/">Opcion1</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>05 TOBE</a></div></nav><h1 class="article-title">05-TOBE</h1><p show-comma="true" class="content-meta"><time datetime="2026-09-01T01:16:53.000Z">31 ago 2026</time><span>Se lee en 11 min</span></p><ul class="tags"><li><a href="../../tags/reto2" class="internal tag-link">reto2</a></li><li><a href="../../tags/actividad-3" class="internal tag-link">actividad-3</a></li><li><a href="../../tags/tobe" class="internal tag-link">tobe</a></li><li><a href="../../tags/diseno" class="internal tag-link">diseno</a></li><li><a href="../../tags/hacienda" class="internal tag-link">hacienda</a></li></ul></div></div><article class="popover-hint"><h1 id="05--to-be-diseño-con-solid--patrones-actividad-3">05 — TO-BE: Diseño con SOLID + Patrones (Actividad 3)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#05--to-be-diseño-con-solid--patrones-actividad-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote class="callout abstract" data-callout="abstract">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Propósito </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>El diseño destino: <strong>qué sale, qué entra, cómo se conecta y qué impacto tiene</strong>. Tres entregables: (3.1) los dos diagramas marcados, (3.2) la tabla de cambio estructural E-XX, (3.3) las fichas por patrón adoptado. Se implementa sobre el AS-IS saneado (<a href="../../Reto2-Hacienda/Opcion1/01-AS-IS" class="internal alias" data-slug="Reto2-Hacienda/Opcion1/01-AS-IS">01-AS-IS</a>) según el catálogo (<a href="../../Reto2-Hacienda/Opcion1/02-PuntosDolor" class="internal alias" data-slug="Reto2-Hacienda/Opcion1/02-PuntosDolor">02-PuntosDolor</a>) y las decisiones vivas (<a href="../../Reto2-Hacienda/Opcion1/04-DecisionesArquitectonicas" class="internal alias" data-slug="Reto2-Hacienda/Opcion1/04-DecisionesArquitectonicas">04-Decisiones</a>).</p>
+</div>
+</blockquote>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Reglas de preservación (congeladas — Líder Técnica) </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ol>
+<li><strong>Mensajes de usuario idénticos</strong> — mismo texto, mismo orden (incluida la validación de edad restaurada, DEC-09).</li>
+<li><strong>Salida de consola idéntica byte a byte</strong> — <code>HandlerConsola</code> reproduce las líneas actuales.</li>
+<li><strong>Cálculos idénticos</strong> — totales, distancias, estados, umbrales, rangos.</li>
+<li><strong>Contrato hacia vistas intacto</strong> — <code>TipoRes</code>, <code>Res.Tipo</code>, bindings y <code>TempData</code> sobreviven.</li>
+<li><strong>Sin capas ni proyectos nuevos</strong> — Domain se fortalece; Application adelgaza; Infrastructure delega.</li>
+<li><strong>SOLID no se toca</strong> — si un patrón tensa un principio, se declara y compensa (Act. 4).</li>
+</ol>
+</div>
+</blockquote>
+<blockquote class="callout success" data-callout="success">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Set de patrones (DEC-06) </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p><strong>Factory Method + Template Method + Builder + Observer</strong> · Composite pendiente de D-12 (solo si SC-1 incluye canastas). Anclaje completo en <a href="../../Reto2-Hacienda/Opcion1/03-PatronesEvaluados" class="internal alias" data-slug="Reto2-Hacienda/Opcion1/03-PatronesEvaluados">03-Patrones</a> §2.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="31--entregable-1--los-dos-diagramas">3.1 · Entregable 1 — Los dos diagramas<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#31--entregable-1--los-dos-diagramas" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="diagrama-a--lo-que-sale-recorte-del-as-is-marcado">Diagrama A — LO QUE SALE (recorte del AS-IS marcado)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#diagrama-a--lo-que-sale-recorte-del-as-is-marcado" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>🔴 sale · 🟠 se transforma · ⚪ permanece. Todos los elementos existen HOY en el código.</p>
+<pre><button class="expand-button" aria-label="Expand mermaid diagram" data-view-component="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 011.06 1.06L2.56 7h10.88l-2.22-2.22a.75.75 0 011.06-1.06l3.5 3.5a.75.75 0 010 1.06l-3.5 3.5a.75.75 0 11-1.06-1.06l2.22-2.22H2.56l2.22 2.22a.75.75 0 11-1.06 1.06l-3.5-3.5a.75.75 0 010-1.06l3.5-3.5z"></path></svg></button><code class="mermaid" data-clipboard="&quot;classDiagram\n    direction LR\n    class FabricaRes_Dict {\n        🔴 diccionario de creators :17-21\n        🔴 DescribirRango switch (restaurado DEC-09)\n        🟠 validez de edad → pasa al esqueleto\n    }\n    class CatalogoRes {\n        🔴 switch CrearDesdeNombre\n        🔴 switch MapearDesdePotrero (P-12)\n        🟠 config → delega a creators\n        ⚪ Parsear (para vistas/seeder)\n    }\n    class IVacunaFactory {\n        🔴 método por tipo :8-13\n    }\n    class FabricaVacuna {\n        🔴 CrearBacteriana/CrearViva\n        🟠 ValidarParametrosComunes → esqueleto\n    }\n    class Validadores {\n        🔴 ValidadorRes/Potrero/Vacuna/Venta\n        P-04: umbrales contradictorios\n        valida lo imposible, omite la regla\n    }\n    class GestorReses_Dolor {\n        🟠 stats por tipo :129-134 (P-01)\n        🟠 reacciones duplicadas :56/:99 (P-14)\n    }\n    class RepoVenta_Guid {\n        🟠 rehidrata con GUID nuevo :39 (P-05)\n    }\n    class PublisherConsola {\n        🟠 único destino consola :5-11 (P-06)\n        VacunaVencidaEvent sin publicador\n    }\n    class Venta_Mono {\n        🟠 soldada a una Res (P-03)\n    }\n    class FabricaVenta {\n        🟠 TimeProvider por método :8 (P-13)\n        🟠 monto &lt; 0 vs Validador &lt;= 0\n    }\n    class ServicioVacunacion_Gemelos {\n        🟠 lotes gemelos :61-117 (P-10)\n        🟠 Crear* por categoría :33-59\n    }\n    class Serializar_x5 {\n        🟠 formato pipe copiado ×5 (P-09)\n    }\n    class BaseSana {\n        ⚪ Res/subtipos encapsulados\n        ⚪ Reglas/ParametrosRes fuente única\n        ⚪ TransicionesChip · RangoEdad\n        ⚪ VOs · Results · enum TipoRes\n    }\n    FabricaRes_Dict --> CatalogoRes : duplica decisión\n    Validadores ..> FabricaVenta : umbral contradictorio\n    ServicioVacunacion_Gemelos ..> IVacunaFactory : método por tipo&quot;">classDiagram
+    direction LR
+    class FabricaRes_Dict {
+        🔴 diccionario de creators :17-21
+        🔴 DescribirRango switch (restaurado DEC-09)
+        🟠 validez de edad → pasa al esqueleto
+    }
+    class CatalogoRes {
+        🔴 switch CrearDesdeNombre
+        🔴 switch MapearDesdePotrero (P-12)
+        🟠 config → delega a creators
+        ⚪ Parsear (para vistas/seeder)
+    }
+    class IVacunaFactory {
+        🔴 método por tipo :8-13
+    }
+    class FabricaVacuna {
+        🔴 CrearBacteriana/CrearViva
+        🟠 ValidarParametrosComunes → esqueleto
+    }
+    class Validadores {
+        🔴 ValidadorRes/Potrero/Vacuna/Venta
+        P-04: umbrales contradictorios
+        valida lo imposible, omite la regla
+    }
+    class GestorReses_Dolor {
+        🟠 stats por tipo :129-134 (P-01)
+        🟠 reacciones duplicadas :56/:99 (P-14)
+    }
+    class RepoVenta_Guid {
+        🟠 rehidrata con GUID nuevo :39 (P-05)
+    }
+    class PublisherConsola {
+        🟠 único destino consola :5-11 (P-06)
+        VacunaVencidaEvent sin publicador
+    }
+    class Venta_Mono {
+        🟠 soldada a una Res (P-03)
+    }
+    class FabricaVenta {
+        🟠 TimeProvider por método :8 (P-13)
+        🟠 monto &lt; 0 vs Validador &lt;= 0
+    }
+    class ServicioVacunacion_Gemelos {
+        🟠 lotes gemelos :61-117 (P-10)
+        🟠 Crear* por categoría :33-59
+    }
+    class Serializar_x5 {
+        🟠 formato pipe copiado ×5 (P-09)
+    }
+    class BaseSana {
+        ⚪ Res/subtipos encapsulados
+        ⚪ Reglas/ParametrosRes fuente única
+        ⚪ TransicionesChip · RangoEdad
+        ⚪ VOs · Results · enum TipoRes
+    }
+    FabricaRes_Dict --> CatalogoRes : duplica decisión
+    Validadores ..> FabricaVenta : umbral contradictorio
+    ServicioVacunacion_Gemelos ..> IVacunaFactory : método por tipo
+</code><div id="mermaid-container" role="dialog"><div id="mermaid-space"><div class="mermaid-content"></div></div></div></pre>
+<p><strong>Lectura:</strong> no se destruye la base sana (⚪) — se extraen los <strong>puntos de decisión regados</strong> (fábricas con 4 idiomas, switches de catálogo, validación post-construcción, reacciones copiadas) y se reconectan a un único mecanismo.</p>
+<h3 id="diagrama-b--lo-que-entra-to-be--lo-conservado">Diagrama B — LO QUE ENTRA (TO-BE; ⚪ lo conservado)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#diagrama-b--lo-que-entra-to-be--lo-conservado" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><button class="expand-button" aria-label="Expand mermaid diagram" data-view-component="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 011.06 1.06L2.56 7h10.88l-2.22-2.22a.75.75 0 011.06-1.06l3.5 3.5a.75.75 0 010 1.06l-3.5 3.5a.75.75 0 11-1.06-1.06l2.22-2.22H2.56l2.22 2.22a.75.75 0 11-1.06 1.06l-3.5-3.5a.75.75 0 010-1.06l3.5-3.5z"></path></svg></button><code class="mermaid" data-clipboard="&quot;classDiagram\n    direction TB\n    class FabricaDeRes {\n        «abstract · Factory Method + Template Method»\n        +Crear(nombre, peso, edad) Res\n        +Rehidratar(datos, id) Res «Id estable — P-05»\n        +TipoAtendido* TipoRes\n        +RangoDescribible* string «mismo texto»\n        #Construir(...)* Res «hook»\n        esqueleto: validar comunes → construir\n        → exigir EsEdadValida (sellado)\n        → publicar Ocurrido\n    }\n    class FabricaTernero { «ConcreteCreator» }\n    class FabricaCebon { «ConcreteCreator» }\n    class FabricaNovillo { «ConcreteCreator» }\n    class FabricaVacaLechera { «SC-1 · 1 clase + 1 registro» }\n    FabricaDeRes &lt;|-- FabricaTernero\n    FabricaDeRes &lt;|-- FabricaCebon\n    FabricaDeRes &lt;|-- FabricaNovillo\n    FabricaDeRes &lt;|-- FabricaVacaLechera\n\n    class RegistroDeReses {\n        «punto único de decisión»\n        +Crear(tipo, ...) / +Rehidratar(tipo, id, ...)\n        «IEnumerable~FabricaDeRes~ por DI»\n    }\n    RegistroDeReses o-- FabricaDeRes\n\n    class FabricaDeVacuna {\n        «abstract · FM + TM»\n        +Crear(DatosVacuna) Vacuna\n        +CrearLote(DatosVacuna, n) «esqueleto común — P-10»\n        #Construir(datos)* / #ValidarPropios(datos)*\n    }\n    class DatosVacuna { «request object — mata método-por-tipo» }\n    class FabricaBacteriana { «ConcreteCreator» }\n    class FabricaViva { «ConcreteCreator» }\n    FabricaDeVacuna &lt;|-- FabricaBacteriana\n    FabricaDeVacuna &lt;|-- FabricaViva\n    class RegistroDeVacunas { «keyed por categoría» }\n    RegistroDeVacunas o-- FabricaDeVacuna\n\n    class FabricaDeProducto {\n        «abstract · SC-1»\n    }\n    class FabricaLacteo { «SC-1» }\n    class FabricaCarne { «SC-1» }\n    class FabricaPiel { «SC-1» }\n    FabricaDeProducto &lt;|-- FabricaLacteo\n    FabricaDeProducto &lt;|-- FabricaCarne\n    FabricaDeProducto &lt;|-- FabricaPiel\n\n    class IVendible { «interface — polimorfismo de ítems» }\n    class Res { ⚪ intacta · Serializar consolidado en base (P-09) }\n    class ProductoDerivado { «SC-1 · nuevo» }\n    IVendible &lt;|.. Res\n    IVendible &lt;|.. ProductoDerivado\n\n    class VentaBuilder {\n        «Builder — P-03»\n        +Iniciar() → ConItem(vendible, cant) → Build()\n        Build(): invariantes + total «una sola vez»\n        reloj por ctor (mata IVentaFactory:8)\n    }\n    class Venta { ⚪ misma cara pública · agregado multi-ítem }\n    VentaBuilder ..> Venta : construye\n\n    class IDomainEventHandlerT {\n        «interface · Observer»\n        +Manejar(evento)\n    }\n    class HandlerConsola { «#1 — salida IDÉNTICA byte a byte» }\n    class HandlerStockDerivados { «#2 · SC-1» }\n    class DespachadorDeEventos {\n        «implementa IDomainEventPublisher existente»\n        orden determinista: consola primero\n    }\n    IDomainEventHandlerT &lt;|.. HandlerConsola\n    IDomainEventHandlerT &lt;|.. HandlerStockDerivados\n    DespachadorDeEventos o-- IDomainEventHandlerT\n\n    class GestorReses { ⚪ orquesta · sin reacciones inline (P-14) }\n    class ServicioVacunacion { ⚪ orquesta · sin gemelos (P-10) }\n    class Repos { ⚪ SQL intacto · rehidratan vía RegistroDeReses }\n    class Program { ⚪ solo AÑADE registros al final (P-08 intacto) }\n    GestorReses --> RegistroDeReses\n    ServicioVacunacion --> RegistroDeVacunas\n    Repos --> RegistroDeReses\n    Program ..> RegistroDeReses : registra creators\n    Program ..> DespachadorDeEventos : registra handlers&quot;">classDiagram
+    direction TB
+    class FabricaDeRes {
+        «abstract · Factory Method + Template Method»
+        +Crear(nombre, peso, edad) Res
+        +Rehidratar(datos, id) Res «Id estable — P-05»
+        +TipoAtendido* TipoRes
+        +RangoDescribible* string «mismo texto»
+        #Construir(...)* Res «hook»
+        esqueleto: validar comunes → construir
+        → exigir EsEdadValida (sellado)
+        → publicar Ocurrido
+    }
+    class FabricaTernero { «ConcreteCreator» }
+    class FabricaCebon { «ConcreteCreator» }
+    class FabricaNovillo { «ConcreteCreator» }
+    class FabricaVacaLechera { «SC-1 · 1 clase + 1 registro» }
+    FabricaDeRes &lt;|-- FabricaTernero
+    FabricaDeRes &lt;|-- FabricaCebon
+    FabricaDeRes &lt;|-- FabricaNovillo
+    FabricaDeRes &lt;|-- FabricaVacaLechera
+
+    class RegistroDeReses {
+        «punto único de decisión»
+        +Crear(tipo, ...) / +Rehidratar(tipo, id, ...)
+        «IEnumerable~FabricaDeRes~ por DI»
+    }
+    RegistroDeReses o-- FabricaDeRes
+
+    class FabricaDeVacuna {
+        «abstract · FM + TM»
+        +Crear(DatosVacuna) Vacuna
+        +CrearLote(DatosVacuna, n) «esqueleto común — P-10»
+        #Construir(datos)* / #ValidarPropios(datos)*
+    }
+    class DatosVacuna { «request object — mata método-por-tipo» }
+    class FabricaBacteriana { «ConcreteCreator» }
+    class FabricaViva { «ConcreteCreator» }
+    FabricaDeVacuna &lt;|-- FabricaBacteriana
+    FabricaDeVacuna &lt;|-- FabricaViva
+    class RegistroDeVacunas { «keyed por categoría» }
+    RegistroDeVacunas o-- FabricaDeVacuna
+
+    class FabricaDeProducto {
+        «abstract · SC-1»
+    }
+    class FabricaLacteo { «SC-1» }
+    class FabricaCarne { «SC-1» }
+    class FabricaPiel { «SC-1» }
+    FabricaDeProducto &lt;|-- FabricaLacteo
+    FabricaDeProducto &lt;|-- FabricaCarne
+    FabricaDeProducto &lt;|-- FabricaPiel
+
+    class IVendible { «interface — polimorfismo de ítems» }
+    class Res { ⚪ intacta · Serializar consolidado en base (P-09) }
+    class ProductoDerivado { «SC-1 · nuevo» }
+    IVendible &lt;|.. Res
+    IVendible &lt;|.. ProductoDerivado
+
+    class VentaBuilder {
+        «Builder — P-03»
+        +Iniciar() → ConItem(vendible, cant) → Build()
+        Build(): invariantes + total «una sola vez»
+        reloj por ctor (mata IVentaFactory:8)
+    }
+    class Venta { ⚪ misma cara pública · agregado multi-ítem }
+    VentaBuilder ..> Venta : construye
+
+    class IDomainEventHandlerT {
+        «interface · Observer»
+        +Manejar(evento)
+    }
+    class HandlerConsola { «#1 — salida IDÉNTICA byte a byte» }
+    class HandlerStockDerivados { «#2 · SC-1» }
+    class DespachadorDeEventos {
+        «implementa IDomainEventPublisher existente»
+        orden determinista: consola primero
+    }
+    IDomainEventHandlerT &lt;|.. HandlerConsola
+    IDomainEventHandlerT &lt;|.. HandlerStockDerivados
+    DespachadorDeEventos o-- IDomainEventHandlerT
+
+    class GestorReses { ⚪ orquesta · sin reacciones inline (P-14) }
+    class ServicioVacunacion { ⚪ orquesta · sin gemelos (P-10) }
+    class Repos { ⚪ SQL intacto · rehidratan vía RegistroDeReses }
+    class Program { ⚪ solo AÑADE registros al final (P-08 intacto) }
+    GestorReses --> RegistroDeReses
+    ServicioVacunacion --> RegistroDeVacunas
+    Repos --> RegistroDeReses
+    Program ..> RegistroDeReses : registra creators
+    Program ..> DespachadorDeEventos : registra handlers
+</code><div id="mermaid-container" role="dialog"><div id="mermaid-space"><div class="mermaid-content"></div></div></div></pre>
+<p><strong>Lectura:</strong> el enum <code>TipoRes</code> NO desaparece: deja de ser punto de decisión y queda como superficie de lectura (vistas + BD). <code>CatalogoRes</code> retiene <code>Parsear</code> y pierde los switches.</p>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Diagramador por capas (muy bien valorado) </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Este par está listo para montarse como <strong>dos capas superpuestas</strong> en draw.io (A gris debajo, B en color encima) — el archivo <code>diagramas/Reto2_ASIS_TOBE_Capas.drawio</code> se re-sincroniza al congelar este diseño.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="32--entregable-2--tabla-de-cambio-estructural-e-xx">3.2 · Entregable 2 — Tabla de cambio estructural (E-XX)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#32--entregable-2--tabla-de-cambio-estructural-e-xx" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>ID</th><th>Elemento</th><th>Estado</th><th>Qué hacía antes (hoy)</th><th>Qué hace ahora</th><th>Quién dependía y cómo se reconecta</th></tr></thead><tbody><tr><td>E-01</td><td><code>FabricaRes</code> + <code>IResFactory</code></td><td><strong>Se transforma</strong></td><td>Diccionario de creators + <code>DescribirRango</code> switch + validez de edad inline</td><td>Base <code>FabricaDeRes</code> (Creator+TM sellado: comunes→hook→<code>EsEdadValida</code>→publicar) + creators concretos; rango describible = dato del creator</td><td><code>GestorReses.cs:15,23</code> pasa a <code>RegistroDeReses</code>; mensajes idénticos</td></tr><tr><td>E-02</td><td><code>CatalogoRes</code></td><td><strong>Se transforma</strong></td><td>Config por tipo + 2 switches (<code>CrearDesdeNombre</code>, <code>MapearDesdePotrero</code>)</td><td>Retiene <code>Parsear</code> (vistas/seeder); creación y mapeo migran al registro/creators; config sigue delegando a <code>ParametrosRes</code> ⚪</td><td>Repos y <code>GestorReses.MapearTipoRes</code> → <code>RegistroDeReses.Rehidratar</code></td></tr><tr><td>E-03</td><td><code>IVacunaFactory</code>/<code>FabricaVacuna</code></td><td><strong>Sale</strong></td><td>Interfaz método-por-tipo + factory con validación común privada</td><td>Jerarquía <code>FabricaDeVacuna</code> + <code>DatosVacuna</code> (request) + <code>RegistroDeVacunas</code></td><td><code>ServicioVacunacion.cs:15,22</code>; <code>VacunaController</code> arma <code>DatosVacuna</code> sin ternario (<code>VacunaController.cs:49-54</code>)</td></tr><tr><td>E-04</td><td>Validadores ×4</td><td><strong>Sale</strong></td><td>Validación post-construcción con umbrales contradictorios (<code>FabricaVenta.cs:20</code> <code>&lt;0</code> vs <code>ValidadorVenta.cs:15</code> <code>&lt;=0</code>)</td><td>Reglas vivas al esqueleto de creación/<code>Build()</code>; mensajes exactos conservados</td><td><code>GestorReses</code>/<code>GestorPotreros</code>/<code>ServicioVentas</code> sueltan <code>_validador</code>; <code>Program.cs:57-60</code> pierde registros</td></tr><tr><td>E-05</td><td><code>GestorReses</code> stats/reacciones</td><td><strong>Se transforma</strong></td><td>Contadores por tipo <code>:129-134</code>; reacciones duplicadas <code>:56/:99</code></td><td>Stats polimórficas agrupando por <code>res.Tipo</code> (LINQ); el flujo solo publica — los handlers reaccionan</td><td><code>ResController</code> consume las mismas keys del diccionario</td></tr><tr><td>E-06</td><td><code>RepositorioVentaSqlite:39</code></td><td><strong>Se transforma</strong></td><td>Rehidrata <code>Res</code> con GUID nuevo por lectura</td><td><code>Rehidratar(tipo, id, …)</code> preserva el <code>Id</code> persistido</td><td>Lecturas correlacionables con potrero/chip (comportamiento interno mejorado, declarado)</td></tr><tr><td>E-07</td><td><code>DomainEventPublisherConsola</code></td><td><strong>Se transforma</strong></td><td>Todo a <code>Console.WriteLine</code></td><td><code>DespachadorDeEventos</code> (implementa <code>IDomainEventPublisher</code> — interfaz intacta) + <code>HandlerConsola</code> con las mismas líneas</td><td>Los publicadores actuales <strong>no cambian</strong> (DIP del Reto 1 rinde)</td></tr><tr><td>E-08</td><td><code>Venta</code> + <code>FabricaVenta</code></td><td><strong>Se transforma</strong></td><td>Agregado soldado a una <code>Res</code>; reloj por parámetro de método</td><td><code>Venta</code> multi-ítem (<code>IVendible</code>) con superficie intacta; <code>VentaBuilder</code> con reloj por ctor</td><td><code>ServicioVentas.cs:14,21</code>; repo de ventas persiste ítems (D-11 define esquema)</td></tr><tr><td>E-09</td><td>Lotes gemelos <code>ServicioVacunacion:61-117</code></td><td><strong>Se transforma</strong></td><td>27 líneas ×2 que difieren en 3</td><td><code>FabricaDeVacuna.CrearLote(DatosVacuna, n)</code> esqueleto común; el servicio orquesta</td><td>Mismos mensajes de lote (numerado <code>-001…</code>, conteo, tope 1-100)</td></tr><tr><td>E-10</td><td><code>Serializar()</code> ×5</td><td><strong>Se transforma</strong></td><td>Formato pipe copiado en 5 subtipos</td><td>Implementación única en la base (<code>Res</code>/<code>Vacuna</code>), hook de sufijo por subtipo</td><td>Contrato de persistencia intacto (mismo formato exacto)</td></tr><tr><td>E-11</td><td><code>RegistroDeReses/Vacunas/Productos</code></td><td><strong>Entra</strong></td><td>—</td><td>Punto único de decisión (crear + rehidratar), <code>IEnumerable&lt;FabricaDeX></code> por DI (idioma de <code>AutorizadorRbca.cs:13-16</code>)</td><td>Servicios y repos consumen; agregar tipo = 1 creator + 1 registro</td></tr><tr><td>E-12</td><td>SC-1: <code>ProductoDerivado</code> + <code>IVendible</code> + <code>FabricaDeProducto/Lacteo/Carne/Piel</code></td><td><strong>Entra</strong></td><td>—</td><td>Jerarquía de derivados con creators propios; implementan <code>IVendible</code></td><td><code>VentaBuilder</code> consume; repositorios de producto nuevos</td></tr><tr><td>E-13</td><td><code>FabricaVacaLechera</code> (DEC-05, Variante A)</td><td><strong>Entra</strong></td><td>—</td><td>Creador del subtipo lechero: <strong>1 clase + 1 registro, cero ediciones</strong> (demostración OCP medida)</td><td><code>RegistroDeReses</code>; stats/vistas la muestran vía <code>Tipo</code></td></tr><tr><td>E-14</td><td><code>Program.cs</code></td><td><strong>Se transforma</strong></td><td>31 registros + arranque sensible (P-08)</td><td>Mismos registros + creators/registros/handlers <strong>añadidos al final</strong> — orden intacto</td><td>Composition root: único lugar con la foto completa</td></tr></tbody></table></div>
+<p><strong>Cuenta:</strong> Entran ~16-20 clases · Se transforman 10 · Salen 6 (E-03 ×2, E-04 ×4). Capas: Domain +8-10, Application −4 netas, Infrastructure ±2, Web solo DI.</p>
+<hr/>
+<h2 id="33--entregable-3--fichas-por-patrón-adoptado">3.3 · Entregable 3 — Fichas por patrón adoptado<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#33--entregable-3--fichas-por-patrón-adoptado" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="ficha-1--factory-method--registrodereses-como-idioma-de-ensamblaje">Ficha 1 · Factory Method (+ RegistroDeReses como idioma de ensamblaje)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ficha-1--factory-method--registrodereses-como-idioma-de-ensamblaje" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Campo</th><th>Contenido</th></tr></thead><tbody><tr><td><strong>Patrón y punto de dolor</strong></td><td>Creacional → <strong>P-01</strong> (<code>FabricaRes.cs:17-21</code> diccionario, <code>CatalogoRes</code> 2 switches, <code>GestorReses.cs:129-134</code>, enum), <strong>P-13</strong> (4 fábricas/4 idiomas), P-02, colateral P-05/P-12</td></tr><tr><td><strong>Alternativas evaluadas</strong></td><td>(1) Simple Factory ordenado — reubica el switch; (2) Abstract Factory — sin familias (Anexo A); (3) <strong>no hacer nada</strong> — 6 archivos/2 capas por subtipo (medido)</td></tr><tr><td><strong>Qué sale / qué entra</strong></td><td>Sale: diccionario central, switches de catálogo, método-por-tipo. Entra: bases <code>FabricaDeRes/Vacuna/Producto</code>, creators concretos, <code>RegistroDe*</code>, <code>DatosVacuna</code></td></tr><tr><td><strong>Cómo se relaciona</strong></td><td>Las bases <strong>son</strong> el Template Method (Ficha 2). El <code>VentaBuilder</code> (Ficha 3) consume productos de los registros. <code>Program.cs</code> ensambla (E-14)</td></tr><tr><td><strong>Impacto</strong></td><td>Creadas ~8-10 · Modificadas: <code>GestorReses</code>, <code>ServicioVacunacion</code>, <code>VacunaController</code>, 3 repos, <code>Program.cs</code> · Eliminadas: <code>IVacunaFactory</code>+<code>FabricaVacuna</code> as-is · <strong>SC-1: VacaLechera = 1+1</strong> (antes 6 ediciones)</td></tr><tr><td><strong>Qué cuesta</strong></td><td>1 clase por subtipo; una indirección más; el registro es un lugar que leer</td></tr><tr><td><strong>Origen</strong></td><td>IA aceptada — B-08; re-anclado al catálogo nuevo en B-15</td></tr></tbody></table></div>
+<h3 id="ficha-2--template-method">Ficha 2 · Template Method<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ficha-2--template-method" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Campo</th><th>Contenido</th></tr></thead><tbody><tr><td><strong>Patrón y punto de dolor</strong></td><td>Comportamiento → <strong>P-04</strong> (umbrales <code>&lt;0</code> vs <code>&lt;=0</code>; validar lo imposible), <strong>P-09</strong> (<code>Serializar</code> ×5), <strong>P-10</strong> (lotes gemelos <code>:61-117</code>), colaterales P-13/P-14. Consolidará como paso sellado la validación de edad restaurada (DEC-09)</td></tr><tr><td><strong>Alternativas evaluadas</strong></td><td>(1) Chain of Responsibility — orden fijo, un consumidor; (2) validadores como hoy — ya desincronizados (evidencia: contradicción de monto); (3) <strong>no hacer nada</strong> — cada fábrica nueva reimplementa el pipeline</td></tr><tr><td><strong>Qué sale / qué entra</strong></td><td>Sale: capa <code>Validaciones/</code> (E-04). Entra: esqueleto sellado en las bases <code>validar comunes → construir (hook) → exigir regla del subtipo → publicar</code>; serialización y lote como esqueletos en la base</td></tr><tr><td><strong>Cómo se relaciona</strong></td><td>Es la mitad comportamiento del mismo mecanismo de la Ficha 1; el paso final dispara Observer (Ficha 4)</td></tr><tr><td><strong>Impacto</strong></td><td>Creadas: 0 extra (comparte bases con Ficha 1) · Eliminadas: 4 validadores + 2 interfaces · <strong>Regla común nueva = se escribe una vez</strong> (SC-1: caducidad de lácteos)</td></tr><tr><td><strong>Qué cuesta</strong></td><td>Herencia para variar (acoplamiento declarado); +1 frame; <strong>tensión LSP compensada</strong>: hooks como propiedades-dato ⇒ ningún subtipo puede “no poder” (matriz en 06)</td></tr><tr><td><strong>Origen</strong></td><td>IA aceptada — B-08; anclas P-09/P-10 ampliadas en B-15</td></tr></tbody></table></div>
+<h3 id="ficha-3--builder">Ficha 3 · Builder<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ficha-3--builder" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Campo</th><th>Contenido</th></tr></thead><tbody><tr><td><strong>Patrón y punto de dolor</strong></td><td>Creacional → <strong>P-03</strong> (<code>Venta.cs:10</code> soldada; SC-1 multi-ítem), P-04 ○ (invariantes una vez), P-13 (reloj por ctor — mata <code>IVentaFactory.cs:8</code>)</td></tr><tr><td><strong>Alternativas evaluadas</strong></td><td>(1) Constructores sobrecargados — telescópicos al primer cambio de ítems; (2) Composite — D-12 pendiente (solo si canastas); (3) <strong>no hacer nada</strong> — SC-1 rompe constructor+factory+repo el día uno</td></tr><tr><td><strong>Qué sale / qué entra</strong></td><td>Sale: <code>FabricaVenta</code>/<code>IVentaFactory</code> tal cual. Entra: <code>VentaBuilder</code> (Iniciar→ConItem→Build), <code>IVendible</code>, <code>ProductoDerivado</code>+creators (E-12)</td></tr><tr><td><strong>Cómo se relaciona</strong></td><td>Ítems desde los registros (Ficha 1); <code>Build()</code> publica el evento de venta vía despachador (Ficha 4)</td></tr><tr><td><strong>Impacto</strong></td><td>Creadas: 1 builder + <code>IVendible</code> + productos SC-1 (3-4) · Modificadas: <code>Venta</code> (superficie intacta), <code>ServicioVentas</code>, repo (D-11)</td></tr><tr><td><strong>Qué cuesta</strong></td><td>Estado intermedio (mitigado: <code>Build()</code> único punto de entrega válida); decisión de esquema (D-11)</td></tr><tr><td><strong>Origen</strong></td><td>IA aceptada — B-08/B-10 (Variante A confirmada)</td></tr></tbody></table></div>
+<h3 id="ficha-4--observer">Ficha 4 · Observer<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ficha-4--observer" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Campo</th><th>Contenido</th></tr></thead><tbody><tr><td><strong>Patrón y punto de dolor</strong></td><td>Comportamiento → <strong>P-06</strong> (consola único destino; <code>VacunaVencidaEvent</code> 0 publicaciones — verificado), <strong>P-14</strong> (reacciones duplicadas <code>GestorReses.cs:56/:99</code>)</td></tr><tr><td><strong>Alternativas evaluadas</strong></td><td>(1) Llamadas directas (status quo — cada reacción toca al publicador); (2) Mediator — god object; (3) <strong>no hacer nada</strong> — SC-1 no puede reaccionar a stock sin cirugía</td></tr><tr><td><strong>Qué sale / qué entra</strong></td><td>Sale: publicador monolítico. Entra: <code>IDomainEventHandler&lt;T></code>, <code>DespachadorDeEventos</code> (interfaz existente intacta), <code>HandlerConsola</code> (líneas idénticas), <code>HandlerStockDerivados</code> (SC-1)</td></tr><tr><td><strong>Cómo se relaciona</strong></td><td>Disparado por el paso final del esqueleto (Ficha 2); registrado en el mismo composition root (Ficha 1)</td></tr><tr><td><strong>Impacto</strong></td><td>Creadas ~4 · Modificadas <strong>0 en publicadores</strong> · SC-1: reaccionar a stock/vencimiento = 1 handler + 1 registro</td></tr><tr><td><strong>Qué cuesta</strong></td><td>Orden determinista a especificar y probar (consola 1º); handlers invisibles en la firma (costo de depuración declarado); sincrónicos v1</td></tr><tr><td><strong>Origen</strong></td><td>IA aceptada — B-08; ancla P-14 añadida en la auditoría B-15</td></tr></tbody></table></div>
+<hr/>
+<h2 id="4-efecto-sobre-las-solicitudes-del-anexo-b-medido-hoy">4. Efecto sobre las solicitudes del Anexo B (medido hoy)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-efecto-sobre-las-solicitudes-del-anexo-b-medido-hoy" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Solicitud</th><th>Costo AS-IS (medido 2026-09-02)</th><th>Costo TO-BE (diseño)</th></tr></thead><tbody><tr><td><strong>SC-1 · Derivados</strong> (elegida)</td><td>~20 clases / ~15 archivos: subtipo (6 ediciones P-01) + venta multi-ítem (P-03) + 5ª fábrica con idioma nuevo (P-13) + sin forma de reaccionar (P-06)</td><td><strong>Núcleo: ~8-10 clases nuevas, 0 ediciones de switches.</strong> <code>FabricaVacaLechera</code> = 1+1 (E-13)</td></tr><tr><td>SC-2 · Chips (ya implementada)</td><td>—</td><td>Colateral: rehidratación con Id estable (E-06); eventos de chip consumibles</td></tr><tr><td>SC-3 · Historia clínica (futura)</td><td>~9-12 clases aditivas</td><td>~4-5: entidad + creator + repositorio + 1 handler</td></tr></tbody></table></div>
+<hr/>
+<h2 id="5-dudas-abiertas">5. Dudas abiertas<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-dudas-abiertas" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>ID</th><th>Duda</th><th>Estado</th></tr></thead><tbody><tr><td>D-04</td><td>Distribución de los 4 frentes entre integrantes</td><td>🟡 Del equipo</td></tr><tr><td>D-06</td><td>≥3 hallazgos propios sin IA</td><td>🟡 1 confirmado (B-16 ◆) — faltan 2</td></tr><tr><td>D-11</td><td>Persistencia multi-ítem: columna JSON vs tabla <code>venta_items</code></td><td>🟡 Se decide al implementar (zona BD: solo añadir)</td></tr><tr><td><strong>D-12</strong></td><td><strong>¿Composite como 5º patrón?</strong> (solo si SC-1 incluye canastas)</td><td>🟡 Del equipo — recomendación: descartar salvo canastas</td></tr></tbody></table></div>
+<h2 id="6-riesgos-propios-del-diseño">6. Riesgos propios del diseño<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-riesgos-propios-del-diseño" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li><strong>Superficie de mensaje:</strong> los textos exactos (incluida la validación restaurada DEC-09 y los 4 mensajes de lote) se trasladan al esqueleto/builder — tabla congelada en <a href="../../Reto2-Hacienda/Opcion1/06-VerificacionSOLID" class="internal alias" data-slug="Reto2-Hacienda/Opcion1/06-VerificacionSOLID">06-Verificación</a>.</li>
+<li><strong>Rehidratación con <code>Id</code> preservado</strong> (E-06): cambia comportamiento <em>interno</em> (identidad estable vs GUID nuevo) — no observable en UI; declarado y probado en Act. 4.</li>
+<li><strong>Determinismo del despachador:</strong> orden especificado (consola primero, resto en orden de registro) con caso de prueba propio.</li>
+<li><strong>Des-sincronización de diagramas:</strong> los <code>.drawio</code> de <code>diagramas/</code> se re-sincronizan al congelar este diseño (los mermaid de §3.1 son hoy la fuente de verdad).</li>
+</ol>
+<h2 id="7-navegación">7. Navegación<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-navegación" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><a href="../../Reto2-Hacienda/Opcion1/01-AS-IS" class="internal alias" data-slug="Reto2-Hacienda/Opcion1/01-AS-IS">01-AS-IS</a> · <a href="../../Reto2-Hacienda/Opcion1/02-PuntosDolor" class="internal alias" data-slug="Reto2-Hacienda/Opcion1/02-PuntosDolor">02-PuntosDolor</a> — la cadena de evidencia.</li>
+<li><a href="../../Reto2-Hacienda/Opcion1/06-VerificacionSOLID" class="internal alias" data-slug="Reto2-Hacienda/Opcion1/06-VerificacionSOLID">06-Verificación</a> — Actividad 4: aquí se audita todo lo que este diseño promete preservar.</li>
+<li><a href="../../Reto2-Hacienda/Opcion1/10-BitacoraIA" class="internal alias" data-slug="Reto2-Hacienda/Opcion1/10-BitacoraIA">10-Bitácora</a> — B-08/B-10/B-15/B-16 sustentan estas decisiones.</li>
+</ul></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Vista Gráfica</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-11" aria-expanded="true"><h3>Tabla de Contenidos</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#05--to-be-diseño-con-solid--patrones-actividad-3" data-for="05--to-be-diseño-con-solid--patrones-actividad-3">05 — TO-BE: Diseño con SOLID + Patrones (Actividad 3)</a></li><li class="depth-1"><a href="#31--entregable-1--los-dos-diagramas" data-for="31--entregable-1--los-dos-diagramas">3.1 · Entregable 1 — Los dos diagramas</a></li><li class="depth-2"><a href="#diagrama-a--lo-que-sale-recorte-del-as-is-marcado" data-for="diagrama-a--lo-que-sale-recorte-del-as-is-marcado">Diagrama A — LO QUE SALE (recorte del AS-IS marcado)</a></li><li class="depth-2"><a href="#diagrama-b--lo-que-entra-to-be--lo-conservado" data-for="diagrama-b--lo-que-entra-to-be--lo-conservado">Diagrama B — LO QUE ENTRA (TO-BE; ⚪ lo conservado)</a></li><li class="depth-1"><a href="#32--entregable-2--tabla-de-cambio-estructural-e-xx" data-for="32--entregable-2--tabla-de-cambio-estructural-e-xx">3.2 · Entregable 2 — Tabla de cambio estructural (E-XX)</a></li><li class="depth-1"><a href="#33--entregable-3--fichas-por-patrón-adoptado" data-for="33--entregable-3--fichas-por-patrón-adoptado">3.3 · Entregable 3 — Fichas por patrón adoptado</a></li><li class="depth-2"><a href="#ficha-1--factory-method--registrodereses-como-idioma-de-ensamblaje" data-for="ficha-1--factory-method--registrodereses-como-idioma-de-ensamblaje">Ficha 1 · Factory Method (+ RegistroDeReses como idioma de ensamblaje)</a></li><li class="depth-2"><a href="#ficha-2--template-method" data-for="ficha-2--template-method">Ficha 2 · Template Method</a></li><li class="depth-2"><a href="#ficha-3--builder" data-for="ficha-3--builder">Ficha 3 · Builder</a></li><li class="depth-2"><a href="#ficha-4--observer" data-for="ficha-4--observer">Ficha 4 · Observer</a></li><li class="depth-1"><a href="#4-efecto-sobre-las-solicitudes-del-anexo-b-medido-hoy" data-for="4-efecto-sobre-las-solicitudes-del-anexo-b-medido-hoy">4. Efecto sobre las solicitudes del Anexo B (medido hoy)</a></li><li class="depth-1"><a href="#5-dudas-abiertas" data-for="5-dudas-abiertas">5. Dudas abiertas</a></li><li class="depth-1"><a href="#6-riesgos-propios-del-diseño" data-for="6-riesgos-propios-del-diseño">6. Riesgos propios del diseño</a></li><li class="depth-1"><a href="#7-navegación" data-for="7-navegación">7. Navegación</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Retroenlaces</h3><ul id="list-2" class="overflow"><li><a href="../../Reto2-Hacienda/Opcion1/01-AS-IS" class="internal">01-AS-IS</a></li><li><a href="../../Reto2-Hacienda/Opcion1/06-VerificacionSOLID" class="internal">06-VerificacionSOLID</a></li><li><a href="../../Reto2-Hacienda/Opcion1/07-Riesgos" class="internal">07-Riesgos</a></li><li><a href="../../Reto2-Hacienda/Opcion1/09-VistaTecnica" class="internal">09-VistaTecnica</a></li><li><a href="../../" class="internal">Arquitectura de Software — Reto 2 Hacienda</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Creado con <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript" data-persist="true">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module" data-persist="true">function E(a,e){if(!a)return;function t(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function n(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}a?.addEventListener("click",t),window.addCleanup(()=>a?.removeEventListener("click",t)),document.addEventListener("keydown",n),window.addCleanup(()=>document.removeEventListener("keydown",n))}function f(a){for(;a.firstChild;)a.removeChild(a.firstChild)}var m=class{constructor(e,t){this.container=e;this.content=t;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),t=this.onMouseMove.bind(this),n=this.onMouseUp.bind(this),o=this.onTouchStart.bind(this),r=this.onTouchMove.bind(this),i=this.onTouchEnd.bind(this),s=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",t),document.addEventListener("mouseup",n),this.container.addEventListener("touchstart",o,{passive:!1}),document.addEventListener("touchmove",r,{passive:!1}),document.addEventListener("touchend",i),window.addEventListener("resize",s),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",t),()=>document.removeEventListener("mouseup",n),()=>this.container.removeEventListener("touchstart",o),()=>document.removeEventListener("touchmove",r),()=>document.removeEventListener("touchend",i),()=>window.removeEventListener("resize",s))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let t=this.createButton("+",()=>this.zoom(.1)),n=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(n),e.appendChild(o),e.appendChild(t),this.container.appendChild(e)}createButton(e,t){let n=document.createElement("button");return n.textContent=e,n.className="mermaid-control-button",n.addEventListener("click",t),window.addCleanup(()=>n.removeEventListener("click",t)),n}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}onTouchStart(e){if(e.touches.length!==1)return;this.isDragging=!0;let t=e.touches[0];this.startPan={x:t.clientX-this.currentPan.x,y:t.clientY-this.currentPan.y}}onTouchMove(e){if(!this.isDragging||e.touches.length!==1)return;e.preventDefault();let t=e.touches[0];this.currentPan={x:t.clientX-this.startPan.x,y:t.clientY-this.startPan.y},this.updateTransform()}onTouchEnd(){this.isDragging=!1}zoom(e){let t=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),n=this.content.getBoundingClientRect(),o=n.width/2,r=n.height/2,i=t-this.scale;this.currentPan.x-=o*i,this.currentPan.y-=r*i,this.scale=t,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){let t=this.content.querySelector("svg").getBoundingClientRect(),n=t.width/this.scale,o=t.height/this.scale;this.scale=1,this.currentPan={x:(this.container.clientWidth-n)/2,y:(this.container.clientHeight-o)/2},this.updateTransform()}},T=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],y;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;y||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let t=y.default,n=new WeakMap;for(let r of e)n.set(r,r.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let c=n.get(s);c&&(s.innerHTML=c)}let r=T.reduce((s,c)=>(s[c]=window.getComputedStyle(document.documentElement).getPropertyValue(c),s),{}),i=document.documentElement.getAttribute("saved-theme")==="dark";t.initialize({startOnLoad:!1,securityLevel:"loose",theme:i?"dark":"base",themeVariables:{fontFamily:r["--codeFont"],primaryColor:r["--light"],primaryTextColor:r["--darkgray"],primaryBorderColor:r["--tertiary"],lineColor:r["--darkgray"],secondaryColor:r["--secondary"],tertiaryColor:r["--tertiary"],clusterBkg:r["--light"],edgeLabelBackground:r["--highlight"]}}),await t.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let r=0;r<e.length;r++){let v=function(){let g=l.querySelector("#mermaid-space"),h=l.querySelector(".mermaid-content");if(!h)return;f(h);let w=i.querySelector("svg").cloneNode(!0);h.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new m(g,h)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},i=e[r],s=i.parentElement,c=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(c),L=c.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),E(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript" data-persist="true"></script><script src="../../postscript.js" type="module" data-persist="true"></script></html>

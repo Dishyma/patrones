@@ -1,0 +1,54 @@
+flowchart TB
+    subgraph Domain["Hacienda.Domain"]
+        direction TB
+        BASE[FabricaDeRes «Creator + Template Method»<br/>esqueleto sellado: validar → construir → regla del subtipo → publicar]
+        CR1[FabricaTernero «ConcreteCreator»]
+        CR2[FabricaCebon «ConcreteCreator»]
+        CR3[FabricaNovillo «ConcreteCreator»]
+        CR4[FabricaVacaLechera «ConcreteCreator · SC-1-A»]
+        BASE <|-- CR1
+        BASE <|-- CR2
+        BASE <|-- CR3
+        BASE <|-- CR4
+        REG[RegistroDeReses<br/>punto único de decisión<br/>crear + rehidratar (Id estable)]
+        REG o-- BASE : creators inyectados (DI)
+        VACBASE[FabricaDeVacuna «TM» +<br/>FabricaBacteriana/Viva «FM»]
+        DV[DatosVacuna<br/>(objeto-solicitud)]
+        REGV[RegistroDeVacunas<br/>(por categoria)]
+        REGV o-- VACBASE
+        PRODBASE[FabricaDeProducto «TM» +<br/>creadores «FM» x3 «SC-1»]
+        BLD[VentaBuilder «Builder»<br/>iniciar → ítems → Build()<br/>valida invariantes + total]
+        IV[IVendible + ProductoDerivado<br/>Lacteo · Carne · Piel «SC-1»]
+        PRODBASE <|-- FabricaLacteo
+        PRODBASE <|-- FabricaCarne
+        PRODBASE <|-- FabricaPiel
+        BLD ..> IV : ensambla
+        IV <|.. Res
+        PRODBASE ..> IV : crea ítems
+    end
+    subgraph Infra["Hacienda.Infrastructure"]
+        OBS[IDomainEventHandler<T> «Observer»]
+        HC[HandlerConsola «Observer #1»<br/>salida IDÉNTICA byte a byte]
+        HS[HandlerStockDerivados «Observer #2 · SC-1»]
+        DESP[DespachadorDeEventos «Observer»<br/>implementa IDomainEventPublisher<br/>(interfaz AS-IS intacta)]
+        OBS <|.. HC
+        OBS <|.. HS
+        DESP o-- OBS : handlers inyectados
+    end
+    subgraph App["Hacienda.Application"]
+        SRV[Servicios<br/>orquestan, no deciden<br/>(se conservan, adelgazan)]
+    end
+    subgraph Web["Hacienda.Web"]
+        PGM[Program.cs (conservado) ensambla:<br/>creators + registros + builder + handlers]
+    end
+    SRV -->|pide crear| REG
+    SRV -->|arma venta| BLD
+    BASE -.-> VACBASE : hereda esqueleto TM
+    BLD -->|ítems| IV
+    PRODBASE -->|ítems| IV
+    DESP -->|despacha| OBS
+    SRV -->|pide crear| REGV
+    PGM -.->|registra| REG
+    PGM -.->|registra| REGV
+    PGM -.->|registra| DESP
+    style SRV fill:#f5f5f5,stroke:#333

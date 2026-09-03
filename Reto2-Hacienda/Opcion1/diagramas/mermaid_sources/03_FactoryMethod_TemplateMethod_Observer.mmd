@@ -1,0 +1,63 @@
+classDiagram
+    class FabricaDeRes {
+        <<abstract>>
+        +Crear(nombre, peso, edad) Res
+        +Rehidratar(datos) Res
+        +TipoAtendido* TipoRes
+        #Construir(nombre, peso, edad)* Res
+        #ValidarComunes()
+        #ExigirReglaDelSubtipo(res, edad)
+        #PublicarOcurrido(evento)
+    }
+    class FabricaTernero { +Construir() Res }
+    class FabricaCebon { +Construir() Res }
+    class FabricaNovillo { +Construir() Res }
+    class FabricaVacaLechera { +Construir() Res }
+    FabricaDeRes <|-- FabricaTernero
+    FabricaDeRes <|-- FabricaCebon
+    FabricaDeRes <|-- FabricaNovillo
+    FabricaDeRes <|-- FabricaVacaLechera
+
+    class RegistroDeReses {
+        +Crear(tipo, ...) Res
+        +Rehidratar(tipo, datos) Res
+    }
+    RegistroDeReses o-- FabricaDeRes : creators
+
+    class IDomainEventPublisher {
+        <<interface>>
+        +Publicar<T>(evento)
+    }
+    class DespachadorDeEventos {
+        +Publicar<T>(evento)
+    }
+    class IDomainEventHandler {
+        <<interface>>
+        +Manejar(evento)
+    }
+    class HandlerConsola
+    class HandlerStockDerivados
+    IDomainEventPublisher <|.. DespachadorDeEventos
+    IDomainEventHandler <|.. HandlerConsola
+    IDomainEventHandler <|.. HandlerStockDerivados
+    DespachadorDeEventos o-- IDomainEventHandler : handlers
+
+    class VentaBuilder {
+        +Iniciar()
+        +ConItem(vendible, cantidad) VentaBuilder
+        +Build() Venta
+    }
+    class IVendible {
+        <<interface>>
+    }
+    class Res
+    class ProductoDerivado
+    IVendible <|.. Res
+    IVendible <|.. ProductoDerivado
+    VentaBuilder ..> IVendible : items
+    VentaBuilder ..> IDomainEventPublisher : publica VentaRealizadaEvent
+
+    FabricaDeRes <|-- FabricaDeVacuna : hereda Template Method
+    FabricaDeRes <|-- FabricaDeProducto : hereda Template Method
+    RegistroDeReses o-- FabricaDeRes
+    FabricaDeRes ..> IDomainEventPublisher : publica
